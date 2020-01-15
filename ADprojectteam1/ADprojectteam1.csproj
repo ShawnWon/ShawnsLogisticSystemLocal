@@ -127,7 +127,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DepEmpController.cs" />
+    <Compile Include="Controllers\DepManagerController.cs" />
+    <Compile Include="Controllers\DepRepController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StoreClerkController.cs" />
+    <Compile Include="Controllers\StoreManagerController.cs" />
+    <Compile Include="Controllers\StoreSupController.cs" />
     <Compile Include="Data\ADDbContext.cs" />
     <Compile Include="Data\ADDbInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -185,6 +191,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DepEmp\" />
+    <Folder Include="Views\DepManager\" />
+    <Folder Include="Views\DepRep\" />
+    <Folder Include="Views\StoreClerk\" />
+    <Folder Include="Views\StoreManager\" />
+    <Folder Include="Views\StoreSup\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
