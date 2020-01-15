@@ -9,8 +9,15 @@ namespace ADprojectteam1.Models
     {
         public int Id { get; set; }
         public virtual Item item { get; set; }
-        public virtual SRequisition SReq { get; set; }
+        public virtual Employee emp { get; set; }
         public int Quant { get; set; }
         public int DeliveredQuant { get; set; }
+
+        public ReqItem(Item i, Employee e, int q) {
+            item = i;
+            emp = e;
+            Quant = q;
+            DeliveredQuant = 0;
+        }
     }
 }

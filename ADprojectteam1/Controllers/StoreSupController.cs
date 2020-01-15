@@ -9,7 +9,7 @@ namespace ADprojectteam1.Controllers
     public class StoreSupController : Controller
     {
         // GET: StoreSup
-        public ActionResult Index()
+        public ActionResult PendingInvAdjList()
         {
             return View();
         }

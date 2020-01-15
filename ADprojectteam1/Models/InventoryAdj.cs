@@ -12,5 +12,13 @@ namespace ADprojectteam1.Models
         public int Quant { get; set; }
         public string Reason { get; set; }
         public string Status { get; set; }//status can be "Pending, Submitted, Approved, Rejected"
+
+        public InventoryAdj(Item i,int q,string r) {
+
+            item = i;
+            Quant = q;
+            Reason = r;
+            Status = "Pending";
+        }
     }
 }

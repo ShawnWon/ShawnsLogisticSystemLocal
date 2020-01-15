@@ -9,7 +9,7 @@ namespace ADprojectteam1.Controllers
     public class StoreManagerController : Controller
     {
         // GET: StoreManager
-        public ActionResult Index()
+        public ActionResult PendingInvAdjList()
         {
             return View();
         }

@@ -17,5 +17,15 @@ namespace ADprojectteam1.Models
         public Employee DepRep { get; set; }
         public Employee DepHead { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
+
+        public Department(string dname,string dcode,string tele,string fax,string cp,Employee e1,Employee e2) {
+            DepName = dname;
+            DepCode = dcode;
+            Tele = tele;
+            Fax = fax;
+            CollectPoint = cp;
+            DepHead = e1;
+            DepRep = e2;
+        }
     }
 }

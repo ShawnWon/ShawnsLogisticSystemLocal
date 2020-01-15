@@ -134,8 +134,9 @@
     <Compile Include="Controllers\StoreClerkController.cs" />
     <Compile Include="Controllers\StoreManagerController.cs" />
     <Compile Include="Controllers\StoreSupController.cs" />
-    <Compile Include="Data\ADDbContext.cs" />
-    <Compile Include="Data\ADDbInitializer.cs" />
+    <Compile Include="DB\ADDbContext.cs" />
+    <Compile Include="DB\ADDbInitializer.cs" />
+    <Compile Include="DB\EmployeeData.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -187,16 +188,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\login.cshtml" />
+    <Content Include="Views\DepEmp\RequisitionList.cshtml" />
+    <Content Include="Views\DepManager\PendingRequisitionList.cshtml" />
+    <Content Include="Views\DepRep\PendingDisbursmentList.cshtml" />
+    <Content Include="Views\StoreClerk\ApprovedRequisitionList.cshtml" />
+    <Content Include="Views\StoreSup\PendingInvAdjList.cshtml" />
+    <Content Include="Views\StoreManager\PendingInvAdjList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\DepEmp\" />
-    <Folder Include="Views\DepManager\" />
-    <Folder Include="Views\DepRep\" />
-    <Folder Include="Views\StoreClerk\" />
-    <Folder Include="Views\StoreManager\" />
-    <Folder Include="Views\StoreSup\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

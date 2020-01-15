@@ -9,7 +9,7 @@ namespace ADprojectteam1.Controllers
     public class StoreClerkController : Controller
     {
         // GET: StoreClerk
-        public ActionResult Index()
+        public ActionResult ApprovedRequisitionList()
         {
             return View();
         }

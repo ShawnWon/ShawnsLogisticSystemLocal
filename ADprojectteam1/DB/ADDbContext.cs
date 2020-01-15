@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace ADprojectteam1.Data
+namespace ADprojectteam1.DB
 {
     public class ADDbContext : DbContext
     {
@@ -13,9 +13,14 @@ namespace ADprojectteam1.Data
             Database.SetInitializer(new ADDbInitializer<ADDbContext>());
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Properties<DateTime>().Configure(c => c.HasColumnType("datetime2"));
+        }
+
         public DbSet<Department> Department { get; set; }
         public DbSet<Employee> Employee { get; set; }
-        public DbSet<StockCard> InVentoryChangeRec { get; set; }
+      
         public DbSet<Item> Item { get; set; }
         public DbSet<ItemSupplier> ItemSupplier { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
@@ -23,6 +28,7 @@ namespace ADprojectteam1.Data
         public DbSet<ReqItem> ReqItem { get; set; }
         public DbSet<SRequisition> SRequisition { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
-
+        public DbSet<StockCard> StockCard { get; set; }
+        public DbSet<InventoryAdj> InventoryAdj { get; set; }
     }
 }

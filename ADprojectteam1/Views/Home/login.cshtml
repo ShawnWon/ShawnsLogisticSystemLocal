@@ -1,0 +1,56 @@
+﻿@model ADprojectteam1.Models.Employee
+
+<br>
+<br>
+<div class="col-md-12 col-xs-12 text-center">
+    <div class="col-md-6 col-sm-6 text-center">
+        <div class="col-md-6 col-sm-6"></div>
+        <div class="col-md-6 col-sm-6">
+
+            @using (Html.BeginForm("LoginCheckPassword", "Home", FormMethod.Post))  //Password only post to checkpassword(),so user will not see it in browser.
+            {
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(x => x.Name):</td>
+                        <td>@Html.TextBoxFor(x => x.Name, new { id = "username" })</td>  @*The name of this textbox is "UserName", the attribute of model user.*@
+                        <td>@Html.ValidationMessageFor(x => x.Name)</td>
+                    </tr>
+
+                    <tr><td><br></td></tr>
+
+                    <tr>
+                        <td>@Html.LabelFor(x => x.PassWord):</td>
+                        <td>@Html.PasswordFor(x => x.PassWord, new { id = "password" })</td>
+                        @*The name of this textbox is "Password", the attribute of model user.*@
+                        <td>@Html.ValidationMessageFor(x => x.PassWord)</td>
+                        @{ if ((bool)TempData["isAuth"] == false)
+                            {
+                                <td>Incorrect username or password</td>
+                            }
+                        }
+                    </tr>
+
+                    <tr><td><br></td></tr>
+
+
+                    <tr>
+                        <td colspan="2" align="right"><input id="submitBtn" type="submit" value="Log In" style="color:midnightblue" /></td>
+                    </tr>
+
+
+                </table>
+            }
+
+
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

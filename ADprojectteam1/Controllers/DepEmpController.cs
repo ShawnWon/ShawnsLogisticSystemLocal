@@ -9,7 +9,7 @@ namespace ADprojectteam1.Controllers
     public class DepEmpController : Controller
     {
         // GET: DepEmp
-        public ActionResult Index()
+        public ActionResult RequisitionList()
         {
             return View();
         }
