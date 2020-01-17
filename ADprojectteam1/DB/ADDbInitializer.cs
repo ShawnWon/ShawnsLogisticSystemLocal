@@ -174,13 +174,39 @@ namespace ADprojectteam1.DB
             rit.Add(new ReqItem(items[40], emps[4], 100));
             rit.Add(new ReqItem(items[84], emps[4], 25));
             rit.Add(new ReqItem(items[73], emps[4], 55));
+            
 
             foreach (ReqItem ri in rit)
+                context.ReqItem.Add(ri);
+
+            List<ReqItem> rit1 = new List<ReqItem>();
+            rit1.Add(new ReqItem(items[1], emps[5], 10));
+            rit1.Add(new ReqItem(items[68], emps[5], 45));
+            rit1.Add(new ReqItem(items[40], emps[5], 100));
+            rit1.Add(new ReqItem(items[84], emps[5], 25));
+            rit1.Add(new ReqItem(items[73], emps[5], 55));
+
+
+            foreach (ReqItem ri in rit1)
                 context.ReqItem.Add(ri);
 
             SRequisition srq = new SRequisition();
             srq.ListItem = rit;
             context.SRequisition.Add(srq);
+
+            SRequisition srq1 = new SRequisition();
+            srq1.ListItem = rit1;
+            context.SRequisition.Add(srq1);
+
+            DepOrder dor = new DepOrder();
+            
+            List<SRequisition> lsr = new List<SRequisition>();
+            lsr.Add(srq);
+            lsr.Add(srq1);
+            dor.ListRequisition = lsr;
+            
+            context.DepOrder.Add(dor);
+            
 
             List<StockCard> lsc = new List<StockCard>();
             DateTime dt = DateTime.Today;

@@ -51,5 +51,11 @@ namespace ADprojectteam1.Models
         public StockCard()
         {
         }
+
+        public bool equalsTo(StockCard other)
+        {
+            if (this.Id == other.Id) return true;
+            return false;
+        }
     }
 }

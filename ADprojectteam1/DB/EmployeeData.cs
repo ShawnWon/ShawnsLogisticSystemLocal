@@ -18,8 +18,8 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.Employee.Where(x => x.UserName == username).Any())
-                    pw = db.Employee.Where(x => x.UserName == username).FirstOrDefault().PassWord;
+                if (db.Employee.Where(x => x.UserName .Equals(username)).Any())
+                    pw = db.Employee.Where(x => x.UserName.Equals(username)).FirstOrDefault().PassWord;
 
             }
             return pw;
@@ -30,8 +30,8 @@ namespace ADprojectteam1.DB
             string role = "";
             using (var db = new ADDbContext())
             {
-                if (db.Employee.Where(x => x.UserName == username).Any())
-                    role = db.Employee.Where(x => x.UserName == username).FirstOrDefault().Role;
+                if (db.Employee.Where(x => x.UserName.Equals(username)).Any())
+                    role = db.Employee.Where(x => x.UserName.Equals(username)).FirstOrDefault().Role;
             }
             return role;
         }
@@ -42,8 +42,8 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.Employee.Where(x => x.UserName == username).Any())
-                    id = db.Employee.Where(x => x.UserName == username).FirstOrDefault().Id;
+                if (db.Employee.Where(x => x.UserName.Equals(username)).Any())
+                    id = db.Employee.Where(x => x.UserName.Equals(username)).FirstOrDefault().Id;
 
             }
             return id;

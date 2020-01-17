@@ -15,8 +15,11 @@ namespace ADprojectteam1.Models
         public ReOrderRecord(ItemSupplier i) {
             itemsupplier =i;
             status = "Pending";
+        }
 
-        
+        public bool equalsTo(ReOrderRecord other)
+        { if (this.Id == other.Id) return true;
+            return false;
         }
     }
 }

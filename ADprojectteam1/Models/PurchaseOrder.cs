@@ -25,5 +25,10 @@ namespace ADprojectteam1.Models
             foreach (ReOrderRecord ror in lro)
                 amount +=ror.itemsupplier.item.ReorderQty*ror.itemsupplier.UnitPrice;
         }
+
+        public bool equalsTo(PurchaseOrder other) {
+            if (this.PONumber.Equals( other.PONumber)) return true;
+            return false;
+        }
     }
 }

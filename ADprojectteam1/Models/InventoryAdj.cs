@@ -20,5 +20,10 @@ namespace ADprojectteam1.Models
             Reason = r;
             Status = "Pending";
         }
+
+        public bool equalsTo(InventoryAdj other) {
+            if (this.Id == other.Id) return true;
+            return false;
+        }
     }
 }

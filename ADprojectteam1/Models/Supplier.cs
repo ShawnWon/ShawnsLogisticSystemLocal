@@ -27,6 +27,12 @@ namespace ADprojectteam1.Models
             Fax = f;
             Emailaddress = e;
         }
+
+        public bool equalsTo(Supplier other) {
+            
+            if (this.Code.Equals(other.Code)) return true;
+            return false;
+        }
     }
     
 }

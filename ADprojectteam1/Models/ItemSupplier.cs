@@ -26,5 +26,11 @@ namespace ADprojectteam1.Models
         public ItemSupplier()
         {
         }
+
+        public bool equalsTo(ItemSupplier other) {
+            
+            if (this.item.equalsTo(other.item) && this.supplier.equalsTo(other.supplier)) return true;
+            return false;
+        }
     }
 }

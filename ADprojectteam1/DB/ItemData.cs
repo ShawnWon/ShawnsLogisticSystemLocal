@@ -15,8 +15,8 @@ namespace ADprojectteam1.DB
 
                 using (var db = new ADDbContext())
                 {
-                    if (db.ItemSupplier.Where(x=>x.item.ItemCode==itemcode).Any())
-                        sb = db.ItemSupplier.Where(x => x.item.ItemCode == itemcode).Select(x=>x.StockBalance).Sum();
+                    if (db.ItemSupplier.Where(x=>x.item.ItemCode.Equals(itemcode)).Any())
+                        sb = db.ItemSupplier.Where(x => x.item.ItemCode.Equals(itemcode)).Select(x=>x.StockBalance).Sum();
 
                 }
                 return sb;
@@ -27,8 +27,8 @@ namespace ADprojectteam1.DB
             ItemSupplier itemSup= new ItemSupplier();
             using (var db = new ADDbContext())
             {
-                if (db.ItemSupplier.Where(x => x.item.ItemCode == itemcode && x.supplier==s).Any())
-                    itemSup = db.ItemSupplier.Where(x => x.item.ItemCode == itemcode && x.supplier==s).FirstOrDefault();
+                if (db.ItemSupplier.Where(x => x.item.ItemCode.Equals( itemcode) && x.supplier.equalsTo(s)).Any())
+                    itemSup = db.ItemSupplier.Where(x => x.item.ItemCode.Equals(itemcode) && x.supplier.equalsTo(s)).FirstOrDefault();
 
                 itemSup.StockBalance += quant;
                 StockCardData.AddToStockRecord(itemSup.item,DateTime.Today,itemSup.supplier,quant);
@@ -41,17 +41,18 @@ namespace ADprojectteam1.DB
 
         public static bool AdjustStockBanlance(Supplier s,InventoryAdj invadj)
         {
+            if (!invadj.Status.Equals("approved")) return false;
             
             ItemSupplier itemSup = new ItemSupplier();
             using (var db = new ADDbContext())
             {
-                if (db.ItemSupplier.Where(x => x.item == invadj.item && x.supplier == s).Any())
-                    itemSup = db.ItemSupplier.Where(x => x.item == invadj.item && x.supplier == s).FirstOrDefault();
+                if (db.ItemSupplier.Where(x => x.item.equalsTo(invadj.item) && x.supplier.equalsTo(s)).Any())
+                    itemSup = db.ItemSupplier.Where(x => x.item.equalsTo(invadj.item) && x.supplier.equalsTo(s)).FirstOrDefault();
 
                 if (itemSup.StockBalance < invadj.Quant) return false;
 
-                itemSup.StockBalance -= invadj.Quant;
-                //StockCardData.AdjustStockRecord(); 
+                itemSup.StockBalance += invadj.Quant;
+                StockCardData.AdjustStockRecord(DateTime.Today,invadj); 
             }
 
             return true;
@@ -65,9 +66,9 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.ItemSupplier.Where(x => x.item.ItemCode == itemcode).Any())
+                if (db.ItemSupplier.Where(x => x.item.ItemCode.Equals(itemcode)).Any())
                 {
-                    List<ItemSupplier> itmsuplist = db.ItemSupplier.Where(x => x.item.ItemCode == itemcode).ToList();
+                    List<ItemSupplier> itmsuplist = db.ItemSupplier.Where(x => x.item.ItemCode.Equals(itemcode)).ToList();
                     int qtw = quant;
 
                     foreach (ItemSupplier itemsup in itmsuplist)

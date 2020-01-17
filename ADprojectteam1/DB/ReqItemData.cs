@@ -9,14 +9,14 @@ namespace ADprojectteam1.DB
     public class ReqItemData
     {
 
-        public static List<ReqItem> GetListReqItemApprovedAndUnfulfilled()
+        /*public static List<ReqItem> GetListReqItemApprovedAndPartlydelivered()
         {
             List<ReqItem> list=new List<ReqItem>();
 
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x.Status=="approved"||x.Status=="partly delivered").Any())
-                    list = db.ReqItem.Where(x => x.Status=="approved"||x.Status=="partly delivered").ToList();
+                if (db.ReqItem.Where(x => x.Status.Equals("approved")||x.Status.Equals("partly delivered")).Any())
+                    list = db.ReqItem.Where(x => x.Status.Equals("approved")||x.Status.Equals("partly delivered")).ToList();
 
             }
             return list;
@@ -28,9 +28,9 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x == ri).Any())
+                if (db.ReqItem.Where(x => x.equalsTo(ri)).Any())
                 {
-                    reqi = db.ReqItem.Where(x => x == ri).FirstOrDefault();
+                    reqi = db.ReqItem.Where(x => x.equalsTo(ri)).FirstOrDefault();
 
 
                     if (reqi.DeliveredQuant + q > reqi.Quant) throw new Exception("Exceed demand quantity");
@@ -51,9 +51,9 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x == ri).Any())
+                if (db.ReqItem.Where(x => x.equalsTo(ri)).Any())
                 {
-                    reqi = db.ReqItem.Where(x => x == ri).FirstOrDefault();
+                    reqi = db.ReqItem.Where(x => x.equalsTo(ri)).FirstOrDefault();
                     reqi.Status = "approved";
                     db.SaveChanges();
                     return true;
@@ -69,9 +69,9 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x == ri).Any())
+                if (db.ReqItem.Where(x => x.equalsTo(ri)).Any())
                 {
-                    reqi = db.ReqItem.Where(x => x == ri).FirstOrDefault();
+                    reqi = db.ReqItem.Where(x => x.equalsTo(ri)).FirstOrDefault();
                     reqi.Status = "rejected";
                     db.SaveChanges();
                     return true;
@@ -87,9 +87,9 @@ namespace ADprojectteam1.DB
             ReqItem reqit = new ReqItem();
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x.Id == ri.Id).Any())
+                if (db.ReqItem.Where(x => x.equalsTo(ri)).Any())
                 {
-                    reqit = db.ReqItem.Where(x => x.Id == ri.Id).FirstOrDefault();
+                    reqit = db.ReqItem.Where(x => x.equalsTo(ri)).FirstOrDefault();
                     reqit.item = ri.item;
                     reqit.emp = ri.emp;
                     reqit.Quant = ri.Quant;
@@ -107,7 +107,7 @@ namespace ADprojectteam1.DB
 
             
             
-        }
+        }*/
 
 
 

@@ -34,5 +34,11 @@ namespace ADprojectteam1.Models
         public Item()
         {
         }
+
+        public bool equalsTo(Item other) {
+            
+            if(this.ItemCode.Equals(other.ItemCode)) return true;
+            return false;
+        }
     }
 }

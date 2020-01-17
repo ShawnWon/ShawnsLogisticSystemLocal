@@ -23,6 +23,11 @@ namespace ADprojectteam1.Models
             Status = "pending";
         }
 
+        public bool equalsTo(ReqItem other) {
+            if (this.item.equalsTo(other.item)&&this.emp.equalsTo(other.emp)) return true;
+            return false;
+        }
+
         public ReqItem()
         {
         }

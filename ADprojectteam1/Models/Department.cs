@@ -27,5 +27,11 @@ namespace ADprojectteam1.Models
             DepHead = e1;
             DepRep = e2;
         }
+
+        public bool equalsTo(Department other) {
+
+            if (this.DepCode.Equals(other.DepCode)) return true;
+            return false;
+        }
     }
 }

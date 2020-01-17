@@ -40,5 +40,11 @@ namespace ADprojectteam1.Models
             EmailAdd = email;
 
         }
+
+        public bool equalsTo(Employee other)
+        {
+            if (this.UserName.Equals(other.UserName)) return true;
+            return false;
+        }
     }
 }

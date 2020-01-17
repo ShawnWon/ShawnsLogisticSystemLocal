@@ -30,5 +30,6 @@ namespace ADprojectteam1.DB
         public DbSet<Supplier> Supplier { get; set; }
         public DbSet<StockCard> StockCard { get; set; }
         public DbSet<InventoryAdj> InventoryAdj { get; set; }
+        public DbSet<DepOrder> DepOrder { get; set; }
     }
 }

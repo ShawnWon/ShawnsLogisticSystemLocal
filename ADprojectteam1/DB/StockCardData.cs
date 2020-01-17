@@ -13,8 +13,8 @@ namespace ADprojectteam1.DB
             List<StockCard> sclist = new List<StockCard>();
             using (var db = new ADDbContext())
             {
-                if (db.StockCard.Where(x => x.item==item).Any())
-                    sclist = db.StockCard.Where(x => x.item==item).ToList();
+                if (db.StockCard.Where(x => x.item.equalsTo(item)).Any())
+                    sclist = db.StockCard.Where(x => x.item.equalsTo(item)).ToList();
 
             }
             return sclist;
@@ -35,7 +35,7 @@ namespace ADprojectteam1.DB
                 sc.supplier = s;
                 sc.quant = quant;
                 sc.comment = "Add In";
-                sc.balance = sbalance + quant;
+                sc.balance += quant;
                 db.StockCard.Add(sc);
                 db.SaveChanges();
             }
@@ -63,14 +63,14 @@ namespace ADprojectteam1.DB
 
         }
 
-        public static void AdjustStockRecord(Item item, DateTime dt,InventoryAdj invadj)
+        public static void AdjustStockRecord(DateTime dt,InventoryAdj invadj)
         {
             StockCard sc = new StockCard();
             int sbalance = 0;
             using (var db = new ADDbContext())
             {
 
-                sbalance = ItemData.GetStockBalancebycode(item.ItemCode);
+                sbalance = ItemData.GetStockBalancebycode(invadj.item.ItemCode);
                 sc.date = dt;
                 sc.item = invadj.item;
                 sc.quant = invadj.Quant;
