@@ -9,12 +9,16 @@ namespace ADprojectteam1.Models
     {
         public int Id { get; set; }
 
+        public string RFormNum { get; set; }
+
         public virtual ICollection<ReqItem> ListItem { get; set; }
 
-        public string status { get; set; }//Can be "UnSubmitted, Submitted, Approved/Rejected, Partly Delivered, Fulfiled(when deliveredQuant equals to Quant in ListItem)."
+        public string status { get; set; }//Can be "Pending, Approved/Rejected, Fulfiled(when all ReqItems' status is delivered)."
+
+        public string remark { get; set; }
 
         public SRequisition() {
-            status = "Unsubmitted";
+            status = "Pending";
         }
     }
 }

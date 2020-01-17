@@ -48,6 +48,8 @@ namespace ADprojectteam1.Models
             comment = "Stock Adjustment";
         }
 
-   
+        public StockCard()
+        {
+        }
     }
 }

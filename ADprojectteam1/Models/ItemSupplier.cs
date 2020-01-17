@@ -11,11 +11,20 @@ namespace ADprojectteam1.Models
         public virtual Item item { get; set; }
         public virtual Supplier supplier { get; set; }
         public double UnitPrice { get; set; }
+        public int StockBalance { get; set; }
+        public string WarehouseLocation { get; set; }
+
 
         public ItemSupplier(Item i, Supplier s, double up) {
             item = i;
             supplier = s;
             UnitPrice = up;
+            StockBalance = 20;
+            WarehouseLocation ="Z1S1R1";
+        }
+
+        public ItemSupplier()
+        {
         }
     }
 }

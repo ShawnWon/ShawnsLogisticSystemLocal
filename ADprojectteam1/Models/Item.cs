@@ -14,7 +14,7 @@ namespace ADprojectteam1.Models
         public int ReorderLevel { get; set; }
         public int ReorderQty { get; set; }
         public string UnitofMeasure { get; set; }
-        public int stockBalance { get; set; }
+        
         public virtual ItemSupplier Supplier1 { get; set; }
         public virtual ItemSupplier Supplier2 { get; set; }
         public virtual ItemSupplier Supplier3 { get; set; }
@@ -26,9 +26,13 @@ namespace ADprojectteam1.Models
             ReorderLevel = relev;
             ReorderQty = requan;
             UnitofMeasure = uom;
-            stockBalance = 20;
+            
 
         
+        }
+
+        public Item()
+        {
         }
     }
 }

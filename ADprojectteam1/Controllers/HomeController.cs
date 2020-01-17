@@ -23,13 +23,13 @@ namespace ADprojectteam1.Controllers
 
         public ActionResult LoginCheckPassword(FormCollection form)
         {
-            string username = form["Name"];
+            string username = form["UserName"];
             string password = form["Password"];
             using (MD5 md5Hash = MD5.Create())
             {
                 string hashedpassword = GetMd5Hash(md5Hash, password);
 
-                string abc = EmployeeData.GetPassword(username);
+                
                 if (hashedpassword == EmployeeData.GetPassword(username))
                 {
                     //when user submit the correct username and password , we create a new session.
