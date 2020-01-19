@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace ADprojectteam1.DB
 {
-    public class ADDbInitializer<T> :CreateDatabaseIfNotExists<ADDbContext> {
+    public class ADDbInitializer<T> :DropCreateDatabaseAlways<ADDbContext> {
         protected override void Seed(ADDbContext context)
         {
             
@@ -105,7 +105,18 @@ namespace ADprojectteam1.DB
             foreach (Item i in items)
                 context.Item.Add(i);
 
-            
+
+            List<Department> deps = new List<Department>();
+
+            deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 0, 5));
+            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 0, 5));
+            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 0, 5));
+            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 0, 5));
+            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 0, 5));
+
+            foreach (Department d in deps)
+                context.Department.Add(d);
+
 
             List<Employee> emps = new List<Employee>();
 
@@ -122,17 +133,11 @@ namespace ADprojectteam1.DB
             
 
 
-            List<Department> deps = new List<Department>();
+            
 
-            deps.Add(new Department("English Dept","ENGL","8742234","8921456","Stationery Store",emps[0],emps[5]));
-            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", emps[0], emps[5]));
-            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", emps[0], emps[5]));
-            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", emps[0], emps[5]));
-            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", emps[0], emps[5]));
-
-            foreach (Department d in deps)
-                context.Department.Add(d);
-
+            emps[0].department = deps[0];
+            emps[4].department = deps[0];
+            emps[5].department = deps[0];
 
 
             List<Supplier> sups = new List<Supplier>();
@@ -144,6 +149,9 @@ namespace ADprojectteam1.DB
 
             foreach (Supplier s in sups)
                 context.Supplier.Add(s);
+
+            List<ItemSupplier> itemsup1 = new List<ItemSupplier>();
+            for (int i = 0; i < 84; i++) itemsup1.Add(new ItemSupplier(items[i], sups[2], 1.00));
 
             List<ItemSupplier> itemsup = new List<ItemSupplier>();
             itemsup.Add(new ItemSupplier(items[58],sups[2],1.00));
@@ -163,7 +171,11 @@ namespace ADprojectteam1.DB
             itemsup.Add(new ItemSupplier(items[70], sups[2], 0.40));
             itemsup.Add(new ItemSupplier(items[68], sups[2], 0.50));
             itemsup.Add(new ItemSupplier(items[69], sups[2], 0.55));
+
             
+
+            
+           
 
             foreach (ItemSupplier x in itemsup)
                 context.ItemSupplier.Add(x);
@@ -206,17 +218,50 @@ namespace ADprojectteam1.DB
             dor.ListRequisition = lsr;
             
             context.DepOrder.Add(dor);
-            
+
+            List<ReOrderRecord> lro = new List<ReOrderRecord>();
+            lro.Add(new ReOrderRecord(itemsup[0]));
+            lro.Add(new ReOrderRecord(itemsup[1]));
+            lro.Add(new ReOrderRecord(itemsup[3]));
+
+            foreach (ReOrderRecord rr in lro)
+                context.ReOrderRecord.Add(rr);
+
+            List<ReOrderRecord> lro1 = new List<ReOrderRecord>();
+            lro.Add(new ReOrderRecord(itemsup[0]));
+            lro.Add(new ReOrderRecord(itemsup[1]));
+            lro.Add(new ReOrderRecord(itemsup[3]));
+
+            foreach (ReOrderRecord rr in lro1)
+                context.ReOrderRecord.Add(rr);
+
+            PurchaseOrder po = new PurchaseOrder("200000068", "XXX", lro);
+            PurchaseOrder po1 = new PurchaseOrder("200000069", "XXX", lro1);
+            context.PurchaseOrder.Add(po);
+            context.PurchaseOrder.Add(po1);
 
             List<StockCard> lsc = new List<StockCard>();
             DateTime dt = DateTime.Today;
             
-            lsc.Add(new StockCard(items[58],dt,sups[2],500,550));
+            lsc.Add(new StockCard(items[58],dt,1,500,550));
             lsc.Add(new StockCard(items[58], dt, deps[0], -20, 530));
             lsc.Add(new StockCard(items[58], dt, 4, 534));
             lsc.Add(new StockCard(items[58], dt, deps[1], -30, 504));
             lsc.Add(new StockCard(items[58], dt, deps[2], -50, 454));
-            lsc.Add(new StockCard(items[58], dt, sups[2], 500, 954));
+            lsc.Add(new StockCard(items[58], dt, 1, 500, 954));
+
+            foreach (StockCard sc in lsc)
+                context.StockCard.Add(sc);
+
+
+            List<StockCard> lsc1 = new List<StockCard>();
+            
+            for(int i=0; i<84;i++)
+            lsc1.Add(new StockCard(items[i], dt, 1, 500, 550));
+
+            foreach (StockCard sc in lsc1)
+                context.StockCard.Add(sc);
+            
 
             foreach (StockCard sc in lsc)
                 context.StockCard.Add(sc);
@@ -228,16 +273,7 @@ namespace ADprojectteam1.DB
             foreach(InventoryAdj ia in liva)
                 context.InventoryAdj.Add(ia);
 
-            List<ReOrderRecord> lro = new List<ReOrderRecord>();
-            lro.Add(new ReOrderRecord(itemsup[0]));
-            lro.Add(new ReOrderRecord(itemsup[1]));
-            lro.Add(new ReOrderRecord(itemsup[3]));
-
-            foreach (ReOrderRecord rr in lro)
-                context.ReOrderRecord.Add(rr);
-
-            PurchaseOrder po = new PurchaseOrder("200000068","XXX",lro);
-            context.PurchaseOrder.Add(po);
+            
 
             base.Seed(context);
         } 

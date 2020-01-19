@@ -18,7 +18,7 @@ namespace ADprojectteam1.Models
         public string status { get; set; }//Can be "pending, fulfiled"
 
         public Department GetDepartment() {
-            return this.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.deparment;
+            return this.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department;
         }
 
 

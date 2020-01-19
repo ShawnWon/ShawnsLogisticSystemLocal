@@ -11,7 +11,7 @@ namespace ADprojectteam1.Models
         public virtual Item item { get; set; }
         public virtual Supplier supplier { get; set; }
         public double UnitPrice { get; set; }
-        public int StockBalance { get; set; }
+        //public int StockBalance { get; set; }
         public string WarehouseLocation { get; set; }
 
 
@@ -19,7 +19,7 @@ namespace ADprojectteam1.Models
             item = i;
             supplier = s;
             UnitPrice = up;
-            StockBalance = 20;
+            //StockBalance = 20;
             WarehouseLocation ="Z1S1R1";
         }
 

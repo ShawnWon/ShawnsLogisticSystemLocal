@@ -23,13 +23,21 @@ namespace ADprojectteam1.Models
             Status = "pending";
         }
 
-        public bool equalsTo(ReqItem other) {
-            if (this.item.equalsTo(other.item)&&this.emp.equalsTo(other.emp)) return true;
-            return false;
-        }
+
 
         public ReqItem()
         {
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ReqItem item &&
+                   Id == item.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

@@ -201,6 +201,7 @@
     <Content Include="Views\StoreClerk\ApprovedDepOrderList.cshtml" />
     <Content Include="Views\StoreSup\PendingInvAdjList.cshtml" />
     <Content Include="Views\StoreManager\PendingInvAdjList.cshtml" />
+    <Content Include="Views\DepEmp\RequisitionForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

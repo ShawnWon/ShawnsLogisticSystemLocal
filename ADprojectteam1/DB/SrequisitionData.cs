@@ -8,29 +8,74 @@ namespace ADprojectteam1.DB
 {
     public class SrequisitionData
     {
-        public static List<SRequisition> GetListRequisitionByDep(Department dep)
+
+
+        internal static List<SRequisition> FindAllPendingByDepId(int depId)
         {
             List<SRequisition> list = new List<SRequisition>();
 
             using (var db = new ADDbContext())
             {
-                if (db.SRequisition.Where(x => x.ListItem.FirstOrDefault().emp.deparment.equalsTo(dep)).Any())
-                    list = db.SRequisition.Where(x => x.ListItem.FirstOrDefault().emp.deparment.equalsTo(dep)).ToList();
+                if (db.SRequisition.Where(x => x.ListItem.FirstOrDefault().emp.department.Id==depId&&x.status.Equals("pending")).Any())
+                    list = db.SRequisition.Include("ListItem.item").Include("ListItem.emp").Where(x => x.ListItem.FirstOrDefault().emp.department.Id==depId&&x.status.Equals("pending")).ToList();
 
             }
             return list;
         }
 
-        public static bool ApproveRequisition(SRequisition sr, string remark)
+        internal static SRequisition FindReqById(int reqId)
+        {
+            SRequisition sr = new SRequisition();
+            using (var db = new ADDbContext())
+            {
+                if (db.SRequisition.Where(x => x.Id==reqId).Any())
+                    sr = db.SRequisition.Include("ListItem.item").Where(x => x.Id==reqId).FirstOrDefault();
+
+            }
+            return sr;
+        }
+
+        internal static List<SRequisition> FindAllByUsername(string user)
+        {
+            List<SRequisition> list=new List<SRequisition>();
+            using (var db = new ADDbContext())
+            {
+                if (db.SRequisition.Where(x => x.ListItem.FirstOrDefault().emp.UserName.Equals(user)).Any())
+                    list = db.SRequisition.Include("ListItem.item").Where(x => x.ListItem.FirstOrDefault().emp.UserName.Equals(user)).ToList();
+
+            }
+            return list;
+        }
+
+        
+
+        internal static void deleteReqById(int id)
+        {
+            SRequisition sr = new SRequisition();
+            using (var db = new ADDbContext())
+            {
+                if (db.SRequisition.Where(x => x.Id == id).Any())
+                {
+                    sr = db.SRequisition.Where(x => x.Id == id).FirstOrDefault();
+                    foreach (ReqItem ri in sr.ListItem) {
+                        db.ReqItem.Remove(ri);
+                    }
+                    db.SRequisition.Remove(sr);
+                }
+            }
+
+        }
+
+        public static bool ApproveRequisition(int srid, string remark)
         {
             SRequisition sreq = new SRequisition();
             DepOrder dorder = new DepOrder();
 
             using (var db = new ADDbContext())
             {
-                if (db.SRequisition.Where(x => x.equalsTo(sr)).Any())
+                if (db.SRequisition.Where(x => x.Id==srid).Any())
                 {
-                    sreq = db.SRequisition.Where(x => x.equalsTo(sr)).FirstOrDefault();
+                    sreq = db.SRequisition.Where(x => x.Id==srid).FirstOrDefault();
 
                     foreach (ReqItem ri in sreq.ListItem)
                     {
@@ -42,11 +87,11 @@ namespace ADprojectteam1.DB
                     db.SaveChanges();
 
                     //add approved requisition to department order
-                    Department dep = sreq.ListItem.FirstOrDefault().emp.deparment;
-                    if (db.DepOrder.Where(x => x.GetDepartment().equalsTo(dep) && x.status.Equals("pending")).Any())//there exists dep order of same department that is pending
+                    int depid = sreq.ListItem.FirstOrDefault().emp.department.Id;
+                    if (db.DepOrder.Where(x => x.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department.Id==depid && x.status.Equals("pending")).Any())//there exists dep order of same department that is pending
 
                     {
-                        dorder = db.DepOrder.Where(x => x.GetDepartment().equalsTo(dep) && x.status.Equals("pending")).FirstOrDefault();
+                        dorder = db.DepOrder.Where(x => x.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department.Id == depid && x.status.Equals("pending")).FirstOrDefault();
                         dorder.ListRequisition.Add(sreq);
                         
                     }
@@ -54,7 +99,7 @@ namespace ADprojectteam1.DB
                     {
                         List<SRequisition> lreq = new List<SRequisition>();
                         lreq.Add(sreq);
-                        DepOrderData.CreateDepOrder(lreq,dep);
+                        DepOrderData.CreateDepOrder(lreq);
                         db.DepOrder.Add(dorder);
                     }
                     db.SaveChanges();
@@ -64,15 +109,15 @@ namespace ADprojectteam1.DB
             return false;
         }
 
-        public static bool RejectRequisition(SRequisition sr, string remark)
+        public static bool RejectRequisition(int srid, string remark)
         {
             SRequisition sreq = new SRequisition();
 
             using (var db = new ADDbContext())
             {
-                if (db.SRequisition.Where(x => x.equalsTo(sr)).Any())
+                if (db.SRequisition.Where(x => x.Id==srid).Any())
                 {
-                    sreq = db.SRequisition.Where(x => x.equalsTo(sr)).FirstOrDefault();
+                    sreq = db.SRequisition.Where(x => x.Id==srid).FirstOrDefault();
 
                     foreach (ReqItem ri in sreq.ListItem)
                     {
@@ -89,19 +134,22 @@ namespace ADprojectteam1.DB
             return false;
         }
 
-        public static SRequisition CreateRequisition(string formnum, List<ReqItem> listreqitem)
+        public static SRequisition CreateRequisition(List<ReqItem> listreqitem)
         {
             SRequisition sreq = new SRequisition();
-            sreq.RFormNum = formnum;
+            
             sreq.ListItem = listreqitem;
 
             using (var db = new ADDbContext())
             {
                 foreach (ReqItem reqitem in listreqitem)
                 {
-                    if (!db.ReqItem.Where(x => x.equalsTo(reqitem)).Any()) db.ReqItem.Add(reqitem);
+                    int i = reqitem.emp.Id;
+                    if (!db.ReqItem.Where(x => x.item.Id==reqitem.item.Id).Any()) db.ReqItem.Add(reqitem);
                 }
                 db.SaveChanges();
+                //int j = db.ReqItem.Where(x => x.item.Id == 1).FirstOrDefault().emp.Id;
+
                 db.SRequisition.Add(sreq);
                 db.SaveChanges();
             }
@@ -109,7 +157,71 @@ namespace ADprojectteam1.DB
 
         }
 
-        public static double GetAmountOfRequisition(SRequisition sr)
+        public static void SaveReq(SRequisition sr)
+        {
+
+
+            using (var db = new ADDbContext())
+            {
+                SRequisition s = new SRequisition();
+                ReqItem ri = new ReqItem();
+                if (db.SRequisition.Where(x => x.Id == sr.Id).Any())
+                {
+                    s = db.SRequisition.Where(x => x.Id == sr.Id).FirstOrDefault();
+
+
+                    if (s.ListItem != null)
+                    {
+                        if (s.ListItem.Sum(x => x.Quant) != 0)
+                        {
+                            foreach (var item in sr.ListItem)
+                            {
+                                if (s.ListItem.Where(x => x.item.ItemCode == item.item.ItemCode).Any())
+                                    s.ListItem.Where(x => x.item.ItemCode == item.item.ItemCode).FirstOrDefault().Quant = sr.ListItem.Where(x => x.item.ItemCode == item.item.ItemCode).FirstOrDefault().Quant;
+                                else
+                                {
+                                    ri.item = item.item;
+                                    ri.emp = item.emp;
+                                    ri.Quant = item.Quant;
+                                    s.ListItem.Add(ri);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+
+                            foreach (var item in sr.ListItem)
+                            {
+                                item.Quant = 0;
+
+                            }
+
+
+                        }
+                    }
+
+                    
+
+                }
+                else
+                {
+                    foreach (var item in sr.ListItem)
+                    {
+                        item.emp = db.Employee.Where(x => x.Id == item.emp.Id).FirstOrDefault();
+                        item.item = db.Item.Where(x => x.Id == item.item.Id).FirstOrDefault();
+                        db.ReqItem.Add(item);
+                    }
+                    db.SaveChanges();
+                    db.SRequisition.Add(sr);
+                }
+                db.SaveChanges();
+
+            }
+
+        }
+
+        /*public static double GetAmountOfRequisition(SRequisition sr)
         {
             SRequisition sreq = new SRequisition();
             double amount = 0;
@@ -130,9 +242,9 @@ namespace ADprojectteam1.DB
                 }
             }
             return amount;
-        }
+        }*/
 
-        public static void SaveRequisition(SRequisition sr)
+        /*public static void SaveRequisition(SRequisition sr)
         {
             
             
@@ -183,7 +295,7 @@ namespace ADprojectteam1.DB
 
 
             }
-            }
+            }*/
 
 
     }

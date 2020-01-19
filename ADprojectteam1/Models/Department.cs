@@ -9,24 +9,26 @@ namespace ADprojectteam1.Models
     {
         public int Id { get; set; }
         public string DepName { get; set; }
-        public Employee Contact { get; set; }
+        public int ContactId { get; set; }
         public string DepCode { get; set; }
         public string Tele { get; set; }
         public string Fax { get; set; }
         public string CollectPoint { get; set; }
-        public Employee DepRep { get; set; }
-        public Employee DepHead { get; set; }
+        public int DepRepId { get; set; }
+        public int DepHeadId { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
 
-        public Department(string dname,string dcode,string tele,string fax,string cp,Employee e1,Employee e2) {
+        public Department(string dname,string dcode,string tele,string fax,string cp,int headId,int repId) {
             DepName = dname;
             DepCode = dcode;
             Tele = tele;
             Fax = fax;
             CollectPoint = cp;
-            DepHead = e1;
-            DepRep = e2;
+            DepHeadId = headId;
+            DepRepId = repId;
         }
+
+        public Department() { }
 
         public bool equalsTo(Department other) {
 

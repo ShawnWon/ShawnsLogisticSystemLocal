@@ -40,5 +40,22 @@ namespace ADprojectteam1.Models
             if(this.ItemCode.Equals(other.ItemCode)) return true;
             return false;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Item item &&
+                   ItemCode == item.ItemCode;
+        }
+
+        public override int GetHashCode()
+        {
+            return -388256781 + EqualityComparer<string>.Default.GetHashCode(ItemCode);
+        }
+    }
+
+    public class searchResult
+    {
+        public string str { get; set; }
+        public bool fit { get; set; }
     }
 }

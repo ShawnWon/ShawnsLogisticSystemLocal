@@ -26,7 +26,8 @@ namespace ADprojectteam1.Models
         public string EmployeeCode { get; set; }
         public string EmailAdd { get; set; }
 
-        public virtual Department deparment { get; set; }
+        //public int DepartmentId { get; set; }
+        public virtual Department department { get; set; }
 
         public Employee() { }
 
@@ -41,10 +42,15 @@ namespace ADprojectteam1.Models
 
         }
 
-        public bool equalsTo(Employee other)
+        public override bool Equals(object obj)
         {
-            if (this.UserName.Equals(other.UserName)) return true;
-            return false;
+            return obj is Employee employee &&
+                   UserName == employee.UserName;
+        }
+
+        public override int GetHashCode()
+        {
+            return 404878561 + EqualityComparer<string>.Default.GetHashCode(UserName);
         }
     }
 }

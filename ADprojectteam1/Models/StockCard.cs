@@ -13,15 +13,15 @@ namespace ADprojectteam1.Models
         public Item item { get; set; }
         public DateTime date { get; set; }
         public Department department { get; set; }
-        public Supplier supplier { get; set; }
+        public double uprice { get; set; }
         public int quant { get; set; }
         public int balance { get; set; }
         public string comment { get; set; }
 
-        public StockCard(Item it, DateTime dt,Supplier s, int q, int b) {
+        public StockCard(Item it, DateTime dt,double price, int q,int b) {
             item = it;
             date = dt;
-            supplier = s;
+            uprice = price;
             quant = q;
             balance = b;
             comment = "Add in";

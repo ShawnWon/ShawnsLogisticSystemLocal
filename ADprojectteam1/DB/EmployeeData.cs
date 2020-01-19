@@ -25,6 +25,33 @@ namespace ADprojectteam1.DB
             return pw;
         }
 
+        internal static int FindDepIdByUsername(string v)
+        {
+            int id = 0;
+
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.UserName.Equals(v)).Any())
+                    id = db.Employee.Where(x => x.UserName.Equals(v)).FirstOrDefault().department.Id;
+
+            }
+            return id;
+
+        }
+
+        internal static Employee FindByUserName(string username)
+        {
+            Employee user = new Employee();
+
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.UserName.Equals(username)).Any())
+                    user = db.Employee.Where(x => x.UserName.Equals(username)).FirstOrDefault();
+
+            }
+            return user;
+        }
+
         public static string GetRole(string username)
         {
             string role = "";

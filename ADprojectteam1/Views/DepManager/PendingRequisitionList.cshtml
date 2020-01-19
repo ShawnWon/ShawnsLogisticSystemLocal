@@ -1,7 +1,122 @@
-﻿
+﻿@using ADprojectteam1.Models;
+
 @{
     ViewBag.Title = "PendingRequisitionList";
+    List<SRequisition> reqlist = ViewBag.listreq;
+
 }
+<h2>RequisitionList</h2>
+<table>
+    <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
 
-<h2>PendingRequisitionList</h2>
+    @{ foreach (SRequisition sr in reqlist)
+        {
+        <tr>
+            <td>@sr.ListItem.FirstOrDefault().emp.Name</td>
+            <td>@sr.GetAmount()</td>
+            <td>@sr.status</td>
+            <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @sr.Id"></td>
+            <td><input type="button" value="Approve" onclick="approveSr(@sr.Id)" /></td>
+            <td><input type="button" value="Reject" onclick="rejectSr(@sr.Id)" /></td>
+        </tr>
 
+            <tr>
+                <td><table>
+                    <tr><th>Item Description</th><th>Quant</th></tr>
+
+                    @{ foreach (ReqItem ri in sr.ListItem)
+                        {
+                            <tr>
+                                <td>@ri.item.Description</td>
+                                <td>@ri.Quant</td>
+                            </tr>
+                        }
+                    }
+                </table>
+                </td>
+            </tr>
+
+        }
+    }
+</table>
+<br>
+<br>
+
+
+<script>
+    function rejectSr(item_id) {
+
+
+
+
+        var remark = document.getElementById("remarkbox " + item_id).value
+
+        var pdata = { reqId: item_id, remark: remark };
+
+        $.ajax({
+            type: "POST",
+            url: "/DepManager/rejectReq",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
+
+            // Response Success
+            success: function (response) {
+
+                alert("Rejected Requisition successfully");
+                window.location.href = "./PendingRequisitionList";
+
+            },
+
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
+
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
+
+
+        });
+    }
+
+        function approveSr(item_id) {
+
+
+
+
+        var remark = document.getElementById("remarkbox " + item_id).value
+
+        var pdata = { reqId: item_id, remark: remark };
+
+        $.ajax({
+            type: "POST",
+            url: "/DepManager/approveReq",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
+
+            // Response Success
+            success: function (response) {
+
+                alert("Approved Requisition successfully");
+                window.location.href = "./PendingRequisitionList";
+
+            },
+
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
+
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
+
+
+        });
+    }
+</script>

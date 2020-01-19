@@ -9,7 +9,7 @@ namespace ADprojectteam1.DB
     public class DepOrderData
     {
 
-        public static DepOrder CreateDepOrder(List<SRequisition> listsreq, Department department)
+        public static DepOrder CreateDepOrder(List<SRequisition> listsreq)
         {
             DepOrder dorder = new DepOrder(listsreq);
            
