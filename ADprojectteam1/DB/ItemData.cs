@@ -114,7 +114,7 @@ namespace ADprojectteam1.DB
             return list;
         }
 
-        internal static Item GetItemById(int id)
+        public static Item GetItemById(int id)
         {
             Item i = new Item();
             using (var db = new ADDbContext())

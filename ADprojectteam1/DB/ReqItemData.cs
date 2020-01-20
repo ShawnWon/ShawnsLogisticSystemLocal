@@ -9,19 +9,20 @@ namespace ADprojectteam1.DB
     public class ReqItemData
     {
 
-        /*public static List<ReqItem> GetListReqItemApprovedAndPartlydelivered()
+        public static List<ReqItem> GetAllReqItemApprovedAndPartlydelivered()
         {
             List<ReqItem> list=new List<ReqItem>();
 
             using (var db = new ADDbContext())
             {
                 if (db.ReqItem.Where(x => x.Status.Equals("approved")||x.Status.Equals("partly delivered")).Any())
-                    list = db.ReqItem.Where(x => x.Status.Equals("approved")||x.Status.Equals("partly delivered")).ToList();
+                    list = db.ReqItem.Include("item").Include("emp.department").Where(x => x.Status.Equals("approved")||x.Status.Equals("partly delivered")).ToList();
 
             }
             return list;
         }
 
+        /*
         public static bool DeliverReqItem(ReqItem ri,int q)
         {
             ReqItem reqi = new ReqItem();

@@ -22,11 +22,7 @@ namespace ADprojectteam1.Models
             status = "pending";
         }
 
-        public bool equalsTo(SRequisition other)
-        {
-            if (this.Id==other.Id) return true;
-            return false;
-        }
+
 
         public Employee getEmployee()
         {
@@ -42,6 +38,17 @@ namespace ADprojectteam1.Models
             
             }
             return amount;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is SRequisition requisition &&
+                   Id == requisition.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

@@ -126,6 +126,8 @@ namespace ADprojectteam1.DB
             emps.Add(new Employee("storesup", "8050b9c976aed3e1ab492f373fbd8421", "StoreSup", "11236", "Ms", "Suwetaa", "suwetaa@gmail.com"));
             emps.Add(new Employee("depemp", "bb3852c905fe1d884ad105f9b6dcbc19", "DepEmp", "11238", "Ms", "Jenny", "jenny@gmail.com"));
             emps.Add(new Employee("deprep", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11239", "Mr", "Than", "than@gmail.com"));
+            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Than", "than@gmail.com"));
+            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Than", "than@gmail.com"));
 
             foreach (Employee e in emps)
                 context.Employee.Add(e);
@@ -138,6 +140,8 @@ namespace ADprojectteam1.DB
             emps[0].department = deps[0];
             emps[4].department = deps[0];
             emps[5].department = deps[0];
+            emps[6].department = deps[1];
+            emps[7].department = deps[1];
 
 
             List<Supplier> sups = new List<Supplier>();
@@ -210,14 +214,9 @@ namespace ADprojectteam1.DB
             srq1.ListItem = rit1;
             context.SRequisition.Add(srq1);
 
-            DepOrder dor = new DepOrder();
+            DeliverOrder dor = new DeliverOrder();
             
-            List<SRequisition> lsr = new List<SRequisition>();
-            lsr.Add(srq);
-            lsr.Add(srq1);
-            dor.ListRequisition = lsr;
             
-            context.DepOrder.Add(dor);
 
             List<ReOrderRecord> lro = new List<ReOrderRecord>();
             lro.Add(new ReOrderRecord(itemsup[0]));

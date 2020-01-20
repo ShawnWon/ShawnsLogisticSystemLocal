@@ -69,7 +69,7 @@ namespace ADprojectteam1.DB
         public static bool ApproveRequisition(int srid, string remark)
         {
             SRequisition sreq = new SRequisition();
-            DepOrder dorder = new DepOrder();
+            
 
             using (var db = new ADDbContext())
             {
@@ -80,12 +80,14 @@ namespace ADprojectteam1.DB
                     foreach (ReqItem ri in sreq.ListItem)
                     {
                         ri.Status = "approved";
+                        DepartmentData.AddDemand(ri.emp.department.Id,ri.item.Id,ri.Quant);
 
                     }
                     sreq.status = "approved";
                     sreq.remark = remark;
                     db.SaveChanges();
 
+                    /*
                     //add approved requisition to department order
                     int depid = sreq.ListItem.FirstOrDefault().emp.department.Id;
                     if (db.DepOrder.Where(x => x.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department.Id==depid && x.status.Equals("pending")).Any())//there exists dep order of same department that is pending
@@ -102,7 +104,7 @@ namespace ADprojectteam1.DB
                         DepOrderData.CreateDepOrder(lreq);
                         db.DepOrder.Add(dorder);
                     }
-                    db.SaveChanges();
+                    db.SaveChanges();*/
                     return true;
                 }
             }

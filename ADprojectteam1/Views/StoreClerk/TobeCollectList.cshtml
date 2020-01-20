@@ -1,0 +1,118 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "TobeCollectList";
+    Dictionary<int, Dictionary<int, int>> reqlist = ViewBag.Rlist;
+    Dictionary<int, int> collist = (Dictionary<int, int>)Session["collist"];
+}
+
+
+
+@{if (collist != null)
+    {
+
+        <h2>Collected Item List</h2>
+        <table>
+            <tr><th>Item Name</th><th>Quant</th></tr>
+
+            @{ foreach (int itemId in collist.Keys)
+                {
+                    <tr>
+                        <td>@ItemData.GetItemById(itemId).Description</td>
+                        <td>@collist[itemId]</td>
+                        <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteColItem","StoreClerk", new { id = itemId})'" /></td>
+                    </tr>
+
+                }
+            }
+        </table>
+        <input type="button" value="Generate Delivery Orders" onclick="location.href='@Url.Action("GenerateDelOrder","StoreClerk")'" />
+    }
+}
+<h2>TobeCollectList</h2>
+
+<table>
+    <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
+
+    @{ foreach (int itemId in reqlist.Keys)
+        {
+            <tr>
+                <td>@ItemData.GetItemById(itemId).Description</td>
+                <td>@reqlist[itemId].Values.Sum()</td>
+                <td><input type="text" placeholder="Input quantity" size="6" id="ActquantityBox @itemId"></td>
+                <td><input type="button" value="Add" onclick="ConfirmCollect(@itemId);" /></td>
+            </tr>
+
+
+            
+
+
+            <tr>
+                <td>
+                    <table>
+                        <tr><th>Department </th><th>Demand Quant</th><th>Actual Quant</th></tr>
+
+                        @{ foreach (int depId in reqlist[itemId].Keys)
+                            {
+                                <tr>
+                                    <td>@DepartmentData.GetDepNameById(depId)</td>
+                                    <td>@reqlist[itemId][depId].</td>
+
+                                </tr>
+
+                            }
+                        }
+                    </table>
+                </td>
+            </tr>
+
+        }
+    }
+</table>
+<br>
+<br>
+
+<script>
+
+    function ConfirmCollect(itemId) {
+
+
+        var q = document.getElementById("ActquantityBox " + itemId).value
+
+        var pdata = {
+            Id: itemId, quant: q
+        };
+
+      
+       
+        $.ajax({
+            type: "POST",
+            url: "/StoreClerk/ConfirmCollect",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
+
+            // Response Success
+            success: function (response) {
+
+                alert("Confirm collection successfully");
+                window.location.href = "./TobeCollectList";
+
+            },
+
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
+
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
+
+
+        });
+    }
+</script>
+

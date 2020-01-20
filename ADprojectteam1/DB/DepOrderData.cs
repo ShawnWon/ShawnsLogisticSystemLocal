@@ -9,16 +9,17 @@ namespace ADprojectteam1.DB
     public class DepOrderData
     {
 
-        public static DepOrder CreateDepOrder(List<SRequisition> listsreq)
+        public static DeliverOrder CreateDeliverOrder(int depId,Dictionary<int,int> listsreq)
         {
-            DepOrder dorder = new DepOrder(listsreq);
-           
+            DeliverOrder dorder = new DeliverOrder();
+            dorder.depId = depId;
+            dorder.itemList = new Dictionary<int, int>();
             
             using (var db = new ADDbContext())
             {
-                foreach (SRequisition sreq in listsreq)
+                foreach (int itemId in listsreq.Keys)
                 {
-                    if (!db.SRequisition.Where(x => x.equalsTo(sreq)).Any()) db.SRequisition.Add(sreq);
+                    dorder.itemList.Add(itemId,listsreq[itemId]);
                 }
                 db.SaveChanges();
                 db.DepOrder.Add(dorder);
@@ -28,15 +29,7 @@ namespace ADprojectteam1.DB
 
         }
 
-        public static List<DepOrder> GetAllPendingDepOrders() {
-
-            List<DepOrder> ldeporder = new List<DepOrder>();
-            using (var db = new ADDbContext()) {
-                if (db.DepOrder.Where(x => x.status.Equals("pending")).Any()) 
-                    ldeporder=db.DepOrder.Where(x=>x.status.Equals("pending")).ToList();
-            }
-                return ldeporder;
-        }
+    
 
     }
 }

@@ -17,6 +17,7 @@ namespace ADprojectteam1.Models
         public int DepRepId { get; set; }
         public int DepHeadId { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
+        public Dictionary<int, int> demandingItem { get; set; }
 
         public Department(string dname,string dcode,string tele,string fax,string cp,int headId,int repId) {
             DepName = dname;
@@ -26,6 +27,7 @@ namespace ADprojectteam1.Models
             CollectPoint = cp;
             DepHeadId = headId;
             DepRepId = repId;
+            
         }
 
         public Department() { }

@@ -136,6 +136,7 @@
     <Compile Include="Controllers\StoreSupController.cs" />
     <Compile Include="DB\ADDbContext.cs" />
     <Compile Include="DB\ADDbInitializer.cs" />
+    <Compile Include="DB\DepartmentData.cs" />
     <Compile Include="DB\DepOrderData.cs" />
     <Compile Include="DB\EmployeeData.cs" />
     <Compile Include="DB\ItemData.cs" />
@@ -146,7 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Department.cs" />
-    <Compile Include="Models\DepOrder.cs" />
+    <Compile Include="Models\DeliverOrder.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\InventoryAdj.cs" />
     <Compile Include="Models\StockCard.cs" />
@@ -198,7 +199,7 @@
     <Content Include="Views\DepEmp\RequisitionList.cshtml" />
     <Content Include="Views\DepManager\PendingRequisitionList.cshtml" />
     <Content Include="Views\DepRep\PendingDisbursmentList.cshtml" />
-    <Content Include="Views\StoreClerk\ApprovedDepOrderList.cshtml" />
+    <Content Include="Views\StoreClerk\TobeCollectList.cshtml" />
     <Content Include="Views\StoreSup\PendingInvAdjList.cshtml" />
     <Content Include="Views\StoreManager\PendingInvAdjList.cshtml" />
     <Content Include="Views\DepEmp\RequisitionForm.cshtml" />

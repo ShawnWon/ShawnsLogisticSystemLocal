@@ -47,7 +47,7 @@ namespace ADprojectteam1.Controllers
                         case "DepRep":
                             return RedirectToAction("PendingDisbursmentList","DepRep");
                         case "StoreClerk":
-                            return RedirectToAction("ApprovedDepOrderList","StoreClerk");
+                            return RedirectToAction("TobeCollectList","StoreClerk");
                         case "StoreSup":
                             return RedirectToAction("PendingInvAdjList","StoreSup");
                         case "StoreManager":
