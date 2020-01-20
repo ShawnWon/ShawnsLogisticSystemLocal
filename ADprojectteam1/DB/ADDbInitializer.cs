@@ -214,7 +214,7 @@ namespace ADprojectteam1.DB
             srq1.ListItem = rit1;
             context.SRequisition.Add(srq1);
 
-            DeliverOrder dor = new DeliverOrder();
+           
             
             
 

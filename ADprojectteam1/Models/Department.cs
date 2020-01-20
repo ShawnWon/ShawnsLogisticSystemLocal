@@ -32,10 +32,15 @@ namespace ADprojectteam1.Models
 
         public Department() { }
 
-        public bool equalsTo(Department other) {
+        public override bool Equals(object obj)
+        {
+            return obj is Department department &&
+                   Id == department.Id;
+        }
 
-            if (this.DepCode.Equals(other.DepCode)) return true;
-            return false;
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

@@ -13,8 +13,8 @@ namespace ADprojectteam1.DB
             List<StockCard> sclist = new List<StockCard>();
             using (var db = new ADDbContext())
             {
-                if (db.StockCard.Where(x => x.item.equalsTo(item)).Any())
-                    sclist = db.StockCard.Where(x => x.item.equalsTo(item)).ToList();
+                if (db.StockCard.Where(x => x.item.Equals(item)).Any())
+                    sclist = db.StockCard.Where(x => x.item.Equals(item)).ToList();
 
             }
             return sclist;
@@ -25,8 +25,8 @@ namespace ADprojectteam1.DB
             int sb=0;
             using (var db = new ADDbContext())
             {
-                if (db.StockCard.Where(x => x.item.equalsTo(item)).Any())
-                    sb = db.StockCard.Where(x => x.item.equalsTo(item)).Select(x=>x.balance).LastOrDefault();
+                if (db.StockCard.Where(x => x.item.Equals(item)).Any())
+                    sb = db.StockCard.Where(x => x.item.Equals(item)).Select(x=>x.balance).LastOrDefault();
 
             }
             return sb;

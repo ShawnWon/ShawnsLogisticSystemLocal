@@ -1,0 +1,116 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "Delivery Order List";
+    Dictionary<int, Dictionary<int, int>> reqlist = ViewBag.Rlist;
+    Dictionary<int, int> collist = (Dictionary<int, int>)Session["collist"];
+    Dictionary<int, Dictionary<int,int>> planlist = (Dictionary<int, Dictionary<int,int>>)Session["plannedlist"];
+}
+@{ if (planlist != null)
+    {<h2>Overall Item Collected</h2>
+<table>
+    <tr><th>Item Name</th><th>Collected Quant</th><th>Planned Quant</th></tr>
+    @{ foreach (int itemId in collist.Keys)
+        {<tr>
+        <td>@ItemData.GetItemById(itemId).Description</td>
+        
+        <td>@collist[itemId]</td>
+        <td><label style="color:black;font-size:15px;">Planned Quant:</label><span id="plannedtotalq @itemId"></span></td>
+    </tr>
+    
+        
+        }
+        <tr><td><a href="@Url.Action("ConfirmDelOrder", "StoreClerk")">
+    Confirm
+</a></td></tr>
+        
+     }
+</table>}
+        }
+    <h2>Delivery Order List</h2>
+
+    <table>
+        <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
+
+        @{ foreach (int depId in reqlist.Keys)
+            {
+                <tr>
+                    <td>@DepartmentData.GetDepNameById(depId)</td>
+                    <td>@DepartmentData.GetColPointById(depId)</td>
+                    <td>@DepartmentData.GetContactNameById(depId)</td>
+                    <td><input type="button" value="Send Notification to Rep" onclick="SendNoti(@depId);" /></td>
+                </tr>
+
+
+
+
+
+                <tr>
+                    <td>
+                        <table>
+                            <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
+
+                            @{ foreach (int itemId in reqlist[depId].Keys)
+                                {
+                                                        <tr>
+                                                            <td>@ItemData.GetItemById(itemId).Description</td>
+                                                            <td>@reqlist[depId][itemId].</td>
+                                                            <td><input type="text" placeholder="Input quantity" onchange="ChangePlan(@itemId,@depId)" size="6" id="PlanquantityBox @itemId" value="@planlist[depId][itemId]"></td>
+                                                        </tr>
+
+                                }
+                            }
+                        </table>
+                    </td>
+                </tr>
+
+            }
+        }
+    </table>
+    <br>
+    <br>
+
+    <script>
+
+        function ChangePlan(itemId,depId) {
+
+
+            var q = document.getElementById("PlanquantityBox " + itemId).value
+
+            var pdata = {
+                itemId: itemId, depId:depId, quant: q
+            };
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreClerk/ChangePlan",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(pdata),
+                dataType: "json",
+
+                // Response Success
+                success: function (response) {
+
+                    alert();
+                    document.getElementById("plannedtotalq " + response.itemId).innerHTML = response.quant;
+
+                },
+
+                // Response Fail
+                failure: function (response) {
+                    alert("Fail Case");
+                },
+
+                // Response Error
+                error: function (response) {
+                    alert("ERROR case");
+                }
+
+
+            });
+        }
+    </script>
+

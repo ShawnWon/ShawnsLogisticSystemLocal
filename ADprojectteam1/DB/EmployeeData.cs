@@ -52,6 +52,19 @@ namespace ADprojectteam1.DB
             return user;
         }
 
+        internal static string GetNameById(int empid)
+        {
+            string user = "";
+
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.Id==empid).Any())
+                    user = db.Employee.Where(x => x.Id==empid).FirstOrDefault().Name;
+
+            }
+            return user;
+        }
+
         public static string GetRole(string username)
         {
             string role = "";
@@ -99,8 +112,14 @@ namespace ADprojectteam1.DB
             return EMList;
         }
 
-   
-
-        
+        internal static Employee FindEmpById(int v)
+        {
+            Employee e = new Employee();
+            using (var db = new ADDbContext())
+            {
+                e = db.Employee.Where(x=>x.Id==v).FirstOrDefault();
+            }
+            return e;
+        }
     }
 }

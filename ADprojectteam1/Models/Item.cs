@@ -35,21 +35,15 @@ namespace ADprojectteam1.Models
         {
         }
 
-        public bool equalsTo(Item other) {
-            
-            if(this.ItemCode.Equals(other.ItemCode)) return true;
-            return false;
-        }
-
         public override bool Equals(object obj)
         {
             return obj is Item item &&
-                   ItemCode == item.ItemCode;
+                   Id == item.Id;
         }
 
         public override int GetHashCode()
         {
-            return -388256781 + EqualityComparer<string>.Default.GetHashCode(ItemCode);
+            return 2108858624 + Id.GetHashCode();
         }
     }
 

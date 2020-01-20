@@ -147,7 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Department.cs" />
-    <Compile Include="Models\DeliverOrder.cs" />
+    <Compile Include="Models\DepOrder.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\InventoryAdj.cs" />
     <Compile Include="Models\StockCard.cs" />
@@ -203,6 +203,8 @@
     <Content Include="Views\StoreSup\PendingInvAdjList.cshtml" />
     <Content Include="Views\StoreManager\PendingInvAdjList.cshtml" />
     <Content Include="Views\DepEmp\RequisitionForm.cshtml" />
+    <Content Include="Views\StoreClerk\GenerateDelOrder.cshtml" />
+    <Content Include="Views\StoreClerk\CollectedDepOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

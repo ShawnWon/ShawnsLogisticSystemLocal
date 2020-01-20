@@ -1,0 +1,140 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "Collected Department Order List";
+    Dictionary<int, Dictionary<int, int>> reqlist = ViewBag.Rlist;
+
+}
+
+<h2>Collected Department Order List</h2>
+
+<table>
+    <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
+    
+    @{ foreach (int depId in reqlist.Keys)
+        {
+            if(reqlist[depId].Values.Sum()!=0) {
+            <tr>
+                <td>@DepartmentData.GetDepNameById(depId)</td>
+                <td>@DepartmentData.GetColPointById(depId)</td>
+                <td>@DepartmentData.GetContactNameById(depId)</td>
+                <td><input type="button" value="Confirm Received" onclick="ConfirmReceived(@depId);" /></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td>
+                    <table>
+                        <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
+
+                        @{ foreach (int itemId in reqlist[depId].Keys)
+                            {
+                                <tr>
+                                    <td>@ItemData.GetItemById(itemId).Description</td>
+                                    <td>@reqlist[depId][itemId].</td>
+                                    <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId,@depId)" size="6" id="ReceivedquantityBox @itemId" value="@reqlist[depId][itemId]"></td>
+                                </tr>
+
+                            }
+                        }
+                    </table>
+                </td>
+            </tr>
+                                }
+                            
+
+                            }
+    }
+                            
+</table>
+<br>
+<br>
+
+<script>
+
+        function ChangeReceive(itemId,depId) {
+
+
+            var q = document.getElementById("ReceivedquantityBox " + itemId).value
+
+            var pdata = {
+                itemId: itemId, depId:depId, quant: q
+            };
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreClerk/ChangeReceiveQuant",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(pdata),
+                dataType: "json",
+
+                // Response Success
+                success: function (response) {
+
+                    alert();
+                    document.getElementById("plannedtotalq " + response.itemId).innerHTML = response.quant;
+
+                },
+
+                // Response Fail
+                failure: function (response) {
+                    alert("Fail Case");
+                },
+
+                // Response Error
+                error: function (response) {
+                    alert("ERROR case");
+                }
+
+
+            });
+    }
+
+
+    function ConfirmReceived(depId) {
+
+
+            
+
+            var pdata = {
+                 depId:depId
+            };
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "/StoreClerk/ConfirmReceive",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(pdata),
+                dataType: "json",
+
+                // Response Success
+                success: function (response) {
+
+                    alert();
+                    window.location.href = "./CollectedDepOrder";
+
+                },
+
+                // Response Fail
+                failure: function (response) {
+                    alert("Fail Case");
+                },
+
+                // Response Error
+                error: function (response) {
+                    alert("ERROR case");
+                }
+
+
+            });
+        }
+</script>
+

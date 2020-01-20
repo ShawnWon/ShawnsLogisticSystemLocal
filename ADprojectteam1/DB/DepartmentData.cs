@@ -19,6 +19,45 @@ namespace ADprojectteam1.DB
             return i;
         }
 
+        internal static Department GetDepById(int depId)
+        {
+            {
+                Department dep=new Department();
+                using (var db = new ADDbContext())
+                {
+                    if (db.Department.Where(x => x.Id == depId).Any())
+                        dep = db.Department.Include("Employees").Where(x => x.Id == depId).FirstOrDefault();
+                }
+                return dep;
+            }
+        }
+
+        public static string GetColPointById(int id)
+        {
+            string i = "";
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x => x.Id == id).Any())
+                    i = db.Department.Where(x => x.Id == id).Select(x => x.CollectPoint).FirstOrDefault();
+            }
+            return i;
+        }
+
+        public static string GetContactNameById(int id)
+        {
+            string i = "";
+            int empid;
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x => x.Id == id).Any())
+                {
+                    empid = db.Department.Where(x => x.Id == id).Select(x => x.ContactId).FirstOrDefault();
+                    i = EmployeeData.GetNameById(empid);
+                }
+            }
+            return i;
+        }
+
         internal static List<Department> GetAllDep()
         {
             List<Department> ld=new List<Department>();
@@ -51,6 +90,17 @@ namespace ADprojectteam1.DB
 
                 db.SaveChanges();
             }
+        }
+
+        internal static int GetRepById(int dId)
+        {
+            int repId = 0;
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x=>x.Id==dId).Any())
+                    repId = db.Department.Where(x=>x.Id==dId).Select(y=>y.DepRepId).FirstOrDefault();
+            }
+            return repId;
         }
     }
 }
