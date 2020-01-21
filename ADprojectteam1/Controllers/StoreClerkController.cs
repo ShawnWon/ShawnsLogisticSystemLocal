@@ -39,7 +39,8 @@ namespace ADprojectteam1.Controllers
                     xlist = slist.Where(x => x.emp.department.Id == depId&&x.item.Id==itemId).ToList();
                      depmap.Add(depId,xlist.Select(x=>x.Quant).Sum());
                     foreach (int empId in empIdset)
-                    { ReqItemData.SetReqItem(empId, itemId, "collecting"); }
+                    {// ReqItemData.SetReqItem(empId, itemId, "collecting");
+                    }
                 }
                 list.Add(itemId,depmap);
                
@@ -87,6 +88,8 @@ namespace ADprojectteam1.Controllers
             Dictionary<int, int> collist = new Dictionary<int, int>();
             if (Session["collist"] != null)
                 collist = (Dictionary<int, int>)Session["collist"];
+            else
+                Session["collist"] = new Dictionary<int,int>();
 
             
             List<ReqItem> lri = ReqItemData.GetAllReqItemApprovedAndCollecting();
@@ -117,6 +120,7 @@ namespace ADprojectteam1.Controllers
             }
             ViewBag.Rlist = list;
             Session["plannedlist"] = list;
+            
 
            
            
@@ -154,6 +158,7 @@ namespace ADprojectteam1.Controllers
                     DepOrderData.SetCollected(depId,itemId,plannedlist[depId][itemId]);
                 }
             }
+            
             return RedirectToAction("CollectedDepOrder");
         }
 
@@ -162,34 +167,42 @@ namespace ADprojectteam1.Controllers
             Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
             
             List<Department> ldep=DepartmentData.GetAllDep();
-
+            
+            //load the collected dep order
             
                 foreach (int depId in ldep.Select(x => x.Id))
                 {
                     List<DepOrder> listdp = DepOrderData.GetCollectedDepOrderByDepId(depId);
-                    foreach (int itemId in listdp.Select(x => x.item.Id))
-                    { Dictionary<int, int> dp = new Dictionary<int, int>();
-                        dp.Add(itemId,listdp.Select(x=>x.collectedquant).FirstOrDefault());
-                        if(!plannedlist.ContainsKey(depId)) plannedlist.Add(depId,dp);
+
+                Dictionary<int, int> dp = new Dictionary<int, int>();
+                foreach (int itemId in listdp.Select(x => x.item.Id))
+                    { 
+                        dp.Add(itemId,listdp.Where(x=>x.item.Id==itemId).FirstOrDefault().collectedquant);
+                        
                     }
+                if (!plannedlist.ContainsKey(depId)) plannedlist.Add(depId, dp);
+                else plannedlist[depId] = dp;
                 }
                 Session["plannedlist"] = plannedlist;
                             
             
             ViewBag.Rlist = plannedlist;
-
+            Session.Remove("collist");
 
             return View();
 
            
         }
 
+        //We don't allow store clerk to change delivered quantity and confirm receive
+        /*
         [HttpPost]
         public JsonResult ChangeReceiveQuant(int itemId, int depId, int quant)
         {
             Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
             if (Session["plannedlist"] != null)
             { plannedlist = (Dictionary<int, Dictionary<int, int>>)Session["plannedlist"]; }
+
 
             if (plannedlist[depId].ContainsKey(itemId))
             {
@@ -206,38 +219,107 @@ namespace ADprojectteam1.Controllers
         public JsonResult ConfirmReceive(int depId)
         {
             Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
-            if (Session["plannedlist"] != null)
-            { plannedlist = (Dictionary<int, Dictionary<int, int>>)Session["plannedlist"]; }
+           
+
+            List<Department> ldep = DepartmentData.GetAllDep();
+
+            //load the department order into plannedlist
+            
+            foreach (int deId in ldep.Select(x => x.Id))
+            {
+                List<DepOrder> listdp = DepOrderData.GetCollectedDepOrderByDepId(deId);
+                Dictionary<int, int> dp = new Dictionary<int, int>();
+                foreach (int itemId in listdp.Select(x => x.item.Id))
+                {
+                    
+                    dp.Add(itemId, listdp.Where(x=>x.item.Id==itemId).FirstOrDefault().collectedquant);
+                    
+                }
+                if (!plannedlist.ContainsKey(deId)) plannedlist.Add(deId, dp);
+                else plannedlist[depId] = dp;
+            }
 
             foreach (int dId in plannedlist.Keys)
             {
                 foreach (int itemId in plannedlist[dId].Keys)
                 {
                     DepOrderData.SetReceived(dId,itemId,plannedlist[dId][itemId]);
+
+                    SRequisition sr = new SRequisition();
+                    sr.ListItem = new List<ReqItem>();
                     foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
                     { ReqItemData.SetReqItem(empId, itemId, "delivered");
                         
                     }
 
+
                     if (plannedlist[dId][itemId] < DepOrderData.GetOrderByDepAndItem(dId, itemId).quant)//if any discrepancy, create new reqItem to replenish in next delivery.
                     {
                         int dif = DepOrderData.GetOrderByDepAndItem(dId, itemId).quant- plannedlist[dId][itemId];
+                        int repid = DepartmentData.GetRepById(dId);
+                        
                         Employee rep = EmployeeData.FindEmpById(DepartmentData.GetRepById(dId));
-                        ReqItemData.CreatReqItem(ItemData.GetItemById(itemId),rep, dif,"approved");
-                    
+
+                        int repid1 = rep.department.Id;
+
+                        Item item = ItemData.GetItemById(itemId);
+
+                        /////////////////////////
+                        
+                        
+
+                        if (sr == null)
+                        {
+                            
+                            sr.ListItem = new List<ReqItem>();
+                            ReqItem reqitem = new ReqItem(item, rep, dif);
+                            sr.ListItem.Add(reqitem);
+
+                        }
+
+                        else if (!sr.ListItem.Where(x => x.item.Id == itemId).Any())
+                        {
+                            Item p = new Item();
+                            int i = rep.Id;
+                            int j = rep.department.Id;
+                            p = ItemData.GetItemById(itemId);
+                            ReqItem reqitem = new ReqItem(p, rep, dif);
+
+                            sr.ListItem.Add(reqitem);
+
+                        }
+                        else
+                        {
+                            ReqItem ri = new ReqItem();
+                            ri = sr.ListItem.Where(x => x.item.Id == dId).FirstOrDefault();
+                            ri.Quant = dif;
+                        }
+
+
+
+
+
+                        
+                        SrequisitionData.SaveReq(sr);
+                        int srId = SrequisitionData.FindLastId();
+                        SrequisitionData.ApproveRequisition(srId, "Unfulfiled quant");
+                        /////////////////////////
+
+
                     }
                     
                 }
-                
 
+                
             }
             Session.Remove("plannedlist");
             Session.Remove("reqlist");
+            
 
             object new_amount = new {  };
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
     }
 

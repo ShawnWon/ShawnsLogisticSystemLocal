@@ -108,11 +108,11 @@ namespace ADprojectteam1.DB
 
             List<Department> deps = new List<Department>();
 
-            deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 0, 5));
-            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 0, 5));
-            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 0, 5));
-            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 0, 5));
-            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 0, 5));
+            deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 5, 3));
+            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 5, 3));
+            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 5, 3));
+            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 5, 3));
+            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 5, 3));
 
             foreach (Department d in deps)
                 context.Department.Add(d);

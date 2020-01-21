@@ -98,7 +98,7 @@ namespace ADprojectteam1.DB
             using (var db = new ADDbContext())
             {
                 if (db.Department.Where(x=>x.Id==dId).Any())
-                    repId = db.Department.Where(x=>x.Id==dId).Select(y=>y.DepRepId).FirstOrDefault();
+                    repId = db.Department.Where(x=>x.Id==dId).FirstOrDefault().DepRepId;
             }
             return repId;
         }

@@ -68,11 +68,13 @@ namespace ADprojectteam1.DB
 
         public static bool ApproveRequisition(int srid, string remark)
         {
-            SRequisition sreq = new SRequisition();
+           
             
 
             using (var db = new ADDbContext())
             {
+                SRequisition sreq = new SRequisition();
+
                 if (db.SRequisition.Where(x => x.Id==srid).Any())
                 {
                     sreq = db.SRequisition.Where(x => x.Id==srid).FirstOrDefault();
@@ -87,24 +89,6 @@ namespace ADprojectteam1.DB
                     sreq.remark = remark;
                     db.SaveChanges();
 
-                    /*
-                    //add approved requisition to department order
-                    int depid = sreq.ListItem.FirstOrDefault().emp.department.Id;
-                    if (db.DepOrder.Where(x => x.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department.Id==depid && x.status.Equals("pending")).Any())//there exists dep order of same department that is pending
-
-                    {
-                        dorder = db.DepOrder.Where(x => x.ListRequisition.FirstOrDefault().ListItem.FirstOrDefault().emp.department.Id == depid && x.status.Equals("pending")).FirstOrDefault();
-                        dorder.ListRequisition.Add(sreq);
-                        
-                    }
-                    else//if there is no existing pending dep order, create a new one
-                    {
-                        List<SRequisition> lreq = new List<SRequisition>();
-                        lreq.Add(sreq);
-                        DepOrderData.CreateDepOrder(lreq);
-                        db.DepOrder.Add(dorder);
-                    }
-                    db.SaveChanges();*/
                     return true;
                 }
             }
@@ -208,20 +192,34 @@ namespace ADprojectteam1.DB
                 }
                 else
                 {
+                    s.ListItem = new List<ReqItem>();
                     foreach (var item in sr.ListItem)
                     {
                         item.emp = db.Employee.Where(x => x.Id == item.emp.Id).FirstOrDefault();
                         item.item = db.Item.Where(x => x.Id == item.item.Id).FirstOrDefault();
                         db.ReqItem.Add(item);
+                        s.ListItem.Add(item);
                     }
                     db.SaveChanges();
-                    db.SRequisition.Add(sr);
+                    db.SRequisition.Add(s);
                 }
                 db.SaveChanges();
 
             }
 
         }
+
+        internal static int FindLastId()
+        {
+            using (var db = new ADDbContext())
+            {
+                return db.SRequisition.Count();
+
+            }
+
+        }
+
+
 
         /*public static double GetAmountOfRequisition(SRequisition sr)
         {

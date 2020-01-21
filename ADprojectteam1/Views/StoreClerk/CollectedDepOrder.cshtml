@@ -19,7 +19,7 @@
                 <td>@DepartmentData.GetDepNameById(depId)</td>
                 <td>@DepartmentData.GetColPointById(depId)</td>
                 <td>@DepartmentData.GetContactNameById(depId)</td>
-                <td><input type="button" value="Confirm Received" onclick="ConfirmReceived(@depId);" /></td>
+                
             </tr>
 
 
@@ -29,14 +29,14 @@
             <tr>
                 <td>
                     <table>
-                        <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
+                        <tr><th>Item Name </th><th>Plan to Deli Quant</th></tr>
 
                         @{ foreach (int itemId in reqlist[depId].Keys)
                             {
                                 <tr>
                                     <td>@ItemData.GetItemById(itemId).Description</td>
                                     <td>@reqlist[depId][itemId].</td>
-                                    <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId,@depId)" size="6" id="ReceivedquantityBox @itemId" value="@reqlist[depId][itemId]"></td>
+                                    <td></td>
                                 </tr>
 
                             }

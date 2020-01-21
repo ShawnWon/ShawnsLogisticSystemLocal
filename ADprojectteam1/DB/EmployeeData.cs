@@ -46,7 +46,7 @@ namespace ADprojectteam1.DB
             using (var db = new ADDbContext())
             {
                 if (db.Employee.Where(x => x.UserName.Equals(username)).Any())
-                    user = db.Employee.Where(x => x.UserName.Equals(username)).FirstOrDefault();
+                    user = db.Employee.Include("department").Where(x => x.UserName.Equals(username)).FirstOrDefault();
 
             }
             return user;
@@ -117,7 +117,7 @@ namespace ADprojectteam1.DB
             Employee e = new Employee();
             using (var db = new ADDbContext())
             {
-                e = db.Employee.Where(x=>x.Id==v).FirstOrDefault();
+                e = db.Employee.Include("department").Where(x=>x.Id==v).FirstOrDefault();
             }
             return e;
         }
