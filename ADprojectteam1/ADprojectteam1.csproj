@@ -205,6 +205,7 @@
     <Content Include="Views\DepEmp\RequisitionForm.cshtml" />
     <Content Include="Views\StoreClerk\GenerateDelOrder.cshtml" />
     <Content Include="Views\StoreClerk\CollectedDepOrder.cshtml" />
+    <Content Include="Views\DepManager\DelegateView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

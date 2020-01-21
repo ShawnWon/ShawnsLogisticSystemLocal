@@ -26,7 +26,7 @@ namespace ADprojectteam1.Models
         public string EmployeeCode { get; set; }
         public string EmailAdd { get; set; }
 
-        //public int DepartmentId { get; set; }
+        public bool Delegated { get; set; }
         public virtual Department department { get; set; }
 
         public Employee() { }

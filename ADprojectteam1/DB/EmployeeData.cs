@@ -52,6 +52,8 @@ namespace ADprojectteam1.DB
             return user;
         }
 
+    
+
         internal static string GetNameById(int empid)
         {
             string user = "";
@@ -110,6 +112,26 @@ namespace ADprojectteam1.DB
                 EMList = db.Employee.Select(x => x.EmailAdd).ToList();
             }
             return EMList;
+        }
+
+        internal static void RetractDelegate(int empId)
+        {
+            using (var db = new ADDbContext())
+            {
+               Employee e = db.Employee.Where(x => x.Id == empId).FirstOrDefault();
+                e.Delegated = false;
+                db.SaveChanges();
+            }
+        }
+
+        internal static void GiveDelegate(int empId)
+        {
+            using (var db = new ADDbContext())
+            {
+                Employee e = db.Employee.Where(x => x.Id == empId).FirstOrDefault();
+                e.Delegated = true;
+                db.SaveChanges();
+            }
         }
 
         internal static Employee FindEmpById(int v)

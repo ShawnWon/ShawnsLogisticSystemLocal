@@ -58,6 +58,18 @@ namespace ADprojectteam1.DB
             return i;
         }
 
+        internal static List<Employee> GetAllEmpByDepId(int id)
+        {
+            List<Employee> le = new List<Employee>();
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x => x.Id == id).Any()) {
+                    le=db.Department.Where(x => x.Id == id).FirstOrDefault().Employees.ToList();    
+                }
+            }
+            return le;
+        }
+
         internal static List<Department> GetAllDep()
         {
             List<Department> ld=new List<Department>();
