@@ -109,7 +109,7 @@ namespace ADprojectteam1.DB
             using (var db = new ADDbContext())
             {
                 if (db.ItemSupplier.Any())
-                    list = db.Item.ToList();
+                    list = db.Item.Include("Supplier1.supplier").Include("Supplier2.supplier").Include("Supplier3.supplier").ToList();
             }
             return list;
         }
@@ -125,6 +125,29 @@ namespace ADprojectteam1.DB
             return i;
         }
 
-      
+        internal static void SetSupplier()
+        {
+            ItemSupplier its1 = new ItemSupplier();
+            ItemSupplier its2 = new ItemSupplier();
+            ItemSupplier its3 = new ItemSupplier();
+            Item it = new Item();
+            using (var db = new ADDbContext())
+            {
+                foreach (int itId in db.Item.ToList().Select(x=>x.Id))
+                {
+                    it = db.Item.Where(x => x.Id == itId).FirstOrDefault();
+                    its1 = db.ItemSupplier.Where(x => x.item.Id == itId && x.supplier.Id == 1).FirstOrDefault();
+                    it.Supplier1 = its1;
+                    its2 = db.ItemSupplier.Where(x => x.item.Id == itId && x.supplier.Id == 2).FirstOrDefault();
+                    it.Supplier2 = its2;
+                    its3 = db.ItemSupplier.Where(x => x.item.Id == itId && x.supplier.Id == 3).FirstOrDefault(); 
+                    it.Supplier3 = its3;
+                }
+                db.SaveChanges();
+
+                
+            }
+
+        }
     }
 }

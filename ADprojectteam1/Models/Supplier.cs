@@ -17,6 +17,8 @@ namespace ADprojectteam1.Models
         public string Emailaddress { get; set; }
         public virtual ICollection<ItemSupplier> ListItemSupplier { get; set; }
 
+        public Supplier() { }
+
         public Supplier(string code,string name, string cname,string address,string p,string f,string e) {
 
             Code = code;

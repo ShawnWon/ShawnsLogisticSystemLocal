@@ -27,10 +27,15 @@ namespace ADprojectteam1.Models
         {
         }
 
-        public bool equalsTo(ItemSupplier other) {
-            
-            if (this.item.Equals(other.item) && this.supplier.equalsTo(other.supplier)) return true;
-            return false;
+        public override bool Equals(object obj)
+        {
+            return obj is ItemSupplier supplier &&
+                   Id == supplier.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

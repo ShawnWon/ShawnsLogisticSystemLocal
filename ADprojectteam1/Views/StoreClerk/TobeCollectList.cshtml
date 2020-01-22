@@ -7,6 +7,8 @@
     Dictionary<int, int> collist = (Dictionary<int, int>)Session["collist"];
 }
 
+<input type="button" value="To be ReOrder List" onclick="location.href='@Url.Action("TobeReOrderList","StoreClerk")'" />
+    
 
 
 @{if (collist != null)
@@ -45,7 +47,7 @@
             </tr>
 
 
-            
+
 
 
             <tr>
@@ -84,8 +86,8 @@
             Id: itemId, quant: q
         };
 
-      
-       
+
+
         $.ajax({
             type: "POST",
             url: "/StoreClerk/ConfirmCollect",

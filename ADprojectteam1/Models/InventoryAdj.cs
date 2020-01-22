@@ -21,9 +21,17 @@ namespace ADprojectteam1.Models
             Status = "Pending";
         }
 
-        public bool equalsTo(InventoryAdj other) {
-            if (this.Id == other.Id) return true;
-            return false;
+        public InventoryAdj() { }
+
+        public override bool Equals(object obj)
+        {
+            return obj is InventoryAdj adj &&
+                   Id == adj.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

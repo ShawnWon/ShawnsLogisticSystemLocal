@@ -52,10 +52,15 @@ namespace ADprojectteam1.Models
         {
         }
 
-        public bool equalsTo(StockCard other)
+        public override bool Equals(object obj)
         {
-            if (this.Id == other.Id) return true;
-            return false;
+            return obj is StockCard card &&
+                   Id == card.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

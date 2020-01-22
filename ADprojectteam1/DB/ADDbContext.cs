@@ -24,7 +24,7 @@ namespace ADprojectteam1.DB
         public DbSet<Item> Item { get; set; }
         public DbSet<ItemSupplier> ItemSupplier { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrder { get; set; }
-        public DbSet<ReOrderRecord> ReOrderRecord { get; set; }
+        //public DbSet<ReOrderRecord> ReOrderRecord { get; set; }
         public DbSet<ReqItem> ReqItem { get; set; }
         public DbSet<SRequisition> SRequisition { get; set; }
         public DbSet<Supplier> Supplier { get; set; }

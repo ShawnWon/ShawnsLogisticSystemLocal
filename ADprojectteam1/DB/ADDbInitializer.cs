@@ -155,9 +155,13 @@ namespace ADprojectteam1.DB
                 context.Supplier.Add(s);
 
             List<ItemSupplier> itemsup1 = new List<ItemSupplier>();
-            for (int i = 0; i < 84; i++) itemsup1.Add(new ItemSupplier(items[i], sups[2], 1.00));
+            for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[1], 1.00));
+            List<ItemSupplier> itemsup2 = new List<ItemSupplier>();
+            for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[2], 2.00));
+            List<ItemSupplier> itemsup3 = new List<ItemSupplier>();
+            for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[3], 3.00));
 
-            List<ItemSupplier> itemsup = new List<ItemSupplier>();
+           /* List<ItemSupplier> itemsup = new List<ItemSupplier>();
             itemsup.Add(new ItemSupplier(items[58],sups[2],1.00));
             itemsup.Add(new ItemSupplier(items[57], sups[2], 0.98));
             itemsup.Add(new ItemSupplier(items[60], sups[2], 1.20));
@@ -174,15 +178,22 @@ namespace ADprojectteam1.DB
             itemsup.Add(new ItemSupplier(items[16], sups[2], 1.20));
             itemsup.Add(new ItemSupplier(items[70], sups[2], 0.40));
             itemsup.Add(new ItemSupplier(items[68], sups[2], 0.50));
-            itemsup.Add(new ItemSupplier(items[69], sups[2], 0.55));
+            itemsup.Add(new ItemSupplier(items[69], sups[2], 0.55));*/
 
             
 
             
            
 
-            foreach (ItemSupplier x in itemsup)
+            foreach (ItemSupplier x in itemsup1)
                 context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup2)
+                context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup3)
+                context.ItemSupplier.Add(x);
+
+            
+
 
             List<ReqItem> rit = new List<ReqItem>();
             rit.Add(new ReqItem(items[1],emps[4],10));
@@ -217,7 +228,7 @@ namespace ADprojectteam1.DB
            
             
             
-
+            /*
             List<ReOrderRecord> lro = new List<ReOrderRecord>();
             lro.Add(new ReOrderRecord(itemsup[0]));
             lro.Add(new ReOrderRecord(itemsup[1]));
@@ -234,10 +245,10 @@ namespace ADprojectteam1.DB
             foreach (ReOrderRecord rr in lro1)
                 context.ReOrderRecord.Add(rr);
 
-            PurchaseOrder po = new PurchaseOrder("200000068", "XXX", lro);
-            PurchaseOrder po1 = new PurchaseOrder("200000069", "XXX", lro1);
+            PurchaseOrder po = new PurchaseOrder(lro);
+            PurchaseOrder po1 = new PurchaseOrder(lro1);
             context.PurchaseOrder.Add(po);
-            context.PurchaseOrder.Add(po1);
+            context.PurchaseOrder.Add(po1);*/
 
             List<StockCard> lsc = new List<StockCard>();
             DateTime dt = DateTime.Today;
@@ -255,7 +266,7 @@ namespace ADprojectteam1.DB
 
             List<StockCard> lsc1 = new List<StockCard>();
             
-            for(int i=0; i<84;i++)
+            for(int i=0; i<85;i++)
             lsc1.Add(new StockCard(items[i], dt, 1, 500, 550));
 
             foreach (StockCard sc in lsc1)
@@ -275,6 +286,10 @@ namespace ADprojectteam1.DB
             
 
             base.Seed(context);
+
+            
+            
+            
         } 
     }
     

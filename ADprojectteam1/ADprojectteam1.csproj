@@ -140,6 +140,8 @@
     <Compile Include="DB\DepOrderData.cs" />
     <Compile Include="DB\EmployeeData.cs" />
     <Compile Include="DB\ItemData.cs" />
+    <Compile Include="DB\ItemSupplierData.cs" />
+    <Compile Include="DB\PurchaseOrderData.cs" />
     <Compile Include="DB\ReqItemData.cs" />
     <Compile Include="DB\SrequisitionData.cs" />
     <Compile Include="DB\StockCardData.cs" />
@@ -154,7 +156,6 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemSupplier.cs" />
     <Compile Include="Models\PurchaseOrder.cs" />
-    <Compile Include="Models\ReOrderRecord.cs" />
     <Compile Include="Models\ReqItem.cs" />
     <Compile Include="Models\SRequisition.cs" />
     <Compile Include="Models\Supplier.cs" />
@@ -206,6 +207,8 @@
     <Content Include="Views\StoreClerk\GenerateDelOrder.cshtml" />
     <Content Include="Views\StoreClerk\CollectedDepOrder.cshtml" />
     <Content Include="Views\DepManager\DelegateView.cshtml" />
+    <Content Include="Views\StoreClerk\TobeReOrderList.cshtml" />
+    <Content Include="Views\StoreClerk\ManagePO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

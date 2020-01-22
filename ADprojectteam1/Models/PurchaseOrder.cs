@@ -8,27 +8,51 @@ namespace ADprojectteam1.Models
     public class PurchaseOrder
     {
         public int Id { get; set; }
-        public string PONumber { get; set; }
-        public string DelToAdd { get; set; }
-        public virtual ICollection<ReOrderRecord> items { get; set; }
+        
+        public virtual ICollection<ItemSupplier> items { get; set; }
         public DateTime RequestDelivDate { get; set; }
-        public double amount { get; set; }
-        public string status { get; set; }//status can be "Pending","Sent","Confirmed","Delivered","Invoiced","Paid"
+        
+        public string status { get; set; }//status can be "pending","sent","confirmed","rejected","delivered"
 
-        public PurchaseOrder(string pon,string addr,List<ReOrderRecord> lro) {
-            PONumber = pon;
-            DelToAdd = addr;
+        public PurchaseOrder(List<ItemSupplier> lro) {
+            
             items = lro;
-            status = "Pending";
+            status = "pending";
 
-            amount = 0;
-            foreach (ReOrderRecord ror in lro)
-                amount +=ror.itemsupplier.item.ReorderQty*ror.itemsupplier.UnitPrice;
         }
 
-        public bool equalsTo(PurchaseOrder other) {
-            if (this.PONumber.Equals( other.PONumber)) return true;
-            return false;
+        public string GetSupplierName()
+        {
+            
+            ItemSupplier its = items.FirstOrDefault();
+            int id = its.Id;
+            Supplier s = its.supplier;
+            return s.Name;
+        }
+
+        public List<Item> GetItemsList()
+        {
+            return items.Select(x=>x.item).ToList();
+        }
+
+        public double GetAmout() {
+            double amount = 0;
+            foreach (ItemSupplier ror in items)
+                amount += ror.item.ReorderQty * ror.UnitPrice;
+            return amount;
+        }
+
+        public PurchaseOrder() { }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PurchaseOrder order &&
+                   Id == order.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
 }

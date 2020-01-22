@@ -15,7 +15,7 @@ namespace ADprojectteam1.Controllers
         public ActionResult TobeCollectList()
         {
            
-            
+            ////////////////////////////////////////////////////////Dispatch features
             ///Retrieve all reqitems need to be deal with
             List<ReqItem> lri = ReqItemData.GetAllReqItemApproved();
             List<ReqItem> slist = new List<ReqItem>();
@@ -114,6 +114,14 @@ namespace ADprojectteam1.Controllers
                     int quant= xlist.Select(x => x.Quant).Sum();
                     if(quant!=0) itemmap.Add(itemId,quant);
                     DepOrderData.CreateDepOrder(depId,itemId,quant);
+
+                    //Withdraw from stock
+                    Item item = ItemData.GetItemById(itemId);
+                    int balance = StockCardData.GetStockBalanceByItem(item);
+                    StockCardData.WithdrawFromStockRecord(item,DateTime.Today,DepartmentData.GetDepById(depId),quant,balance);
+                    int stockbalance = StockCardData.GetStockBalanceByItem(item);
+                    
+                    //if (stockbalance < item.ReorderLevel) Send Notification
                 }
                 list.Add(depId, itemmap);
 
@@ -197,133 +205,236 @@ namespace ADprojectteam1.Controllers
            
         }
 
-        //We don't allow store clerk to change delivered quantity and confirm receive
-        /*
-        [HttpPost]
-        public JsonResult ChangeReceiveQuant(int itemId, int depId, int quant)
+
+
+        /////////////////////////////////////////////////////////////////////////ReOrder features
+        public ActionResult TobeReOrderList()
         {
-            Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
-            if (Session["plannedlist"] != null)
-            { plannedlist = (Dictionary<int, Dictionary<int, int>>)Session["plannedlist"]; }
+            ItemData.SetSupplier();
+            List<Item> listItem = ItemData.FindAll();
 
+            
+               
+            
 
-            if (plannedlist[depId].ContainsKey(itemId))
+            //Get all items which is in process of reOrder
+            List<Item> listinprocess = PurchaseOrderData.GetItemsInProcess();
+
+            //Get all items whose stockbalance is below reorderLevel
+            List<Item> listreorder = listItem.Where(x=>x.ReorderLevel> StockCardData.GetStockBalanceByItem(x)).ToList();
+            //Screen out items in process
+            listinprocess.ForEach(x=>listreorder.Remove(x));
+            
+            
+            Dictionary<int, int> selectedsupplier = new Dictionary<int, int>();
+            foreach (Item item in listreorder)
             {
-                plannedlist[depId][itemId] = quant;
+                int itId = item.Id;
+                int suId = item.Supplier1.supplier.Id;
+                selectedsupplier.Add(item.Id, item.Supplier1.supplier.Id);
             }
-            int totalq = plannedlist[depId].Sum(x => x.Value);
+            
 
-            object new_amount = new { Id = itemId, quant = totalq };
+
+
+            Session["selectedsupplier"] = selectedsupplier;
+            ViewBag.Rlist = listreorder;
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult SelectSupplier(int itemId, int sId)
+        {
+            Dictionary<int,int> selectedsupplier = new Dictionary<int, int>();
+            if (Session["selectedsupplier"] != null)
+            { selectedsupplier = (Dictionary<int, int>)Session["selectedsupplier"]; }
+            else
+            {
+                throw new Exception("please log in"); 
+            }
+
+            selectedsupplier[itemId] = sId;
+
+            Session["selectedsupplier"] = selectedsupplier;
+            object new_amount = new {  };
+
+            return Json(new_amount, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GeneratePendingPO()
+        {
+            List<PurchaseOrder> listPO =new  List<PurchaseOrder>();
+
+            Dictionary<int, int> selectedsupplier = new Dictionary<int, int>();
+            if (Session["selectedsupplier"] != null)
+            { selectedsupplier = (Dictionary<int, int>)Session["selectedsupplier"]; }
+            else
+            {
+                throw new Exception("please log in");
+            }
+
+
+            //Group the reorder demand by selected supplier
+            Dictionary<int, List<int>> itemsforeachsupplier = new Dictionary<int, List<int>>();
+            
+            var supplierIdset = new HashSet<int>(selectedsupplier.Values);
+            foreach (int supId in supplierIdset)
+            {
+                List<int> itemlist = new List<int>();
+                foreach (int itemId in selectedsupplier.Keys)
+                {
+                    if (selectedsupplier[itemId] == supId) {
+                        if (itemsforeachsupplier.ContainsKey(supId)) itemsforeachsupplier[supId].Add(itemId);
+                        else
+                        {
+                            itemlist.Add(itemId);
+                            itemsforeachsupplier.Add(supId, itemlist);
+                        } 
+                    }
+                    
+                }
+                
+            }
+
+            //Create PO
+            foreach (int supId in itemsforeachsupplier.Keys)
+            {
+                
+                List<ItemSupplier> lrr = new List<ItemSupplier>();
+
+                foreach (int itemId in itemsforeachsupplier[supId])
+                { ItemSupplier its=ItemSupplierData.GetByItemIdAndSupplierId(itemId,supId);
+                    int itId = its.Id;
+                    int suId = its.supplier.Id;
+                   
+                    lrr.Add(its);
+                    //ReOrderRecordData.CreateReOrderRocord(its);
+                }
+                
+                PurchaseOrderData.CreatePO(lrr);
+            }
+
+
+
+            ViewBag.reorderrecordgroupbysupplier = itemsforeachsupplier;
+            Session.Remove("selectedsupplier");
+
+
+
+            object new_amount = new { };
+
+            return Json(new_amount, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ManagePO()
+        {
+            //Get all PO in process
+            List<PurchaseOrder> pendingpo = PurchaseOrderData.GetPendingPO();
+            List<PurchaseOrder> sentpo = PurchaseOrderData.GetSentPO();
+            List<PurchaseOrder> confirmedpo = PurchaseOrderData.GetConfirmedPO();
+            Dictionary<PurchaseOrder, List<Item>> ppo = new Dictionary<PurchaseOrder, List<Item>>();
+            Dictionary<PurchaseOrder, List<Item>> spo = new Dictionary<PurchaseOrder, List<Item>>();
+            Dictionary<PurchaseOrder, List<Item>> cpo = new Dictionary<PurchaseOrder, List<Item>>();
+            foreach (PurchaseOrder po in pendingpo)
+            {
+                List<Item> li = new List<Item>();
+                foreach (ItemSupplier rr in po.items)
+                {
+                    if (ppo.ContainsKey(po)) ppo[po].Add(rr.item);
+                    else
+                    {
+                        li.Add(rr.item);
+                        ppo.Add(po, li);
+
+                    }
+                }
+            }
+
+            foreach (PurchaseOrder po in sentpo)
+            {
+                List<Item> li = new List<Item>();
+                foreach (ItemSupplier rr in po.items)
+                {
+                    if (spo.ContainsKey(po)) spo[po].Add(rr.item);
+                    else
+                    {
+                        li.Add(rr.item);
+                        spo.Add(po, li);
+
+                    }
+                }
+            }
+            foreach (PurchaseOrder po in confirmedpo)
+            {
+                List<Item> li = new List<Item>();
+                foreach (ItemSupplier rr in po.items)
+                {
+                    if (cpo.ContainsKey(po)) cpo[po].Add(rr.item);
+                    else
+                    {
+                        li.Add(rr.item);
+                        cpo.Add(po, li);
+
+                    }
+                }
+            }
+            ViewBag.Plist = ppo;
+            ViewBag.Slist = spo;
+            ViewBag.Clist = cpo;
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult SendPO(int pId)
+        {
+            //Link to send email to supplier
+            PurchaseOrderData.setStatus(pId,"sent");
+            object new_amount = new { };
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public JsonResult ConfirmReceive(int depId)
+        public JsonResult ConfirmPO(int pId)
         {
-            Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
-           
-
-            List<Department> ldep = DepartmentData.GetAllDep();
-
-            //load the department order into plannedlist
             
-            foreach (int deId in ldep.Select(x => x.Id))
-            {
-                List<DepOrder> listdp = DepOrderData.GetCollectedDepOrderByDepId(deId);
-                Dictionary<int, int> dp = new Dictionary<int, int>();
-                foreach (int itemId in listdp.Select(x => x.item.Id))
-                {
-                    
-                    dp.Add(itemId, listdp.Where(x=>x.item.Id==itemId).FirstOrDefault().collectedquant);
-                    
-                }
-                if (!plannedlist.ContainsKey(deId)) plannedlist.Add(deId, dp);
-                else plannedlist[depId] = dp;
-            }
-
-            foreach (int dId in plannedlist.Keys)
-            {
-                foreach (int itemId in plannedlist[dId].Keys)
-                {
-                    DepOrderData.SetReceived(dId,itemId,plannedlist[dId][itemId]);
-
-                    SRequisition sr = new SRequisition();
-                    sr.ListItem = new List<ReqItem>();
-                    foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
-                    { ReqItemData.SetReqItem(empId, itemId, "delivered");
-                        
-                    }
-
-
-                    if (plannedlist[dId][itemId] < DepOrderData.GetOrderByDepAndItem(dId, itemId).quant)//if any discrepancy, create new reqItem to replenish in next delivery.
-                    {
-                        int dif = DepOrderData.GetOrderByDepAndItem(dId, itemId).quant- plannedlist[dId][itemId];
-                        int repid = DepartmentData.GetRepById(dId);
-                        
-                        Employee rep = EmployeeData.FindEmpById(DepartmentData.GetRepById(dId));
-
-                        int repid1 = rep.department.Id;
-
-                        Item item = ItemData.GetItemById(itemId);
-
-                        /////////////////////////
-                        
-                        
-
-                        if (sr == null)
-                        {
-                            
-                            sr.ListItem = new List<ReqItem>();
-                            ReqItem reqitem = new ReqItem(item, rep, dif);
-                            sr.ListItem.Add(reqitem);
-
-                        }
-
-                        else if (!sr.ListItem.Where(x => x.item.Id == itemId).Any())
-                        {
-                            Item p = new Item();
-                            int i = rep.Id;
-                            int j = rep.department.Id;
-                            p = ItemData.GetItemById(itemId);
-                            ReqItem reqitem = new ReqItem(p, rep, dif);
-
-                            sr.ListItem.Add(reqitem);
-
-                        }
-                        else
-                        {
-                            ReqItem ri = new ReqItem();
-                            ri = sr.ListItem.Where(x => x.item.Id == dId).FirstOrDefault();
-                            ri.Quant = dif;
-                        }
-
-
-
-
-
-                        
-                        SrequisitionData.SaveReq(sr);
-                        int srId = SrequisitionData.FindLastId();
-                        SrequisitionData.ApproveRequisition(srId, "Unfulfiled quant");
-                        /////////////////////////
-
-
-                    }
-                    
-                }
-
-                
-            }
-            Session.Remove("plannedlist");
-            Session.Remove("reqlist");
-            
-
-            object new_amount = new {  };
+            PurchaseOrderData.setStatus(pId, "confirmed");
+            object new_amount = new { };
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
-        }*/
+        }
 
+        [HttpPost]
+        public JsonResult RejectPO(int pId)
+        {
+            //Link to send email to supplier
+            PurchaseOrderData.setStatus(pId, "rejected");
+            object new_amount = new { };
+
+            return Json(new_amount, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CheckInPO(int pId)
+        {
+            PurchaseOrder po=PurchaseOrderData.GetPOById(pId);
+            //Add record to stock card
+            foreach (Item item in po.items.Select(x => x.item).ToList())
+            {
+                int balance = StockCardData.GetStockBalanceByItem(item);
+                StockCardData.AddToStock(item, DateTime.Today, po.items.Select(x => x.UnitPrice).FirstOrDefault(), po.items.Select(x => x.item.ReorderQty).FirstOrDefault(),balance);
+                
+            }
+            
+            PurchaseOrderData.setStatus(pId, "delivered");
+            object new_amount = new { };
+
+            return Json(new_amount, JsonRequestBehavior.AllowGet);
+        }
     }
 
 
