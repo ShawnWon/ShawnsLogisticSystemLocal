@@ -17,7 +17,7 @@ namespace ADprojectteam1.Controllers
            
             
             ///Retrieve all reqitems need to be deal with
-            List<ReqItem> lri = ReqItemData.GetAllReqItemApprovedAndCollecting();
+            List<ReqItem> lri = ReqItemData.GetAllReqItemApproved();
             List<ReqItem> slist = new List<ReqItem>();
             List<ReqItem> xlist = new List<ReqItem>();
             var itemIdset = new HashSet<int>(lri.Select(x => x.item.Id).ToList());
@@ -92,7 +92,7 @@ namespace ADprojectteam1.Controllers
                 Session["collist"] = new Dictionary<int,int>();
 
             
-            List<ReqItem> lri = ReqItemData.GetAllReqItemApprovedAndCollecting();
+            List<ReqItem> lri = ReqItemData.GetAllReqItemApproved();
             var itemIdset = new HashSet<int>(collist.Keys);
             var depIdset = new HashSet<int>(lri.Select(x => x.emp.department.Id).ToList());
             List<ReqItem> slist = new List<ReqItem>();
@@ -112,7 +112,7 @@ namespace ADprojectteam1.Controllers
 
                     xlist = slist.Where(x => x.item.Id==itemId).ToList();
                     int quant= xlist.Select(x => x.Quant).Sum();
-                    itemmap.Add(itemId,quant);
+                    if(quant!=0) itemmap.Add(itemId,quant);
                     DepOrderData.CreateDepOrder(depId,itemId,quant);
                 }
                 list.Add(depId, itemmap);
@@ -155,7 +155,10 @@ namespace ADprojectteam1.Controllers
 
                 foreach (int itemId in plannedlist[depId].Keys)
                 {
-                    DepOrderData.SetCollected(depId,itemId,plannedlist[depId][itemId]);
+                    
+                    foreach(int empId in DepartmentData.GetAllEmpByDepId(depId).Select(x=>x.Id))
+                    ReqItemData.SetReqItemCollected(empId,itemId);
+                    DepOrderData.SetCollected(depId, itemId, plannedlist[depId][itemId]);
                 }
             }
             

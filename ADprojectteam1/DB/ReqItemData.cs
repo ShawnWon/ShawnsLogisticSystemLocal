@@ -9,14 +9,14 @@ namespace ADprojectteam1.DB
     public class ReqItemData
     {
 
-        public static List<ReqItem> GetAllReqItemApprovedAndCollecting()
+        public static List<ReqItem> GetAllReqItemApproved()
         {
             List<ReqItem> list=new List<ReqItem>();
 
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x.Status.Equals("approved")||x.Status.Equals("collecting")).Any())
-                    list = db.ReqItem.Include("item").Include("emp.department").Where(x => x.Status.Equals("approved")||x.Status.Equals("collecting")).ToList();
+                if (db.ReqItem.Where(x => x.Status.Equals("approved")).Any())
+                    list = db.ReqItem.Include("item").Include("emp.department").Where(x => x.Status.Equals("approved")).ToList();
 
             }
             return list;
@@ -35,15 +35,29 @@ namespace ADprojectteam1.DB
             
         }
 
-        internal static void SetReqItem(int empId, int itemId, string v)
+        internal static void SetReqItemDelivered(int empId, int itemId)
         {
             ReqItem reitem = new ReqItem();
             
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId).Any())
-                    reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId).FirstOrDefault();
-                reitem.Status = v;
+                if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).Any())
+                    reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).FirstOrDefault();
+                reitem.Status = "delivered";
+
+                db.SaveChanges();
+            }
+        }
+
+        internal static void SetReqItemCollected(int empId, int itemId)
+        {
+            ReqItem reitem = new ReqItem();
+
+            using (var db = new ADDbContext())
+            {
+                if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("approved")).Any())
+                    reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("approved")).FirstOrDefault();
+                reitem.Status = "collected";
 
                 db.SaveChanges();
             }

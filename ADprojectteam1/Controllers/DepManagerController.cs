@@ -103,9 +103,19 @@ namespace ADprojectteam1.Controllers
         [HttpPost]
         public JsonResult cancelDelegation(int empId)
         {
+            object status;
+            int userid = EmployeeData.GetId((string)Session["username"]);
+            if (userid == empId)
+            {
+                status = new { status = false };
+
+                return Json(status, JsonRequestBehavior.AllowGet);
+
+            }
+
             EmployeeData.RetractDelegate(empId);
 
-            object status = new { status=true};
+            status = new { status=true};
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }

@@ -14,12 +14,12 @@ namespace ADprojectteam1.Models
         public int quant { get; set; }
         public int collectedquant { get; set; }
         public int deliveredquant { get; set; }
-        public string status { get; set; }//can be "acknowledged","collected","fulfiled","tobereplenished"
+        public string status { get; set; }//can be "acknowledged","collected","delivered","tobereplenished"
         public DateTime signindate { get; set; }
 
         public DepOrder()
         {
-            
+            status = "acknowledged";
         }
 
         public double GetOrderAmount()

@@ -108,8 +108,8 @@
 
             // Response Success
             success: function (response) {
-
-                if (response.status==true) alert("Cancel Delegate successfully");
+                if (response.status == false) alert("You can not cancel delegate to yourself.");
+                else alert("Cancel Delegate successfully");
                
 
             },

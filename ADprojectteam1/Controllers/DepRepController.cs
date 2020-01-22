@@ -30,12 +30,9 @@ namespace ADprojectteam1.Controllers
         public ActionResult PendingDisbursmentList()
         {
             Dictionary<int, int> signinglist = new Dictionary<int, int>();
-            if (Session["signinglist"] != null)
-            { signinglist = (Dictionary<int, int>)Session["signinglist"]; }
-            else
-            {
+            
                 signinglist = loadsigninglist();
-            }
+            
 
             ViewBag.Rlist=signinglist;
             Session["signinglist"] = signinglist;
@@ -68,10 +65,7 @@ namespace ADprojectteam1.Controllers
         [HttpPost]
         public JsonResult ConfirmReceive()
         {
-            Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
-
-
-            List<Department> ldep = DepartmentData.GetAllDep();
+            
 
             //load the signinglist
             Dictionary<int, int> signinglist = new Dictionary<int, int>();
@@ -97,27 +91,28 @@ namespace ADprojectteam1.Controllers
             
                 foreach (int itemId in signinglist.Keys)
                 {
-                    DepOrderData.SetReceived(depId, itemId, signinglist[itemId]);
+                    
 
                     SRequisition sr = new SRequisition();
                     sr.ListItem = new List<ReqItem>();
                     foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
                     {
-                        ReqItemData.SetReqItem(empId, itemId, "delivered");
+                        ReqItemData.SetReqItemDelivered(empId, itemId);
+                        
 
                     }
 
 
                 //if any discrepancy, create new reqItem to replenish in next delivery.
+                int dif = DepOrderData.GetDeliveringOrderByDepAndItem(depId, itemId).quant- signinglist[itemId];
 
-
-                if (signinglist[itemId] < DepOrderData.GetOrderByDepAndItem(depId, itemId).quant)                    {
-                        int dif = DepOrderData.GetOrderByDepAndItem(depId, itemId).quant - signinglist[itemId];
-                        int repid = DepartmentData.GetRepById(depId);
+                if (dif>0)                    {
+                        
+          
 
                         Employee rep = EmployeeData.FindEmpById(DepartmentData.GetRepById(depId));
 
-                        int repid1 = rep.department.Id;
+                        
 
                         Item item = ItemData.GetItemById(itemId);
 
@@ -165,7 +160,8 @@ namespace ADprojectteam1.Controllers
 
                     }
 
-                
+                //mark this DepOrder to be delivered
+                DepOrderData.SetReceived(depId, itemId, signinglist[itemId]);
 
 
             }

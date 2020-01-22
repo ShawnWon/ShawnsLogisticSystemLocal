@@ -36,8 +36,8 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.DepOrder.Where(x => x.item.Id==itemId&&x.dep.Id==depId).Any())
-                    deporder = db.DepOrder.Where(x => x.item.Id == itemId && x.dep.Id == depId).FirstOrDefault();
+                if (db.DepOrder.Where(x => x.item.Id==itemId&&x.dep.Id==depId&&x.status.Equals("acknowledged")).Any())
+                    deporder = db.DepOrder.Where(x => x.item.Id == itemId && x.dep.Id == depId&&x.status.Equals("acknowledged")).FirstOrDefault();
                 
                 deporder.collectedquant = v;
                 deporder.status = "collected";
@@ -81,8 +81,8 @@ namespace ADprojectteam1.DB
 
             using (var db = new ADDbContext())
             {
-                if (db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId).Any())
-                    deporder = db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId).FirstOrDefault();
+                if (db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).Any())
+                    deporder = db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).FirstOrDefault();
                 deporder.deliveredquant = v;
                 deporder.status = "received";
                 db.SaveChanges();
@@ -96,6 +96,19 @@ namespace ADprojectteam1.DB
             {
                 if (db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id==itemId).Any())
                     depo = db.DepOrder.Include("dep").Include("item").Where(x => x.dep.Id == dId && x.item.Id == itemId).FirstOrDefault();
+
+            }
+            return depo;
+
+        }
+
+        internal static DepOrder GetDeliveringOrderByDepAndItem(int dId, int itemId)
+        {
+            DepOrder depo = new DepOrder();
+            using (var db = new ADDbContext())
+            {
+                if (db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).Any())
+                    depo = db.DepOrder.Include("dep").Include("item").Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).FirstOrDefault();
 
             }
             return depo;
