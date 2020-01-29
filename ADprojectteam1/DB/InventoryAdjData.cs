@@ -26,7 +26,7 @@ namespace ADprojectteam1.DB
             using (var db = new ADDbContext())
             {
                 if (db.InventoryAdj.Where(x=>x.Status.Equals("pending")).Any())
-                    list = db.InventoryAdj.Include("item").Where(x => x.Status.Equals("pending")).ToList();
+                    list = db.InventoryAdj.Include("item.Supplier1").Where(x => x.Status.Equals("pending")).ToList();
 
 
             }

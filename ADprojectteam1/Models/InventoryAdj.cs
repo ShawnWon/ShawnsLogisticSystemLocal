@@ -14,7 +14,10 @@ namespace ADprojectteam1.Models
         public string Remark { get; set; }
         public string Status { get; set; }//status can be "pending, approved, rejected"
 
-        
+        public double getAmount()
+        {
+            return Math.Abs(Quant) * item.Supplier1.UnitPrice;
+        }
 
         public InventoryAdj(Item i,int q,string r) {
 

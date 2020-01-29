@@ -15,7 +15,7 @@
         <tr>
             <td>@invadj.item.Description</td>
             <td>@invadj.Quant</td>
-            <td>AAA</td>
+            <td>@invadj.getAmount()</td>
             <td>@invadj.Reason</td>
             <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @invadj.Id"></td>
             <td><input type="button" value="Approve" onclick="approveInvAdj(@invadj.Id)" /></td>

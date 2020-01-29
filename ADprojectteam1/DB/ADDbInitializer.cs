@@ -161,8 +161,28 @@ namespace ADprojectteam1.DB
             List<ItemSupplier> itemsup3 = new List<ItemSupplier>();
             for (int i = 0; i < 85; i++) itemsup3.Add(new ItemSupplier(items[i], sups[3], 3.00));
 
+           
 
+            
 
+            
+           
+
+            foreach (ItemSupplier x in itemsup1)
+                context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup2)
+                context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup3)
+                context.ItemSupplier.Add(x);
+
+            context.SaveChanges();
+
+            for (int i = 0; i < 85; i++)
+            {
+                items[i].Supplier1 = itemsup1[i];
+                items[i].Supplier2 = itemsup2[i];
+                items[i].Supplier3 = itemsup3[i];
+            }
 
 
             List<ReqItem> rit = new List<ReqItem>();
@@ -257,12 +277,7 @@ namespace ADprojectteam1.DB
 
             base.Seed(context);
 
-            foreach (ItemSupplier x in itemsup1)
-                context.ItemSupplier.Add(x);
-            foreach (ItemSupplier x in itemsup2)
-                context.ItemSupplier.Add(x);
-            foreach (ItemSupplier x in itemsup3)
-                context.ItemSupplier.Add(x);
+            
 
 
         } 

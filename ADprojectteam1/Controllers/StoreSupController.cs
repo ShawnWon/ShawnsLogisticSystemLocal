@@ -14,8 +14,13 @@ namespace ADprojectteam1.Controllers
         public ActionResult PendingInvAdjList()
         {
             List<InventoryAdj> list = new List<InventoryAdj>();
+            List<InventoryAdj> list1 = new List<InventoryAdj>();
             list = InventoryAdjData.FindPendingForSup();
-            ViewBag.listInvAdj = list;
+            foreach (InventoryAdj invadj in list)
+            {
+                if (invadj.Quant * invadj.item.Supplier1.UnitPrice <= 100) list1.Add(invadj);
+            }
+            ViewBag.listInvAdj = list1;
             return View();
         }
 
