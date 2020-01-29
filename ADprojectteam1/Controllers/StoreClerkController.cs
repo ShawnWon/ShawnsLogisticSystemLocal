@@ -435,6 +435,83 @@ namespace ADprojectteam1.Controllers
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
         }
+
+        /////////////////////////////////////////////////////////////////////////////////////Inventory Adjustment Vouchour
+        ///
+        
+        public ActionResult InvAdjForm(string searchStr)
+        {
+            List<Item> Plist = new List<Item>();
+            Plist = ItemData.FindAll();
+            ViewBag.listItem = Plist;
+
+
+            List<InventoryAdj> listInvAdj = new List<InventoryAdj>();
+            listInvAdj = InventoryAdjData.FindAll();
+            ViewBag.InvAdjList = listInvAdj;
+
+
+            List<Item> Rlist = new List<Item>();
+            bool match = false;
+
+
+
+
+            if (searchStr == null)
+            {
+                searchStr = "";
+                ViewBag.Rlist = Plist;
+            }
+            else
+            {
+                foreach (Item Pro in Plist)
+                {
+                    bool fit = false;
+                    if (Found(Pro.Description, searchStr).fit)
+                    {
+                        fit = true;
+                        Pro.Description = Found(Pro.Description, searchStr).str;
+                    }
+
+                    if (fit) { match = true; Rlist.Add(Pro); }
+                }
+                ViewBag.Rlist = Rlist;
+            }
+
+
+            ViewData["searchStr"] = searchStr;
+            ViewData["match"] = match;
+
+
+
+            return View();
+        }
+
+        public searchResult Found(string ba, string ta)
+        {
+
+            string s = ba;
+            int index = ba.IndexOf(ta, StringComparison.CurrentCultureIgnoreCase);
+            if (index != -1)
+            {
+
+                s = ba.Substring(0, index) + "<span class='font-red'>" + ba.Substring(index, ta.Length) + "</span>" + ba.Substring(index + ta.Length);
+            }
+
+            return new searchResult { fit = (index != -1), str = s };
+
+        }
+
+        [HttpPost]
+        public JsonResult SubmitInvAdj(int Id, int quant,string reason)
+        {
+            Item it = ItemData.GetItemById(Id);
+            
+            InventoryAdjData.CreateInvAdj(it,quant,reason);
+            object new_q = new { };
+            return Json(new_q, JsonRequestBehavior.AllowGet);
+
+        }
     }
 
 

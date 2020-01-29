@@ -1,7 +1,110 @@
-﻿
+﻿@using ADprojectteam1.Models;
+
 @{
-    ViewBag.Title = "PendingInvAdjList";
+    ViewBag.Title = "Pending Inventory Adjustment Vouchour List";
+    List<InventoryAdj> listinvadj = ViewBag.listInvAdj;
+
 }
+<h2>Inventory Adjustment List</h2>
 
-<h2>PendingInvAdjList</h2>
+<table>
+    <tr><th>Item Name</th><th>Quantity</th><th>Amount</th><th>Reason</th></tr>
 
+    @{ foreach (InventoryAdj invadj in listinvadj)
+        {
+        <tr>
+            <td>@invadj.item.Description</td>
+            <td>@invadj.Quant</td>
+            <td>AAA</td>
+            <td>@invadj.Reason</td>
+            <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @invadj.Id"></td>
+            <td><input type="button" value="Approve" onclick="approveInvAdj(@invadj.Id)" /></td>
+            <td><input type="button" value="Reject" onclick="rejectInvAdj(@invadj.Id)" /></td>
+        </tr>
+
+            
+
+        }
+    }
+</table>
+<br>
+<br>
+
+
+<script>
+    function rejectInvAdj(invadj_id) {
+
+
+
+
+        var remark = document.getElementById("remarkbox " + invadj_id).value
+
+        var pdata = { InvAdjId: invadj_id, remark: remark };
+
+        $.ajax({
+            type: "POST",
+            url: "/StoreSup/rejectInvAdj",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
+
+            // Response Success
+            success: function (response) {
+
+                alert("Rejected Inventory Adjustment successfully");
+                window.location.href = "./PendingInvAdjList";
+
+            },
+
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
+
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
+
+
+        });
+    }
+
+        function approveInvAdj(invadj_id) {
+
+
+
+
+        var remark = document.getElementById("remarkbox " + invadj_id).value
+
+        var pdata = { InvAdjId: invadj_id, remark: remark };
+
+        $.ajax({
+            type: "POST",
+            url: "/StoreSup/approveInvAdj",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
+
+            // Response Success
+            success: function (response) {
+
+                alert("Approved Inventory Adjustment successfully");
+                window.location.href = "./PendingInvAdjList";
+
+            },
+
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
+
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
+
+
+        });
+    }
+</script>

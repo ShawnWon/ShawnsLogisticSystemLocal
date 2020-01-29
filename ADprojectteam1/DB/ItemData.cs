@@ -93,16 +93,7 @@ namespace ADprojectteam1.DB
           return record;
       }
 
-      public static double FindAvePriceByItem(Item item) {
-
-          double price = 0;
-          using (var db = new ADDbContext())
-          {
-              if (db.ItemSupplier.Where(x => x.item==item).Any())
-                  price = db.ItemSupplier.Where(x => x.item==item).Select(x=>x.UnitPrice).Average();
-          }
-          return price;
-      }*/
+      */
         internal static List<Item> FindAll()
         {
             List<Item> list = new List<Item>();
@@ -148,6 +139,9 @@ namespace ADprojectteam1.DB
                 
             }
 
+
         }
+
+        
     }
 }

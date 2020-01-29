@@ -157,42 +157,12 @@ namespace ADprojectteam1.DB
             List<ItemSupplier> itemsup1 = new List<ItemSupplier>();
             for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[1], 1.00));
             List<ItemSupplier> itemsup2 = new List<ItemSupplier>();
-            for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[2], 2.00));
+            for (int i = 0; i < 85; i++) itemsup2.Add(new ItemSupplier(items[i], sups[2], 2.00));
             List<ItemSupplier> itemsup3 = new List<ItemSupplier>();
-            for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[3], 3.00));
+            for (int i = 0; i < 85; i++) itemsup3.Add(new ItemSupplier(items[i], sups[3], 3.00));
 
-           /* List<ItemSupplier> itemsup = new List<ItemSupplier>();
-            itemsup.Add(new ItemSupplier(items[58],sups[2],1.00));
-            itemsup.Add(new ItemSupplier(items[57], sups[2], 0.98));
-            itemsup.Add(new ItemSupplier(items[60], sups[2], 1.20));
-            itemsup.Add(new ItemSupplier(items[61], sups[2], 1.20));
-            itemsup.Add(new ItemSupplier(items[46], sups[2], 2.00));
-            itemsup.Add(new ItemSupplier(items[47], sups[2], 2.00));
-            itemsup.Add(new ItemSupplier(items[48], sups[2], 2.00));
-            itemsup.Add(new ItemSupplier(items[11], sups[2], 0.48));
-            itemsup.Add(new ItemSupplier(items[12], sups[2], 0.22));
-            itemsup.Add(new ItemSupplier(items[13], sups[2], 0.24));
-            itemsup.Add(new ItemSupplier(items[17], sups[2], 0.54));
-            itemsup.Add(new ItemSupplier(items[18], sups[2], 0.62));
-            itemsup.Add(new ItemSupplier(items[15], sups[2], 1.00));
-            itemsup.Add(new ItemSupplier(items[16], sups[2], 1.20));
-            itemsup.Add(new ItemSupplier(items[70], sups[2], 0.40));
-            itemsup.Add(new ItemSupplier(items[68], sups[2], 0.50));
-            itemsup.Add(new ItemSupplier(items[69], sups[2], 0.55));*/
 
-            
 
-            
-           
-
-            foreach (ItemSupplier x in itemsup1)
-                context.ItemSupplier.Add(x);
-            foreach (ItemSupplier x in itemsup2)
-                context.ItemSupplier.Add(x);
-            foreach (ItemSupplier x in itemsup3)
-                context.ItemSupplier.Add(x);
-
-            
 
 
             List<ReqItem> rit = new List<ReqItem>();
@@ -287,9 +257,14 @@ namespace ADprojectteam1.DB
 
             base.Seed(context);
 
-            
-            
-            
+            foreach (ItemSupplier x in itemsup1)
+                context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup2)
+                context.ItemSupplier.Add(x);
+            foreach (ItemSupplier x in itemsup3)
+                context.ItemSupplier.Add(x);
+
+
         } 
     }
     

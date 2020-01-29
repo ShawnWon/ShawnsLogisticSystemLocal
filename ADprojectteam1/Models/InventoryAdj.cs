@@ -11,14 +11,17 @@ namespace ADprojectteam1.Models
         public virtual Item item { get; set; }
         public int Quant { get; set; }
         public string Reason { get; set; }
-        public string Status { get; set; }//status can be "Pending, Submitted, Approved, Rejected"
+        public string Remark { get; set; }
+        public string Status { get; set; }//status can be "pending, approved, rejected"
+
+        
 
         public InventoryAdj(Item i,int q,string r) {
 
             item = i;
             Quant = q;
             Reason = r;
-            Status = "Pending";
+            Status = "pending";
         }
 
         public InventoryAdj() { }

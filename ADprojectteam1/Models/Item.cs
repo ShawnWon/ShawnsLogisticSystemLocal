@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ADprojectteam1.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,8 @@ namespace ADprojectteam1.Models
         public virtual ItemSupplier Supplier1 { get; set; }
         public virtual ItemSupplier Supplier2 { get; set; }
         public virtual ItemSupplier Supplier3 { get; set; }
+
+        
 
         public Item(string icode,string cat, string desc,int relev,int requan,string uom) {
             ItemCode = icode;

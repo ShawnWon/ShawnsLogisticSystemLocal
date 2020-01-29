@@ -139,6 +139,7 @@
     <Compile Include="DB\DepartmentData.cs" />
     <Compile Include="DB\DepOrderData.cs" />
     <Compile Include="DB\EmployeeData.cs" />
+    <Compile Include="DB\InventoryAdjData.cs" />
     <Compile Include="DB\ItemData.cs" />
     <Compile Include="DB\ItemSupplierData.cs" />
     <Compile Include="DB\PurchaseOrderData.cs" />
@@ -209,6 +210,7 @@
     <Content Include="Views\DepManager\DelegateView.cshtml" />
     <Content Include="Views\StoreClerk\TobeReOrderList.cshtml" />
     <Content Include="Views\StoreClerk\ManagePO.cshtml" />
+    <Content Include="Views\StoreClerk\InvAdjForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
