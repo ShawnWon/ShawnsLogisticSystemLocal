@@ -18,7 +18,7 @@
             <h2>RequisitionList</h2>
 
             <input type="button" value="Delegate" onclick="location.href='@Url.Action("DelegateView","DepManager")'" />
-            <table>
+            <table class="w3-table w3-striped">
                 <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
 
                 @{ foreach (SRequisition sr in reqlist)
@@ -34,7 +34,7 @@
 
                         <tr>
                             <td>
-                                <table>
+                                <table class="w3-table w3-striped">
                                     <tr><th>Item Description</th><th>Quant</th></tr>
 
                                     @{ foreach (ReqItem ri in sr.ListItem)

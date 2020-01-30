@@ -23,7 +23,7 @@
                 {
 
                     <h2>Collected Item List</h2>
-                    <table>
+                    <table class="w3-table w3-striped">
                         <tr><th>Item Name</th><th>Quant</th></tr>
 
                         @{ foreach (int itemId in collist.Keys)
@@ -42,7 +42,7 @@
             }
             <h2>TobeCollectList</h2>
 
-            <table>
+            <table class="w3-table w3-striped">
                 <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
 
                 @{ foreach (int itemId in reqlist.Keys)
@@ -60,7 +60,7 @@
 
                         <tr>
                             <td>
-                                <table>
+                                <table class="w3-table w3-striped">
                                     <tr><th>Department </th><th>Demand Quant</th><th>Actual Quant</th></tr>
 
                                     @{ foreach (int depId in reqlist[itemId].Keys)

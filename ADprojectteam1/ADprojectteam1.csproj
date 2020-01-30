@@ -147,6 +147,12 @@
     <Compile Include="DB\ReqItemData.cs" />
     <Compile Include="DB\SrequisitionData.cs" />
     <Compile Include="DB\StockCardData.cs" />
+    <Compile Include="Filter\DepEmpFilter.cs" />
+    <Compile Include="Filter\DepManagerFilter.cs" />
+    <Compile Include="Filter\DepRepFilter.cs" />
+    <Compile Include="Filter\StoreClerkFilter.cs" />
+    <Compile Include="Filter\StoreManagerFilter.cs" />
+    <Compile Include="Filter\StoreSupFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,6 +224,9 @@
     <Content Include="Views\Shared\_Layout_DepRep_LeftBar.cshtml" />
     <Content Include="Views\Shared\_Layout_StoreSup_LeftBar.cshtml" />
     <Content Include="Views\Shared\_Layout_StoreManager_LeftBar.cshtml" />
+    <Content Include="Views\DepRep\ManageCollectingPoint.cshtml" />
+    <Content Include="Views\StoreManager\ManageSupplier.cshtml" />
+    <Content Include="Views\StoreSup\TrendReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,4 +1,5 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ADprojectteam1.Controllers
 {
+    [DepEmpFilter]
     public class DepEmpController : Controller
     {
         // GET: DepEmp
@@ -15,8 +17,14 @@ namespace ADprojectteam1.Controllers
         {
             List<SRequisition> lreq = new List<SRequisition>();
             string user = (string)Session["username"];
+            bool dele= EmployeeData.GetDelegateStatusByUserName(user);
+            ViewBag.delestatus = dele;
+            if (dele) Session["sessionRole"] = "DeleManager";
+
             lreq = SrequisitionData.FindAllByUsername(user);
             ViewBag.listreq = lreq;
+            
+            
             return View();
         }
 

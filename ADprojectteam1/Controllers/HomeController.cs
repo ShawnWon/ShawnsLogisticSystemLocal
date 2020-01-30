@@ -39,9 +39,10 @@ namespace ADprojectteam1.Controllers
                     //when user submit the correct username and password , we create a new session.
 
                     Session["username"] = username;
+                    
 
                     string role = EmployeeData.GetRole(username);
-
+                    Session["sessionRole"] = role;
                     switch (role)
                     {
                         case "DepEmp":

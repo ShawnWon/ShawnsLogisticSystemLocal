@@ -1,4 +1,5 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ADprojectteam1.Controllers
 {
+    [DepRepFilter]
     public class DepRepController : Controller
     {
         public Dictionary<int, int> loadsigninglist()
@@ -32,10 +34,14 @@ namespace ADprojectteam1.Controllers
             Dictionary<int, int> signinglist = new Dictionary<int, int>();
             
                 signinglist = loadsigninglist();
-            
-
             ViewBag.Rlist=signinglist;
             Session["signinglist"] = signinglist;
+
+            string user = (string)Session["username"];
+            bool dele = EmployeeData.GetDelegateStatusByUserName(user);
+            if (dele) Session["sessionRole"] = "DeleManager";
+            ViewBag.delestatus = dele;
+
             return View();
         }
 
@@ -170,6 +176,31 @@ namespace ADprojectteam1.Controllers
 
 
             object new_amount = new { };
+
+            return Json(new_amount, JsonRequestBehavior.AllowGet);
+        }
+
+        ///////////////////////Manage Collecting Point
+        public ActionResult ManageCollectingPoint()
+        {
+            List<string> listCP = new List<string>() { "Stationery Store-Administration Building(9:30am)","Management School(11:00am)","Medical School(9:30am)","Engineering School(11:00am)","Science School(9:30am)","University Hospital(11:00am)"};
+            Employee emp = EmployeeData.FindByUserName((string)Session["username"]);
+            Department dep = DepartmentData.GetDepById(emp.department.Id);
+            
+            ViewBag.currentDep = dep;
+            ViewBag.listCP = listCP;
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult ChangeCollectingPoint(string cp)
+        {
+            Employee emp = EmployeeData.FindByUserName((string)Session["username"]);
+            Department dep = DepartmentData.GetDepById(emp.department.Id);
+
+            DepartmentData.SetColPoint(dep.Id, cp);
+
+            object new_amount = new {cp=cp };
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
         }

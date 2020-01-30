@@ -25,6 +25,19 @@ namespace ADprojectteam1.DB
             return pw;
         }
 
+        internal static bool GetDelegateStatusByUserName(string user)
+        {
+            bool s=false;
+
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.UserName.Equals(user)).Any())
+                    s = db.Employee.Where(x => x.UserName.Equals(user)).FirstOrDefault().Delegated;
+
+            }
+            return s;
+        }
+
         internal static int FindDepIdByUsername(string v)
         {
             int id = 0;

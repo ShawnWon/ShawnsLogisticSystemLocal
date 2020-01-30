@@ -60,7 +60,7 @@
             <h2>Sent PO List</h2>
             @{ if (slist != null)
                 {
-                    <table>
+                    <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
 
                         @{ foreach (PurchaseOrder po in slist.Keys)
@@ -98,7 +98,7 @@
             <h2>Confirmed PO List</h2>
             @{ if (clist != null)
                 {
-                    <table>
+                    <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
 
                         @{ foreach (PurchaseOrder po in clist.Keys)

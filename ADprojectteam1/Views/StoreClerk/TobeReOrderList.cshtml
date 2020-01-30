@@ -20,7 +20,7 @@
             <input type="button" value="Manage Purchase Order" onclick="location.href='@Url.Action("ManagePO", "StoreClerk")'" />
             <input type="button" value="Generate Purchase Orders" onclick="GeneratePO()" />
 
-            <table>
+            <table class="w3-table w3-striped">
                 <tr><th>Item Name</th></tr>
 
                 @{ foreach (Item item in list)
@@ -28,7 +28,7 @@
                         <tr>
                             <td>@item.Description</td>
                             <td>
-                                <table>
+                                <table class="w3-table w3-striped">
                                     <tr><th>Supplier Name</th><th>Unit Price</th><th>UOM</th></tr>
                                     <tr>
                                         <td>@item.Supplier1.supplier.Name</td>
@@ -55,12 +55,11 @@
                             <td>
                                 <select style="width:350px;" id="supId" onchange="SelectSup(@item.Id)">
                                     @{
-                                        for (int j = 0; j < 3; j++)
-                                        {
+                                        
                                             <option value="@item.Supplier1.supplier.Id">@item.Supplier1.supplier.Name</option>
                                             <option value="@item.Supplier2.supplier.Id">@item.Supplier2.supplier.Name</option>
                                             <option value="@item.Supplier3.supplier.Id">@item.Supplier3.supplier.Name</option>
-                                        }
+                                        
                                     }
                                 </select>
                             </td>

@@ -1,4 +1,5 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace ADprojectteam1.Controllers
 {
+    [DepManagerFilter]
     public class DepManagerController : Controller
     {
         ///////////////////////////////////////////////////////requisition
@@ -74,7 +76,7 @@ namespace ADprojectteam1.Controllers
 
 
 
-            var DailyTime = "21:42:00";
+            var DailyTime = "20:31:00";
             var timeParts = DailyTime.Split(new char[1] { ':' });
             var dateNow = DateTime.Now;
             var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));

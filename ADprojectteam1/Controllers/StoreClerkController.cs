@@ -1,4 +1,5 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace ADprojectteam1.Controllers
 {
+    [StoreClerkFilter]
     public class StoreClerkController : Controller
     {
         // GET: StoreClerk

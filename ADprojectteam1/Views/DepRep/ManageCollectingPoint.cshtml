@@ -1,0 +1,91 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "Manage Collecting Point";
+    List<string> listcp = ViewBag.listCP;
+    Department dep = ViewBag.CurrentDep;
+
+
+}
+
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_DepRep_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+
+        <h2>Current Collecting Point</h2>
+
+        <h6 id="currentcp">@dep.CollectPoint</h6>
+        <br>
+        <h2>Select New Collecting Point</h2>
+
+        <select style="width:350px;" id="selectcp">
+            @{
+                foreach (string s in listcp)
+                {
+                    <option value="@s">@s</option>
+                    
+                }
+              }
+        </select>
+        <br>
+        <input type="button" value="Set New Collecting Point" onclick="ChangeCP()" />
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<script>
+
+            function ChangeCP() {
+
+
+                var s = document.getElementById("selectcp");
+                    var collectingpoint = s.options[s.selectedIndex].value;
+
+                var pdata = {
+                    cp:collectingpoint
+                };
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/DepRep/ChangeCollectingPoint",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
+
+                    // Response Success
+                    success: function (response) {
+
+                        alert("Change Collecting Point successfully");
+                        document.getElementById("currentcp").innerHTML = response.cp;
+
+                    },
+
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
+
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
+
+
+                });
+            }
+
+
+          
+</script>
+

@@ -18,7 +18,7 @@
         <div class="w3-main" style="margin-left:250px">
             @{ if (planlist != null)
                 {<h2>Overall Item Collected</h2>
-                    <table>
+                    <table class="w3-table w3-striped">
                         <tr><th>Item Name</th><th>Collected Quant</th><th>Planned Quant</th></tr>
                         @{ foreach (int itemId in collist.Keys)
                             {
@@ -44,7 +44,7 @@
             }
             <h2>Delivery Order List</h2>
 
-            <table>
+            <table class="w3-table w3-striped">
                 <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
 
                 @{ foreach (int depId in reqlist.Keys)
@@ -62,7 +62,7 @@
 
                         <tr>
                             <td>
-                                <table>
+                                <table class="w3-table w3-striped">
                                     <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
 
                                     @{ foreach (int itemId in reqlist[depId].Keys)

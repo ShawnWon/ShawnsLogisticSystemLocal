@@ -114,5 +114,18 @@ namespace ADprojectteam1.DB
             }
             return repId;
         }
+
+        internal static void SetColPoint(int id, string cp)
+        {
+            Department d = new Department();
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x => x.Id == id).Any())
+                    d = db.Department.Where(x => x.Id == id).FirstOrDefault();
+                d.CollectPoint = cp;
+                db.SaveChanges();
+            }
+
+        }
     }
 }

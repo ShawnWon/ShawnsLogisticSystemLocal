@@ -1,4 +1,5 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ADprojectteam1.Controllers
 {
+    [StoreManagerFilter]
     public class StoreManagerController : Controller
     {
         // GET: StoreManager
@@ -18,7 +20,7 @@ namespace ADprojectteam1.Controllers
             list = InventoryAdjData.FindPendingForSup();
             foreach (InventoryAdj invadj in list)
             {
-                if (invadj.Quant * invadj.item.Supplier1.UnitPrice > 100) list1.Add(invadj);
+                if (invadj.Quant * invadj.item.Supplier1.UnitPrice > 250) list1.Add(invadj);
             }
             ViewBag.listInvAdj = list1;
             return View();

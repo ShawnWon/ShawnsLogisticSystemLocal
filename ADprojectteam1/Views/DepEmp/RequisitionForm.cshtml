@@ -34,7 +34,7 @@
             {
 
                 <h2>Selected Item List</h2>
-                <table>
+                <table class="w3-table w3-striped">
                     <tr><th>Item Name</th><th>Quant</th></tr>
 
                     @{ foreach (ReqItem ri in sr.ListItem)
@@ -52,7 +52,7 @@
             }
         }
 
-
+        <br>
         <form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
             <table>
                 <tr>
@@ -71,12 +71,13 @@
         </form>
 
 
-
+        <br>
+        <br>
 
         @{
             <br>
 
-            <table>
+            <table class="w3-table w3-striped">
                 <tr><th>Item Description</th><th>Quant</th><th>UOM</th></tr>
 
 
