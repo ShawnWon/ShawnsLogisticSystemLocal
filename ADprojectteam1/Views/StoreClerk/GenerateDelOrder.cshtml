@@ -56,7 +56,7 @@
                                                         <tr>
                                                             <td>@ItemData.GetItemById(itemId).Description</td>
                                                             <td>@reqlist[depId][itemId].</td>
-                                                            <td><input type="text" placeholder="Input quantity" onchange="ChangePlan(@itemId,@depId)" size="6" id="PlanquantityBox @itemId" value="@planlist[depId][itemId]"></td>
+                                                            <td><input type="text" placeholder="Input quantity" onchange="ChangePlan(@itemId,@depId)" size="6" id="PlanquantityBox @itemId@depId" value="@planlist[depId][itemId]"></td>
                                                         </tr>
 
                                 }
@@ -76,7 +76,7 @@
         function ChangePlan(itemId,depId) {
 
 
-            var q = document.getElementById("PlanquantityBox " + itemId).value
+            var q = document.getElementById("PlanquantityBox " + itemId + depId).value
 
             var pdata = {
                 itemId: itemId, depId:depId, quant: q
