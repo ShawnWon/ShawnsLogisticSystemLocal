@@ -5,120 +5,133 @@
     List<SRequisition> reqlist = ViewBag.listreq;
 
 }
-<h2>RequisitionList</h2>
 
-<input type="button" value="Delegate" onclick="location.href='@Url.Action("DelegateView","DepManager")'" />
-<table>
-    <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
 
-    @{ foreach (SRequisition sr in reqlist)
-        {
-        <tr>
-            <td>@sr.ListItem.FirstOrDefault().emp.Name</td>
-            <td>@sr.GetAmount()</td>
-            <td>@sr.status</td>
-            <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @sr.Id"></td>
-            <td><input type="button" value="Approve" onclick="approveSr(@sr.Id)" /></td>
-            <td><input type="button" value="Reject" onclick="rejectSr(@sr.Id)" /></td>
-        </tr>
+    <div class="row" style="padding-top:70px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_DepManager_LeftBar");
+            }
+        </div>
 
-            <tr>
-                <td><table>
-                    <tr><th>Item Description</th><th>Quant</th></tr>
+        <div class="w3-main" style="margin-left:250px">
+            <h2>RequisitionList</h2>
 
-                    @{ foreach (ReqItem ri in sr.ListItem)
-                        {
-                            <tr>
-                                <td>@ri.item.Description</td>
-                                <td>@ri.Quant</td>
-                            </tr>
-                        }
+            <input type="button" value="Delegate" onclick="location.href='@Url.Action("DelegateView","DepManager")'" />
+            <table>
+                <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
+
+                @{ foreach (SRequisition sr in reqlist)
+                    {
+                        <tr>
+                            <td>@sr.ListItem.FirstOrDefault().emp.Name</td>
+                            <td>@sr.GetAmount()</td>
+                            <td>@sr.status</td>
+                            <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @sr.Id"></td>
+                            <td><input type="button" value="Approve" onclick="approveSr(@sr.Id)" /></td>
+                            <td><input type="button" value="Reject" onclick="rejectSr(@sr.Id)" /></td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr><th>Item Description</th><th>Quant</th></tr>
+
+                                    @{ foreach (ReqItem ri in sr.ListItem)
+                                        {
+                                            <tr>
+                                                <td>@ri.item.Description</td>
+                                                <td>@ri.Quant</td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+
                     }
-                </table>
-                </td>
-            </tr>
-
-        }
-    }
-</table>
-<br>
-<br>
+                }
+            </table>
+            <br>
+            <br>
+            </div>
+        </div>
 
 
-<script>
-    function rejectSr(item_id) {
+            <script>
+                function rejectSr(item_id) {
 
 
 
 
-        var remark = document.getElementById("remarkbox " + item_id).value
+                    var remark = document.getElementById("remarkbox " + item_id).value
 
-        var pdata = { reqId: item_id, remark: remark };
+                    var pdata = { reqId: item_id, remark: remark };
 
-        $.ajax({
-            type: "POST",
-            url: "/DepManager/rejectReq",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
+                    $.ajax({
+                        type: "POST",
+                        url: "/DepManager/rejectReq",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
 
-            // Response Success
-            success: function (response) {
+                        // Response Success
+                        success: function (response) {
 
-                alert("Rejected Requisition successfully");
-                window.location.href = "./PendingRequisitionList";
+                            alert("Rejected Requisition successfully");
+                            window.location.href = "./PendingRequisitionList";
 
-            },
+                        },
 
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
 
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-
-        function approveSr(item_id) {
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
 
 
+                    });
+                }
+
+                function approveSr(item_id) {
 
 
-        var remark = document.getElementById("remarkbox " + item_id).value
-
-        var pdata = { reqId: item_id, remark: remark };
-
-        $.ajax({
-            type: "POST",
-            url: "/DepManager/approveReq",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Approved Requisition successfully");
-                window.location.href = "./PendingRequisitionList";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
 
 
-        });
-    }
-</script>
+                    var remark = document.getElementById("remarkbox " + item_id).value
+
+                    var pdata = { reqId: item_id, remark: remark };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/DepManager/approveReq",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("Approved Requisition successfully");
+                            window.location.href = "./PendingRequisitionList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+            </script>

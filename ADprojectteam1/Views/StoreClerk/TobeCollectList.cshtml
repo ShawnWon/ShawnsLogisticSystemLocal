@@ -7,114 +7,123 @@
     Dictionary<int, int> collist = (Dictionary<int, int>)Session["collist"];
 }
 
-<input type="button" value="To be ReOrder List" onclick="location.href='@Url.Action("TobeReOrderList","StoreClerk")'" />
-<input type="button" value="InvAdjForm" onclick="location.href='@Url.Action("InvAdjForm","StoreClerk")'" />
-
-
-@{if (collist != null)
-    {
-
-        <h2>Collected Item List</h2>
-        <table>
-            <tr><th>Item Name</th><th>Quant</th></tr>
-
-            @{ foreach (int itemId in collist.Keys)
-                {
-                    <tr>
-                        <td>@ItemData.GetItemById(itemId).Description</td>
-                        <td>@collist[itemId]</td>
-                        <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteColItem","StoreClerk", new { id = itemId})'" /></td>
-                    </tr>
-
-                }
+    <div class="row" style="padding-top:70px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_StoreClerk_LeftBar");
             }
-        </table>
-        <input type="button" value="Generate Delivery Orders" onclick="location.href='@Url.Action("GenerateDelOrder","StoreClerk")'" />
-    }
-}
-<h2>TobeCollectList</h2>
+        </div>
 
-<table>
-    <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
-
-    @{ foreach (int itemId in reqlist.Keys)
-        {
-            <tr>
-                <td>@ItemData.GetItemById(itemId).Description</td>
-                <td>@reqlist[itemId].Values.Sum()</td>
-                <td><input type="text" placeholder="Input quantity" size="6" id="ActquantityBox @itemId"></td>
-                <td><input type="button" value="Confirm Collected" onclick="ConfirmCollect(@itemId);" /></td>
-            </tr>
+        <div class="w3-main" style="margin-left:250px">
+            <input type="button" value="To be ReOrder List" onclick="location.href='@Url.Action("TobeReOrderList","StoreClerk")'" />
+            <input type="button" value="InvAdjForm" onclick="location.href='@Url.Action("InvAdjForm","StoreClerk")'" />
 
 
+            @{if (collist != null)
+                {
 
-
-
-            <tr>
-                <td>
+                    <h2>Collected Item List</h2>
                     <table>
-                        <tr><th>Department </th><th>Demand Quant</th><th>Actual Quant</th></tr>
+                        <tr><th>Item Name</th><th>Quant</th></tr>
 
-                        @{ foreach (int depId in reqlist[itemId].Keys)
+                        @{ foreach (int itemId in collist.Keys)
                             {
                                 <tr>
-                                    <td>@DepartmentData.GetDepNameById(depId)</td>
-                                    <td>@reqlist[itemId][depId].</td>
-
+                                    <td>@ItemData.GetItemById(itemId).Description</td>
+                                    <td>@collist[itemId]</td>
+                                    <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteColItem","StoreClerk", new { id = itemId})'" /></td>
                                 </tr>
 
                             }
                         }
                     </table>
-                </td>
-            </tr>
-
-        }
-    }
-</table>
-<br>
-<br>
-
-<script>
-
-    function ConfirmCollect(itemId) {
-
-
-        var q = document.getElementById("ActquantityBox " + itemId).value
-
-        var pdata = {
-            Id: itemId, quant: q
-        };
-
-
-
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/ConfirmCollect",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Confirm collection successfully");
-                window.location.href = "./TobeCollectList";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
+                    <input type="button" value="Generate Delivery Orders" onclick="location.href='@Url.Action("GenerateDelOrder","StoreClerk")'" />
+                }
             }
+            <h2>TobeCollectList</h2>
+
+            <table>
+                <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
+
+                @{ foreach (int itemId in reqlist.Keys)
+                    {
+                        <tr>
+                            <td>@ItemData.GetItemById(itemId).Description</td>
+                            <td>@reqlist[itemId].Values.Sum()</td>
+                            <td><input type="text" placeholder="Input quantity" size="6" id="ActquantityBox @itemId"></td>
+                            <td><input type="button" value="Confirm Collected" onclick="ConfirmCollect(@itemId);" /></td>
+                        </tr>
 
 
-        });
-    }
-</script>
+
+
+
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr><th>Department </th><th>Demand Quant</th><th>Actual Quant</th></tr>
+
+                                    @{ foreach (int depId in reqlist[itemId].Keys)
+                                        {
+                                            <tr>
+                                                <td>@DepartmentData.GetDepNameById(depId)</td>
+                                                <td>@reqlist[itemId][depId].</td>
+
+                                            </tr>
+
+                                        }
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </table>
+            <br>
+            <br>
+            </div>
+        </div>
+            <script>
+
+                function ConfirmCollect(itemId) {
+
+
+                    var q = document.getElementById("ActquantityBox " + itemId).value
+
+                    var pdata = {
+                        Id: itemId, quant: q
+                    };
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/ConfirmCollect",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("Confirm collection successfully");
+                            window.location.href = "./TobeCollectList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+            </script>
 

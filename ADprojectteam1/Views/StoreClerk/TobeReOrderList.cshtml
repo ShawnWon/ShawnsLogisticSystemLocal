@@ -7,142 +7,153 @@
      Dictionary<int, int> sellist = (Dictionary<int, int>)Session["selectedsupplier"];
 }
 
+    <div class="row" style="padding-top:70px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_StoreClerk_LeftBar");
+            }
+        </div>
 
+        <div class="w3-main" style="margin-left:250px">
 
-<h2>Tobe ReOrder List</h2>
-<input type="button" value="Manage Purchase Order" onclick="location.href='@Url.Action("ManagePO", "StoreClerk")'" />
-<input type="button" value="Generate Purchase Orders" onclick="GeneratePO()"/>
+            <h2>Tobe ReOrder List</h2>
+            <input type="button" value="Manage Purchase Order" onclick="location.href='@Url.Action("ManagePO", "StoreClerk")'" />
+            <input type="button" value="Generate Purchase Orders" onclick="GeneratePO()" />
 
-<table>
-    <tr><th>Item Name</th></tr>
+            <table>
+                <tr><th>Item Name</th></tr>
 
-    @{ foreach (Item item in list)
-        {
-            <tr>
-                <td>@item.Description</td>
-                <td>
-                    <table>
-                        <tr><th>Supplier Name</th><th>Unit Price</th><th>UOM</th></tr>
+                @{ foreach (Item item in list)
+                    {
                         <tr>
-                            <td>@item.Supplier1.supplier.Name</td>
-                            <td>@item.Supplier1.UnitPrice</td>
-                            <td>@item.UnitofMeasure</td>
-                        </tr>
+                            <td>@item.Description</td>
+                            <td>
+                                <table>
+                                    <tr><th>Supplier Name</th><th>Unit Price</th><th>UOM</th></tr>
+                                    <tr>
+                                        <td>@item.Supplier1.supplier.Name</td>
+                                        <td>@item.Supplier1.UnitPrice</td>
+                                        <td>@item.UnitofMeasure</td>
+                                    </tr>
 
-                        <tr>
-                            <td>@item.Supplier2.supplier.Name</td>
-                            <td>@item.Supplier2.UnitPrice</td>
-                            <td>@item.UnitofMeasure</td>
-                        </tr>
+                                    <tr>
+                                        <td>@item.Supplier2.supplier.Name</td>
+                                        <td>@item.Supplier2.UnitPrice</td>
+                                        <td>@item.UnitofMeasure</td>
+                                    </tr>
 
-                        <tr>
-                            <td>@item.Supplier3.supplier.Name</td>
-                            <td>@item.Supplier3.UnitPrice</td>
-                            <td>@item.UnitofMeasure</td>
-                        </tr>
+                                    <tr>
+                                        <td>@item.Supplier3.supplier.Name</td>
+                                        <td>@item.Supplier3.UnitPrice</td>
+                                        <td>@item.UnitofMeasure</td>
+                                    </tr>
 
-                    </table>
-                    
-                </td>
-                
-                <td><select style="width:350px;" id="supId" onchange="SelectSup(@item.Id)">
-                    @{
-                        for (int j = 0; j < 3; j++)
-                        {
-                        <option value="@item.Supplier1.supplier.Id">@item.Supplier1.supplier.Name</option>
-                        <option value="@item.Supplier2.supplier.Id">@item.Supplier2.supplier.Name</option>
-                        <option value="@item.Supplier3.supplier.Id">@item.Supplier3.supplier.Name</option>
-                        }
+                                </table>
+
+                            </td>
+
+                            <td>
+                                <select style="width:350px;" id="supId" onchange="SelectSup(@item.Id)">
+                                    @{
+                                        for (int j = 0; j < 3; j++)
+                                        {
+                                            <option value="@item.Supplier1.supplier.Id">@item.Supplier1.supplier.Name</option>
+                                            <option value="@item.Supplier2.supplier.Id">@item.Supplier2.supplier.Name</option>
+                                            <option value="@item.Supplier3.supplier.Id">@item.Supplier3.supplier.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
                     }
-                    </select></td>
-                </tr>
-        }
-    }
-</table>
-<br>
-<br>
+                }
+            </table>
+            <br>
+            <br>
+            </div>
+        </div>
 
-<script>
+            <script>
 
-    function SelectSup(itemId) {
+                function SelectSup(itemId) {
 
-        var s = document.getElementById("supId");
-        var sId = s.options[s.selectedIndex].value;
-
-        
-
-        var pdata = {
-            itemId: itemId, sId: sId
-        };
+                    var s = document.getElementById("supId");
+                    var sId = s.options[s.selectedIndex].value;
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/SelectSupplier",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Selected supplier successfully");
-                
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-
-    function GeneratePO() {
-
-        
-        var pdata = {
-           
-        };
+                    var pdata = {
+                        itemId: itemId, sId: sId
+                    };
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/GeneratePendingPO",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/SelectSupplier",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
 
-            // Response Success
-            success: function (response) {
+                        // Response Success
+                        success: function (response) {
 
-                alert("Generated Purchase Order successfully");
-                window.location.href = "./TobeReOrderList";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
+                            alert("Selected supplier successfully");
 
 
-        });
-    }
-</script>
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+
+                function GeneratePO() {
+
+
+                    var pdata = {
+
+                    };
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/GeneratePendingPO",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("Generated Purchase Order successfully");
+                            window.location.href = "./TobeReOrderList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+            </script>
 
 

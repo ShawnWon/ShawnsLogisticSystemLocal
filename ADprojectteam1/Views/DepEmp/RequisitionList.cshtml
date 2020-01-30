@@ -5,40 +5,51 @@
     List<SRequisition> reqlist = ViewBag.listreq;
 
 }
-    <h2>RequisitionList</h2>
-    <table>
-        <tr><th>Req Num</th><th>Status</th><th>Remark</th></tr>
 
-        @{ foreach (SRequisition sr in reqlist)
-            {
-                <tr>
-                    <td>@sr.Id</td>
-                    <td>@sr.status</td>
-                    <td>@sr.remark</td>
-                    <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteReq", "DepEmp", new { id = sr.Id })'" /></td>
-                </tr>
-
-                <tr>
-                   <td> <table>
-                        <tr><th>Item Description</th><th>Quant</th></tr>
-                        
-                        @{ foreach (ReqItem ri in sr.ListItem)
-                            {
-                        <tr>
-                        <td>@ri.item.Description</td>
-                        <td>@ri.Quant</td>
-                        </tr>
-                            }
-                         }
-                    </table>
-                    </td>
-                </tr>
-
+    <div class="row" style="padding-top:70px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_Emp_LeftBar");
             }
-        }
-    </table>
-<br>
-<br>
-    <input type="button" value="Create new requisition" onclick="location.href='@Url.Action("RequisitionForm","DepEmp")'" />
+        </div>
 
+        <div class="w3-main" style="margin-left:250px">
+            <h2>RequisitionList</h2>
+            <table>
+                <tr><th>Req Num</th><th>Status</th><th>Remark</th></tr>
 
+                @{ foreach (SRequisition sr in reqlist)
+                    {
+                        <tr>
+                            <td>@sr.Id</td>
+                            <td>@sr.status</td>
+                            <td>@sr.remark</td>
+                            <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteReq", "DepEmp", new { id = sr.Id })'" /></td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr><th>Item Description</th><th>Quant</th></tr>
+
+                                    @{ foreach (ReqItem ri in sr.ListItem)
+                                        {
+                                            <tr>
+                                                <td>@ri.item.Description</td>
+                                                <td>@ri.Quant</td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </table>
+            <br>
+            <br>
+      
+            </div>
+
+        </div>

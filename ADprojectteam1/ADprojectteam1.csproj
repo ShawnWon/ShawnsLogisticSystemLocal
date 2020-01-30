@@ -197,8 +197,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\login.cshtml" />
     <Content Include="Views\DepEmp\RequisitionList.cshtml" />
     <Content Include="Views\DepManager\PendingRequisitionList.cshtml" />
@@ -213,6 +211,13 @@
     <Content Include="Views\StoreClerk\TobeReOrderList.cshtml" />
     <Content Include="Views\StoreClerk\ManagePO.cshtml" />
     <Content Include="Views\StoreClerk\InvAdjForm.cshtml" />
+    <Content Include="Views\Shared\_Layout_Header.cshtml" />
+    <Content Include="Views\Shared\_Layout_Emp_LeftBar.cshtml" />
+    <Content Include="Views\Shared\_Layout_DepManager_LeftBar.cshtml" />
+    <Content Include="Views\Shared\_Layout_StoreClerk_LeftBar.cshtml" />
+    <Content Include="Views\Shared\_Layout_DepRep_LeftBar.cshtml" />
+    <Content Include="Views\Shared\_Layout_StoreSup_LeftBar.cshtml" />
+    <Content Include="Views\Shared\_Layout_StoreManager_LeftBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

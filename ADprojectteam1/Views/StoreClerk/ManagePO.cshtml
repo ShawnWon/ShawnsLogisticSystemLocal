@@ -10,276 +10,286 @@
 
 
 
+    <div class="row" style="padding-top:70px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_StoreClerk_LeftBar");
+            }
+        </div>
+
+        <div class="w3-main" style="margin-left:250px">
 
 
 
-
-<h2>Pending PO List</h2>
-@{ if (plist != null) {
-<table>
-    <tr><th>Supplier Name</th></tr>
-
-    @{ foreach (PurchaseOrder po in plist.Keys)
-        {
-            <tr>
-                <td>@po.GetSupplierName()</td>
-                <td>
+            <h2>Pending PO List</h2>
+            @{ if (plist != null)
+                {
                     <table>
-                        <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
-                        @{ foreach (Item item in plist[po])
+                        <tr><th>Supplier Name</th></tr>
+
+                        @{ foreach (PurchaseOrder po in plist.Keys)
                             {
                                 <tr>
-                                    <td>@item.Description</td>
-                                    <td>@item.ReorderQty</td>
-                                    <td>@item.UnitofMeasure</td>
+                                    <td>@po.GetSupplierName()</td>
+                                    <td>
+                                        <table>
+                                            <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
+                                            @{ foreach (Item item in plist[po])
+                                                {
+                                                    <tr>
+                                                        <td>@item.Description</td>
+                                                        <td>@item.ReorderQty</td>
+                                                        <td>@item.UnitofMeasure</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                    <td><input type="button" value="Send Purchase Orders" onclick="sendPO(@po.Id)" /></td>
+
                                 </tr>
                             }
                         }
                     </table>
-                </td>
-                <td><input type="button" value="Send Purchase Orders" onclick="sendPO(@po.Id)" /></td>
-
-            </tr>
-                            }
-    }
-</table>
-                            }
-}
-<br>
-<br>
+                }
+            }
+            <br>
+            <br>
 
 
-<h2>Sent PO List</h2>
-@{ if (slist != null) {
-<table>
-    <tr><th>Supplier Name</th></tr>
-
-    @{ foreach (PurchaseOrder po in slist.Keys)
-        {
-            <tr>
-                <td>@po.GetSupplierName()</td>
-                <td>
+            <h2>Sent PO List</h2>
+            @{ if (slist != null)
+                {
                     <table>
-                        <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
-                        @{ foreach (Item rr in slist[po])
+                        <tr><th>Supplier Name</th></tr>
+
+                        @{ foreach (PurchaseOrder po in slist.Keys)
                             {
                                 <tr>
-                                    <td>@rr.Description</td>
-                                    <td>@rr.ReorderQty</td>
-                                    <td>@rr.UnitofMeasure</td>
+                                    <td>@po.GetSupplierName()</td>
+                                    <td>
+                                        <table>
+                                            <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
+                                            @{ foreach (Item rr in slist[po])
+                                                {
+                                                    <tr>
+                                                        <td>@rr.Description</td>
+                                                        <td>@rr.ReorderQty</td>
+                                                        <td>@rr.UnitofMeasure</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                    <td><input type="button" value="PO confirmed by supplier" onclick="confirmPO(@po.Id)" /></td>
+                                    <td><input type="button" value="PO rejected by supplier" onclick="rejectPO(@po.Id)" /></td>
+
+                                </tr>
+                            }
+                        }
+
+                    </table>
+                }
+            }
+            <br>
+            <br>
+
+
+            <h2>Confirmed PO List</h2>
+            @{ if (clist != null)
+                {
+                    <table>
+                        <tr><th>Supplier Name</th></tr>
+
+                        @{ foreach (PurchaseOrder po in clist.Keys)
+                            {
+                                <tr>
+                                    <td>@po.GetSupplierName()</td>
+                                    <td>
+                                        <table>
+                                            <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
+                                            @{ foreach (Item rr in clist[po])
+                                                {
+                                                    <tr>
+                                                        <td>@rr.Description</td>
+                                                        <td>@rr.ReorderQty</td>
+                                                        <td>@rr.UnitofMeasure</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <input type="button" value="PO checked in stock " onclick="checkinPO(@po.Id)" />
+                                    </td>
+
                                 </tr>
                             }
                         }
                     </table>
-                </td>
-                <td><input type="button" value="PO confirmed by supplier" onclick="confirmPO(@po.Id)" /></td>
-                <td><input type="button" value="PO rejected by supplier" onclick="rejectPO(@po.Id)" /></td>
+                }
+            }
+            <br>
+            <br>
+            </div>
+        </div>
+            <script>
 
-            </tr>
-                            }
-    }
-    
-</table>
-                                }
-                            }
-<br>
-<br>
+                function sendPO(poId) {
 
 
-<h2>Confirmed PO List</h2>
-@{ if (clist != null)
-    {
-<table>
-    <tr><th>Supplier Name</th></tr>
 
-    @{ foreach (PurchaseOrder po in clist.Keys)
-        {
-            <tr>
-                <td>@po.GetSupplierName()</td>
-                <td>
-                    <table>
-                        <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
-                        @{ foreach (Item rr in clist[po])
-                            {
-                                <tr>
-                                    <td>@rr.Description</td>
-                                    <td>@rr.ReorderQty</td>
-                                    <td>@rr.UnitofMeasure</td>
-                                </tr>
-                            }
+                    var pdata = {
+                        pId: poId
+                    };
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/SendPO",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("PO sent to supplier successfully");
+                            window.location.href = "./ManagePO";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
                         }
-                    </table>
-                </td>
-                <td>
-                    <input type="button" value="PO checked in stock " onclick="checkinPO(@po.Id)" />
-                </td>
 
-            </tr>
-                            }
-    }
-</table>
-                                }
-}
-<br>
-<br>
 
-<script>
+                    });
+                }
 
-    function sendPO(poId) {
-
-        
-
-        var pdata = {
-            pId: poId
-        };
+                function confirmPO(poId) {
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/SendPO",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("PO sent to supplier successfully");
-                window.location.href = "./ManagePO";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-
-        function confirmPO(poId) {
-
-        
-
-        var pdata = {
-            pId: poId
-        };
+                    var pdata = {
+                        pId: poId
+                    };
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/ConfirmPO",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/ConfirmPO",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
 
-            // Response Success
-            success: function (response) {
+                        // Response Success
+                        success: function (response) {
 
-                alert("PO confirmed by supplier successfully");
-                window.location.href = "./ManagePO";
+                            alert("PO confirmed by supplier successfully");
+                            window.location.href = "./ManagePO";
 
-            },
+                        },
 
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
 
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
 
 
-        });
-    }
+                    });
+                }
 
-        function rejectPO(poId) {
-
-        
-
-        var pdata = {
-            pId: poId
-        };
+                function rejectPO(poId) {
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/RejectPO",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("PO was rejected by supplier, please place order to other suppliers.");
-                window.location.href = "./ManagePO";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-
-        function checkinPO(poId) {
-
-        
-
-        var pdata = {
-            pId: poId
-        };
+                    var pdata = {
+                        pId: poId
+                    };
 
 
 
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/CheckInPO",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/RejectPO",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
 
-            // Response Success
-            success: function (response) {
+                        // Response Success
+                        success: function (response) {
 
-                alert("PO checked into warehouse successfully.");
-                window.location.href = "./ManagePO";
+                            alert("PO was rejected by supplier, please place order to other suppliers.");
+                            window.location.href = "./ManagePO";
 
-            },
+                        },
 
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
 
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
 
 
-        });
-    }
-</script>
+                    });
+                }
+
+                function checkinPO(poId) {
+
+
+
+                    var pdata = {
+                        pId: poId
+                    };
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/CheckInPO",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("PO checked into warehouse successfully.");
+                            window.location.href = "./ManagePO";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+            </script>
 
 

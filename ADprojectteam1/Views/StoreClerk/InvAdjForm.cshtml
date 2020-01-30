@@ -9,197 +9,205 @@
     window.onload = function () { searchEnter() };
 </script>
 
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_StoreClerk_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
 
 
+        @{
+            List<Item> listItem = new List<Item>();
+            listItem = ViewBag.Rlist;
+            string searchStr = (string)ViewData["searchStr"];
+            bool match = (bool)ViewData["match"];
+            List<InventoryAdj> listInvAdj = new List<InventoryAdj>();
+            listInvAdj = ViewBag.InvAdjList;
+        }
 
-@{
-    List<Item> listItem = new List<Item>();
-    listItem = ViewBag.Rlist;
-    string searchStr = (string)ViewData["searchStr"];
-    bool match = (bool)ViewData["match"];
-    List<InventoryAdj> listInvAdj=new List<InventoryAdj>();
-    listInvAdj = ViewBag.InvAdjList;
-}
-
-@{ if (listInvAdj != null)
-    {
-
-        <h2>Selected Item List</h2>
-        <table>
-            <tr><th>Item Name</th><th>Quant</th><th>Reason</th><th>Status</th></tr>
-
-            @{ foreach (InventoryAdj invadj in listInvAdj)
-                {
-                        <tr>
-                            <td>@invadj.item.Description</td>
-                            <td>@invadj.Quant</td>
-                            <td>@invadj.Reason</td>
-                            <td>@invadj.Status</td>
-                            <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteInvAdj","StoreClerk", new { id = invadj.Id})'" /></td>
-                        </tr>
-
-                }
-            }
-        </table>
-       
-    }
-}
-
-
-<form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
-    <table>
-        <tr>
-            <td>
-
-                <input type="text" class="form-control" placeholder="Search.." size="6" id="searchBox" value="@searchStr">
-            </td>
-            <td>
-                <button type="submit" class="btn btn-info" style="background-color:darkslategrey;border:none;">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </td>
-
-        </tr>
-    </table>
-</form>
-
-
-
-
-@{
-    <br>
-
-    <table>
-        <tr><th>Item Description</th><th>Quant</th><th>UOM</th><th>Reason</th></tr>
-
-
-
-
-
-        @{ if (match || searchStr == "")
+        @{ if (listInvAdj != null)
             {
-                foreach (Item it in listItem)
-                {
+
+                <h2>Selected Item List</h2>
+                <table>
+                    <tr><th>Item Name</th><th>Quant</th><th>Reason</th><th>Status</th></tr>
+
+                    @{ foreach (InventoryAdj invadj in listInvAdj)
+                        {
+                            <tr>
+                                <td>@invadj.item.Description</td>
+                                <td>@invadj.Quant</td>
+                                <td>@invadj.Reason</td>
+                                <td>@invadj.Status</td>
+                                <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteInvAdj","StoreClerk", new { id = invadj.Id})'" /></td>
+                            </tr>
+
+                        }
+                    }
+                </table>
+
+            }
+        }
+
+
+        <form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
+            <table>
                 <tr>
-                    <td>@Html.Raw(it.Description)</td>
                     <td>
-                        <input type="text" placeholder="Input quantity" size="6" id="quantityBox @it.Id">
+
+                        <input type="text" class="form-control" placeholder="Search.." size="6" id="searchBox" value="@searchStr">
                     </td>
-                    <td>@it.UnitofMeasure</td>
-                    <td><input type="text" placeholder="Input reason" size="6" id="reasonBox @it.Id"></td>
-                    <td><input type="button" value="Submit" onclick="Submit_InvAdj(@it.Id);" /></td>
+                    <td>
+                        <button type="submit" class="btn btn-info" style="background-color:darkslategrey;border:none;">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </td>
 
                 </tr>
+            </table>
+        </form>
 
+
+
+
+        @{
+            <br>
+
+            <table>
+                <tr><th>Item Description</th><th>Quant</th><th>UOM</th><th>Reason</th></tr>
+
+
+
+
+
+                @{ if (match || searchStr == "")
+                    {
+                        foreach (Item it in listItem)
+                        {
+                            <tr>
+                                <td>@Html.Raw(it.Description)</td>
+                                <td>
+                                    <input type="text" placeholder="Input quantity" size="6" id="quantityBox @it.Id">
+                                </td>
+                                <td>@it.UnitofMeasure</td>
+                                <td><input type="text" placeholder="Input reason" size="6" id="reasonBox @it.Id"></td>
+                                <td><input type="button" value="Submit" onclick="Submit_InvAdj(@it.Id);" /></td>
+
+                            </tr>
+
+                        }
+                    }
+
+
+
+
+                    else
+                    {
+                        <tr>
+                            <td class="col-sm-3">There are no matches for your search.</td>
+                        </tr>
+                    }
                 }
-            }
-
-
-
-
-            else
-            {
-                <tr>
-                    <td class="col-sm-3">There are no matches for your search.</td>
-                </tr>
-            }
+            </table>
         }
-    </table>
-}
+
+
+        </div>
+    </div>
 
 
 
 
 
+        <style>
+            tr, th, td {
+                padding: 5px
+            }
+
+            .font-red {
+                font: weightbold;
+                color: red;
+            }
+        </style>
 
 
+        <script>
 
-<style>
-    tr, th, td {
-        padding: 5px
-    }
+            function searchEnter() {
+                var searchBox = document.getElementById("searchBox");
+                searchBox.addEventListener("keypress", function (e) {
+                    var key = e.which || e.keyCode;
+                    if (key === 13) {
+                        var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
+                        doPOST(data);           /*Here we post 'data' to method, if the method has a parameter with same name of "searchStr", it passes to controller.*/
+                    }
+                });
+            }
 
-    .font-red {
-        font: weightbold;
-        color: red;
-    }
-</style>
-
-
-<script>
-
-    function searchEnter() {
-        var searchBox = document.getElementById("searchBox");
-        searchBox.addEventListener("keypress", function (e) {
-            var key = e.which || e.keyCode;
-            if (key === 13) {
+            function searchClick() {
+                var searchBox = document.getElementById("searchBox");
                 var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
-                doPOST(data);           /*Here we post 'data' to method, if the method has a parameter with same name of "searchStr", it passes to controller.*/
-            }
-        });
-    }
 
-    function searchClick() {
-        var searchBox = document.getElementById("searchBox");
-        var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
-
-        doPOST(data);
-    }
-
-    function doPOST(data) {
-        var ajax = new XMLHttpRequest();
-
-        ajax.onreadystatechange = function () {
-            if (ajax.readyState == 4) {
-                document.open();
-                document.write(ajax.response);
-                document.close();
-            }
-        }
-        ajax.open("POST", "/StoreClerk/InvAdjForm", true);
-        ajax.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-
-        ajax.send(JSON.stringify(data));
-    }
-
-    function Submit_InvAdj(item_id) {
-
-
-
-
-        var q = document.getElementById("quantityBox " + item_id).value
-        var r = document.getElementById("reasonBox " + item_id).value
-
-        var pdata = { Id: item_id, quant: q, reason:r };
-
-        $.ajax({
-            type: "POST",
-            url: "/StoreClerk/SubmitInvAdj",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Inventory Adjustment vouchour submitted successfully");
-                window.location.href = "./InvAdjForm";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
+                doPOST(data);
             }
 
+            function doPOST(data) {
+                var ajax = new XMLHttpRequest();
 
-        });
-    }
+                ajax.onreadystatechange = function () {
+                    if (ajax.readyState == 4) {
+                        document.open();
+                        document.write(ajax.response);
+                        document.close();
+                    }
+                }
+                ajax.open("POST", "/StoreClerk/InvAdjForm", true);
+                ajax.setRequestHeader("Content-type", "application/json;charset=UTF-8");
 
-</script>
+                ajax.send(JSON.stringify(data));
+            }
+
+            function Submit_InvAdj(item_id) {
+
+
+
+
+                var q = document.getElementById("quantityBox " + item_id).value
+                var r = document.getElementById("reasonBox " + item_id).value
+
+                var pdata = { Id: item_id, quant: q, reason: r };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/StoreClerk/SubmitInvAdj",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
+
+                    // Response Success
+                    success: function (response) {
+
+                        alert("Inventory Adjustment vouchour submitted successfully");
+                        window.location.href = "./InvAdjForm";
+
+                    },
+
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
+
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
+
+
+                });
+            }
+
+        </script>
 

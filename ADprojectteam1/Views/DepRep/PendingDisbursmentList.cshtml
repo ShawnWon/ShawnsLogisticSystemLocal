@@ -4,115 +4,125 @@
 @{
     ViewBag.Title = "Pending Disbursement";
     Dictionary<int, int> itemlist = ViewBag.Rlist;
-    
+
 
 }
 
-<h2>Pending Discursement</h2>
-
-<input type="button" value="Confirm Received" onclick="ConfirmReceived();" />
-
-<table>
-    <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
-
-    @{ foreach (int itemId in itemlist.Keys)
-        {
-            <tr>
-                <td>@ItemData.GetItemById(itemId).Description</td>
-                <td>@itemlist[itemId]</td>
-                <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId)" size="6" id="ReceivedquantityBox @itemId" value="@itemlist[itemId]"></td>
-            </tr>
-
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_DepRep_LeftBar");
         }
-    }
-</table>
+    </div>
 
+    <div class="w3-main" style="margin-left:250px">
 
+        <h2>Pending Discursement</h2>
 
-<br>
-<br>
+        <input type="button" value="Confirm Received" onclick="ConfirmReceived();" />
 
-<script>
+        <table>
+            <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
 
-        function ChangeReceive(itemId) {
+            @{ foreach (int itemId in itemlist.Keys)
+                {
+                    <tr>
+                        <td>@ItemData.GetItemById(itemId).Description</td>
+                        <td>@itemlist[itemId]</td>
+                        <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId)" size="6" id="ReceivedquantityBox @itemId" value="@itemlist[itemId]"></td>
+                    </tr>
 
-
-            var q = document.getElementById("ReceivedquantityBox " + itemId).value
-
-            var pdata = {
-                itemId: itemId, quant: q
-            };
-
-
-
-            $.ajax({
-                type: "POST",
-                url: "/DepRep/ChangeReceiveQuant",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(pdata),
-                dataType: "json",
-
-                // Response Success
-                success: function (response) {
-
-                    alert();
-                    document.getElementById("Receivedtotalq " + response.itemId).innerHTML = response.quant;
-
-                },
-
-                // Response Fail
-                failure: function (response) {
-                    alert("Fail Case");
-                },
-
-                // Response Error
-                error: function (response) {
-                    alert("ERROR case");
                 }
+            }
+        </table>
+
+        </div>
+    </div>
+
+        <br>
+        <br>
+
+        <script>
+
+            function ChangeReceive(itemId) {
 
 
-            });
-    }
+                var q = document.getElementById("ReceivedquantityBox " + itemId).value
 
-
-    function ConfirmReceived() {
-
-
-
-
-            var pdata = {
-                
-            };
+                var pdata = {
+                    itemId: itemId, quant: q
+                };
 
 
 
-            $.ajax({
-                type: "POST",
-                url: "/DepRep/ConfirmReceive",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(pdata),
-                dataType: "json",
+                $.ajax({
+                    type: "POST",
+                    url: "/DepRep/ChangeReceiveQuant",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
 
-                // Response Success
-                success: function (response) {
+                    // Response Success
+                    success: function (response) {
 
-                    alert();
-                    window.location.href = "./PendingDisbursmentList";
+                        alert();
+                        document.getElementById("Receivedtotalq " + response.itemId).innerHTML = response.quant;
 
-                },
+                    },
 
-                // Response Fail
-                failure: function (response) {
-                    alert("Fail Case");
-                },
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
 
-                // Response Error
-                error: function (response) {
-                    alert("ERROR case");
-                }
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
 
 
-            });
-        }
-</script>
+                });
+            }
+
+
+            function ConfirmReceived() {
+
+
+
+
+                var pdata = {
+
+                };
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/DepRep/ConfirmReceive",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
+
+                    // Response Success
+                    success: function (response) {
+
+                        alert();
+                        window.location.href = "./PendingDisbursmentList";
+
+                    },
+
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
+
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
+
+
+                });
+            }
+        </script>
 
