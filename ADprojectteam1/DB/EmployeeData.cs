@@ -134,7 +134,7 @@ namespace ADprojectteam1.DB
             }
         }
 
-        internal static Employee FindEmpById(int v)
+        public static Employee FindEmpById(int v)
         {
             Employee e = new Employee();
             using (var db = new ADDbContext())

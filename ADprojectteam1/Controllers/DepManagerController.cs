@@ -11,6 +11,7 @@ namespace ADprojectteam1.Controllers
 {
     public class DepManagerController : Controller
     {
+        ///////////////////////////////////////////////////////requisition
         // GET: DepManager
         public ActionResult PendingRequisitionList()
         {
@@ -41,6 +42,7 @@ namespace ADprojectteam1.Controllers
             return Json(n, JsonRequestBehavior.AllowGet);
         }
 
+        //////////////////////////////////////////////////////delegate
         public ActionResult DelegateView()
         {
             Employee u = EmployeeData.FindByUserName((string)Session["username"]);
@@ -49,7 +51,8 @@ namespace ADprojectteam1.Controllers
             
             
             List<Employee> lemp = DepartmentData.GetAllEmpByDepId(u.department.Id);
-
+            List<Delegation> listdele = DelegationData.GetAllByManagerId(uId);
+            ViewBag.listdeleg = listdele;
             ViewBag.listemp = lemp;
             return View();
         }
@@ -66,6 +69,11 @@ namespace ADprojectteam1.Controllers
                 return Json(status, JsonRequestBehavior.AllowGet);
 
             }
+
+            DelegationData.CreateDelegation(userid,startdate,enddate,empId);
+
+
+
             var DailyTime = "21:42:00";
             var timeParts = DailyTime.Split(new char[1] { ':' });
             var dateNow = DateTime.Now;
@@ -78,34 +86,41 @@ namespace ADprojectteam1.Controllers
                 date = date.AddDays(1);
                 ts = date - dateNow;
             }
-            Task.Delay(ts).ContinueWith((x) => DailyCheck(startdate,enddate,empId));
+            Task.Delay(ts).ContinueWith((x) => DailyCheck());
             
             status = new {status=true };
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-        public void DailyCheck(DateTime sd,DateTime ed,int EmpId)
+        public void DailyCheck()
         {
-            var datetoday = DateTime.Today;
-            if (sd.Date == datetoday)
+            List<Delegation> delelist = DelegationData.GetAll();
+
+            foreach (Delegation dele in delelist)
             {
-               EmployeeData.GiveDelegate(EmpId);
+                var datetoday = DateTime.Today;
+                if (dele.startdate.Date == datetoday)
+                {
+                    EmployeeData.GiveDelegate(dele.DelegatedEmpId);
+                }
+                if (dele.enddate.Date == datetoday)
+                {
+                    EmployeeData.RetractDelegate(dele.DelegatedEmpId);
+                }
             }
-            if (ed.Date == datetoday)
-            {
-               EmployeeData.RetractDelegate(EmpId);
-            }
-        
         }
 
 
         [HttpPost]
-        public JsonResult cancelDelegation(int empId)
+        public JsonResult cancelDelegation(int dId)
         {
+            Delegation dele=DelegationData.GetById(dId);
+            
+
             object status;
             int userid = EmployeeData.GetId((string)Session["username"]);
-            if (userid == empId)
+            if (userid == dele.DelegatedEmpId)
             {
                 status = new { status = false };
 
@@ -113,7 +128,9 @@ namespace ADprojectteam1.Controllers
 
             }
 
-            EmployeeData.RetractDelegate(empId);
+            EmployeeData.RetractDelegate(dele.DelegatedEmpId);
+
+            DelegationData.RemoveById(dId);
 
             status = new { status=true};
 

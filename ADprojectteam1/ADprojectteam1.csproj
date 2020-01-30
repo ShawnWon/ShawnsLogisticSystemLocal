@@ -136,6 +136,7 @@
     <Compile Include="Controllers\StoreSupController.cs" />
     <Compile Include="DB\ADDbContext.cs" />
     <Compile Include="DB\ADDbInitializer.cs" />
+    <Compile Include="DB\DelegationData.cs" />
     <Compile Include="DB\DepartmentData.cs" />
     <Compile Include="DB\DepOrderData.cs" />
     <Compile Include="DB\EmployeeData.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Delegation.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\DepOrder.cs" />
     <Compile Include="Models\Employee.cs" />

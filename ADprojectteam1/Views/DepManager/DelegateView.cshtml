@@ -1,130 +1,149 @@
 ﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
 
 @{
     ViewBag.Title = "DelegateView";
     List<Employee> lemp = ViewBag.listemp;
+    List<Delegation> ldeleg = ViewBag.listdeleg;
 }
 
 <h2>DelegateView</h2>
+<table>
+    <tr><th>Start Date</th><th>End Date</th><th>Delegate To</th></tr>
 
-<select style="width:350px;" id="empId">
-    @{
-        for (int j = 0; j < lemp.Count(); j++)
+    @{ if (ldeleg != null)
+
         {
-            <option value="@lemp[j].Id">@lemp[j].Name</option>
+            foreach (Delegation de in ldeleg)
+            {
+        <tr>
+            <td>@de.startdate.ToString("dd/MM/yyyy")</td>
+            <td>@de.enddate.ToString("dd/MM/yyyy")</td>
+            <td>@EmployeeData.FindEmpById(de.DelegatedEmpId).Name</td>
+            <td><input type="button" value="Cancel Delegate" onclick="canceldele(@de.Id)" /></td>
+        </tr>
+            }
         }
+
     }
-</select>
+</table>
 
-<h5>Start date</h5>
-<input type="date" placeholder="startdate" required="required" onchange="checkDate()" size="6" id="startdate">
+    <select style="width:350px;" id="empId">
+        @{
+            for (int j = 0; j < lemp.Count(); j++)
+            {
+                <option value="@lemp[j].Id">@lemp[j].Name</option>
+            }
+        }
+    </select>
 
-<h5>End date</h5>
-<input type="date" placeholder="enddate" required="required" onchange="checkDate()" size="6" id="enddate">
+    <h5>Start date</h5>
+    <input type="date" placeholder="startdate" required="required" onchange="checkDate()" size="6" id="startdate">
 
-<input type="button" value="Delegate authority" onclick="delegate()" />
-<input type="button" value="Cancel Delegate" onclick="canceldele()" />
+    <h5>End date</h5>
+    <input type="date" placeholder="enddate" required="required" onchange="checkDate()" size="6" id="enddate">
 
-<script>
-    function delegate() {
+    <input type="button" value="Delegate authority" onclick="delegate()" />
+    
 
-        var e = document.getElementById("empId");
-        var eId = e.options[e.selectedIndex].value;
+    <script>
+        function delegate() {
+
+            var e = document.getElementById("empId");
+            var eId = e.options[e.selectedIndex].value;
 
             var dateString = document.getElementById('startdate').value;
             var dateString2 = document.getElementById('enddate').value;
             var DateStart = new Date(dateString);
-        var DateEnd = new Date(dateString2);
-
-        
-        
-        var pdata = { startdate: DateStart.toUTCString(), enddate: DateEnd.toUTCString(), empId:eId };
-        
-        $.ajax({
-            type: "POST",
-            url: "/DepManager/setDelegation",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                if (response.status == false) alert("You can not delegate yourself.");
-                else alert("Delegate successfully");
-               
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
+            var DateEnd = new Date(dateString2);
 
 
-        });
-    }
 
-    function checkDate() {
-        
-        var dateString = document.getElementById('startdate').value;
-        var dateString2 = document.getElementById('enddate').value;
-        var DateStart = new Date(dateString);
-        var DateEnd = new Date(dateString2);
-        var todaysDate = new Date();
-  if (DateEnd < DateStart) {
-    alert("End date cannot be less than Start date.");
-    return false;
+            var pdata = { startdate: DateStart.toUTCString(), enddate: DateEnd.toUTCString(), empId: eId };
+
+            $.ajax({
+                type: "POST",
+                url: "/DepManager/setDelegation",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(pdata),
+                dataType: "json",
+
+                // Response Success
+                success: function (response) {
+
+                    if (response.status == false) alert("You can not delegate yourself.");
+                    else alert("Delegate successfully");
+
+                    window.location.href = "./DelegateView";
+                },
+
+                // Response Fail
+                failure: function (response) {
+                    alert("Fail Case");
+                },
+
+                // Response Error
+                error: function (response) {
+                    alert("ERROR case");
+                }
+
+
+            });
         }
 
-        if (DateStart.setHours(0, 0, 0, 0) < todaysDate.setHours(0, 0, 0, 0)) {
-            alert("Delegation Date cannot start from past.");
-            return false;
-}
-  return true;
-}
+        function checkDate() {
 
-   function canceldele() {
-
-        var e = document.getElementById("empId");
-        var eId = e.options[e.selectedIndex].value;
-
-
-        
-        alert(eId);
-        var pdata = { empId:eId };
-        alert();
-        $.ajax({
-            type: "POST",
-            url: "/DepManager/cancelDelegation",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-                if (response.status == false) alert("You can not cancel delegate to yourself.");
-                else alert("Cancel Delegate successfully");
-               
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
+            var dateString = document.getElementById('startdate').value;
+            var dateString2 = document.getElementById('enddate').value;
+            var DateStart = new Date(dateString);
+            var DateEnd = new Date(dateString2);
+            var todaysDate = new Date();
+            if (DateEnd < DateStart) {
+                alert("End date cannot be less than Start date.");
+                return false;
             }
 
+            if (DateStart.setHours(0, 0, 0, 0) < todaysDate.setHours(0, 0, 0, 0)) {
+                alert("Delegation Date cannot start from past.");
+                return false;
+            }
+            return true;
+        }
 
-        });
-    } 
-</script>
+        function canceldele(deleId) {
+
+
+
+            
+            var pdata = { dId:deleId };
+            
+            $.ajax({
+                type: "POST",
+                url: "/DepManager/cancelDelegation",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(pdata),
+                dataType: "json",
+
+                // Response Success
+                success: function (response) {
+                    if (response.status == false) alert("You can not cancel delegate to yourself.");
+                    else alert("Cancel Delegate successfully");
+
+                    window.location.href = "./DelegateView";
+
+                },
+
+                // Response Fail
+                failure: function (response) {
+                    alert("Fail Case");
+                },
+
+                // Response Error
+                error: function (response) {
+                    alert("ERROR case");
+                }
+
+
+            });
+        }
+    </script>
