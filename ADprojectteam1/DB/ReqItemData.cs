@@ -35,32 +35,40 @@ namespace ADprojectteam1.DB
             
         }
 
-        internal static void SetReqItemDeliveredToRep(int empId, int itemId)
+        internal static bool SetReqItemDeliveredToRep(int empId, int itemId)
         {
             ReqItem reitem = new ReqItem();
-            
+            bool status = false;
             using (var db = new ADDbContext())
             {
-                if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).Any())
-                    reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).FirstOrDefault();
-                reitem.Status = "deliveredToRep";
-
+                if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("collected")).Any())
+                {
+                    reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("collected")).FirstOrDefault();
+                    reitem.Status = "deliveredToRep";
+                    status = true;
+                }
                 db.SaveChanges();
             }
+            return status;
         }
 
-        internal static void SetReqItemCollected(int empId, int itemId)
+        
+
+        internal static bool SetReqItemCollected(int empId, int itemId)
         {
             ReqItem reitem = new ReqItem();
-
+            bool status=false;
             using (var db = new ADDbContext())
             {
                 if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("approved")).Any())
+                {
                     reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId && x.Status.Equals("approved")).FirstOrDefault();
-                reitem.Status = "collected";
-
+                    reitem.Status = "collected";
+                    status = true;
+                }
                 db.SaveChanges();
             }
+            return status;
         }
     }
 }

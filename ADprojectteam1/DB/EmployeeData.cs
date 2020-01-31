@@ -156,5 +156,29 @@ namespace ADprojectteam1.DB
             }
             return e;
         }
+
+        internal static void SetRoleToEmp(int id)
+        {
+            Employee emp = new Employee();
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.Id == id).Any())
+                    emp = db.Employee.Where(x => x.Id == id).FirstOrDefault();
+                emp.Role="DepEmp";
+                db.SaveChanges();
+            }
+        }
+
+        internal static void SetRoleToRep(int id)
+        {
+            Employee emp = new Employee();
+            using (var db = new ADDbContext())
+            {
+                if (db.Employee.Where(x => x.Id == id).Any())
+                    emp = db.Employee.Where(x => x.Id == id).FirstOrDefault();
+                emp.Role = "DepRep";
+                db.SaveChanges();
+            }
+        }
     }
 }

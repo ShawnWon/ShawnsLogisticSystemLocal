@@ -127,5 +127,17 @@ namespace ADprojectteam1.DB
             }
 
         }
+
+        internal static void SetRep(int dId,int empId)
+        {
+            Department d = new Department();
+            using (var db = new ADDbContext())
+            {
+                if (db.Department.Where(x => x.Id == dId).Any())
+                    d = db.Department.Where(x => x.Id == dId).FirstOrDefault();
+                d.DepRepId=empId;
+                db.SaveChanges();
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace ADprojectteam1.Models
         public int deliveredquant { get; set; }
         public string status { get; set; }//can be "acknowledged","collected","delivered","tobereplenished"
         public DateTime signindate { get; set; }
+        public ICollection<SRequisition> listreq { get; set; }
 
         public DepOrder()
         {

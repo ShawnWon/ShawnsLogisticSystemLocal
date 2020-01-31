@@ -1,10 +1,12 @@
 ﻿using ADprojectteam1.DB;
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
+using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -41,7 +43,8 @@ namespace ADprojectteam1.Controllers
                     xlist = slist.Where(x => x.emp.department.Id == depId&&x.item.Id==itemId).ToList();
                      depmap.Add(depId,xlist.Select(x=>x.Quant).Sum());
                     foreach (int empId in empIdset)
-                    {// ReqItemData.SetReqItem(empId, itemId, "collecting");
+                    {//ReqItemData.SetReqItemCollecting(empId, itemId);
+
                     }
                 }
                 list.Add(itemId,depmap);
@@ -188,13 +191,28 @@ namespace ADprojectteam1.Controllers
             //Set ItemReq status and Dep Order status
             foreach (int depId in plannedlist.Keys)
             {
-
+                bool notifystatus = false;
                 foreach (int itemId in plannedlist[depId].Keys)
                 {
-                    
-                    foreach(int empId in DepartmentData.GetAllEmpByDepId(depId).Select(x=>x.Id))
-                    ReqItemData.SetReqItemCollected(empId,itemId);
                     DepOrderData.SetCollected(depId, itemId, plannedlist[depId][itemId]);
+
+                    
+                    foreach (int empId in DepartmentData.GetAllEmpByDepId(depId).Select(x => x.Id))
+                    {
+
+                        if (ReqItemData.SetReqItemCollected(empId, itemId)&&notifystatus==false)
+                        {
+                            
+                            string emailaddress = EmployeeData.FindEmpById(empId).EmailAdd;
+                            Task task = Task.Run(() =>
+                            {
+                                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition is under delivering");
+                            });
+                            notifystatus = true;
+                        }
+
+
+                    }
                 }
             }
             result = new { status=true };

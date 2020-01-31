@@ -1,9 +1,11 @@
 ﻿using ADprojectteam1.DB;
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
+using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -92,21 +94,28 @@ namespace ADprojectteam1.Controllers
             {
                 throw new Exception("please sign in to confirm receivement"); 
             }
-            
 
-            
+
+            bool notifystatus = false;
                 foreach (int itemId in signinglist.Keys)
                 {
                     
 
                     SRequisition sr = new SRequisition();
                     sr.ListItem = new List<ReqItem>();
-                    foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
-                    {
-                        ReqItemData.SetReqItemDeliveredToRep(empId, itemId);
                         
-
+                foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
+                    {
+                    if (ReqItemData.SetReqItemDeliveredToRep(empId, itemId) && notifystatus == false)
+                    {
+                        string emailaddress = EmployeeData.FindEmpById(empId).EmailAdd;
+                        Task task = Task.Run(() =>
+                        {
+                            EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition has delivered to Department Representative.");
+                        });
+                        notifystatus = true;
                     }
+                }
 
 
                 //if any discrepancy, create new reqItem to replenish in next delivery.

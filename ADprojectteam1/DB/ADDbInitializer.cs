@@ -108,11 +108,11 @@ namespace ADprojectteam1.DB
 
             List<Department> deps = new List<Department>();
 
-            deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 5, 3));
-            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 5, 3));
-            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 5, 3));
-            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 5, 3));
-            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 5, 3));
+            deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 1, 3));
+            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 1, 3));
+            deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 1, 3));
+            deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 1, 3));
+            deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 1, 3));
 
             foreach (Department d in deps)
                 context.Department.Add(d);
@@ -120,14 +120,14 @@ namespace ADprojectteam1.DB
 
             List<Employee> emps = new List<Employee>();
 
-            emps.Add(new Employee("depmanager", "dadb22fff1accc6fe4aa720910d8a9a1", "DepManager", "11233", "Mr", "Kaung Khant Kyaw", "k3@gmail.com"));
+            emps.Add(new Employee("depmanager", "dadb22fff1accc6fe4aa720910d8a9a1", "DepManager", "11233", "Mr", "Kaung Khant Kyaw", "e0457838@u.nus.edu"));
             emps.Add(new Employee("storeclerk", "cfc6722c02fd40116a5dd21ed60f9352", "StoreClerk", "11234", "Mr", "GuoMing", "gm@gmail.com"));
-            emps.Add(new Employee("storemanager", "4e02b0e68f049d9fd40b2013f7b637e2", "StoreManager", "11235", "Ms", "Aye", "aye@gmail.com"));
-            emps.Add(new Employee("storesup", "8050b9c976aed3e1ab492f373fbd8421", "StoreSup", "11236", "Ms", "Suwetaa", "suwetaa@gmail.com"));
-            emps.Add(new Employee("depemp", "bb3852c905fe1d884ad105f9b6dcbc19", "DepEmp", "11238", "Ms", "Jenny", "jenny@gmail.com"));
-            emps.Add(new Employee("deprep", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11239", "Mr", "Than", "than@gmail.com"));
-            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Than", "than@gmail.com"));
-            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Than", "than@gmail.com"));
+            emps.Add(new Employee("storemanager", "4e02b0e68f049d9fd40b2013f7b637e2", "StoreManager", "11235", "Ms", "Aye Moe Phyu", "aye@gmail.com"));
+            emps.Add(new Employee("storesup", "8050b9c976aed3e1ab492f373fbd8421", "StoreSup", "11236", "Ms", "Suwetaa Ramesh", "suwetaa@gmail.com"));
+            emps.Add(new Employee("depemp", "bb3852c905fe1d884ad105f9b6dcbc19", "DepEmp", "11238", "Ms", "Jenny Tang", "e0457838@u.nus.edu"));
+            emps.Add(new Employee("deprep", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11239", "Mr", "Thant Htet Myet", "than@gmail.com"));
+            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Thant Htet Myet", "than@gmail.com"));
+            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Thant Htet Myet", "than@gmail.com"));
 
             foreach (Employee e in emps)
                 context.Employee.Add(e);
@@ -157,16 +157,17 @@ namespace ADprojectteam1.DB
             List<ItemSupplier> itemsup1 = new List<ItemSupplier>();
             for (int i = 0; i < 85; i++) itemsup1.Add(new ItemSupplier(items[i], sups[1], 1.00));
             List<ItemSupplier> itemsup2 = new List<ItemSupplier>();
-            for (int i = 0; i < 85; i++) itemsup2.Add(new ItemSupplier(items[i], sups[2], 2.00));
+            for (int i = 0; i < 85; i++) itemsup2.Add(new ItemSupplier(items[i], sups[2], 1.20));
             List<ItemSupplier> itemsup3 = new List<ItemSupplier>();
-            for (int i = 0; i < 85; i++) itemsup3.Add(new ItemSupplier(items[i], sups[3], 3.00));
+            for (int i = 0; i < 85; i++) itemsup3.Add(new ItemSupplier(items[i], sups[3], 1.50));
+            List<ItemSupplier> itemsup4 = new List<ItemSupplier>();
+            for (int i = 0; i < 85; i++) itemsup4.Add(new ItemSupplier(items[i], sups[0], 2.10));
 
-           
 
-            
 
-            
-           
+
+
+
 
             foreach (ItemSupplier x in itemsup1)
                 context.ItemSupplier.Add(x);
@@ -174,7 +175,8 @@ namespace ADprojectteam1.DB
                 context.ItemSupplier.Add(x);
             foreach (ItemSupplier x in itemsup3)
                 context.ItemSupplier.Add(x);
-
+            foreach (ItemSupplier x in itemsup4)
+                context.ItemSupplier.Add(x);
             context.SaveChanges();
 
             for (int i = 0; i < 85; i++)
@@ -243,12 +245,28 @@ namespace ADprojectteam1.DB
             List<StockCard> lsc = new List<StockCard>();
             DateTime dt = DateTime.Today;
             
-            lsc.Add(new StockCard(items[58],dt,1,500,550));
-            lsc.Add(new StockCard(items[58], dt, deps[0], -20, 530));
-            lsc.Add(new StockCard(items[58], dt, 4, 534));
+            lsc.Add(new StockCard(items[58],dt.AddMonths(-5),1,500,550));
+            lsc.Add(new StockCard(items[58], dt.AddMonths(-5), deps[0], -20, 530));
+            lsc.Add(new StockCard(items[58], dt.AddMonths(-5), 4, 534));
             lsc.Add(new StockCard(items[58], dt, deps[1], -30, 504));
             lsc.Add(new StockCard(items[58], dt, deps[2], -50, 454));
             lsc.Add(new StockCard(items[58], dt, 1, 500, 954));
+
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-5), 1, 100, 100));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-5), deps[0], -20, 80));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-5), 4, 84));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-4), deps[1], -35, 49));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-4), 1, 30, 79));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-4), deps[1], -15, 64));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), deps[1], -40, 24));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), 1, 30, 64));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-2), deps[1], -20, 44));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-2), 1, 30, 74));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-1), deps[1], -35, 39));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-1), 1, 30, 69));
+            lsc.Add(new StockCard(items[0], dt, deps[2], -50, 19));
+            lsc.Add(new StockCard(items[0], dt, 1, 30, 49));
+            lsc.Add(new StockCard(items[0], dt, 1, 30, 79));
 
             foreach (StockCard sc in lsc)
                 context.StockCard.Add(sc);
@@ -256,7 +274,7 @@ namespace ADprojectteam1.DB
 
             List<StockCard> lsc1 = new List<StockCard>();
             
-            for(int i=0; i<85;i++)
+            for(int i=1; i<85;i++)
             lsc1.Add(new StockCard(items[i], dt, 1, 500, 550));
 
             foreach (StockCard sc in lsc1)

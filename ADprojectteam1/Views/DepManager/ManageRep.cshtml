@@ -1,0 +1,79 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "Manage Department Representative";
+    Department dep = ViewBag.dep;
+    List<Employee> listemp = ViewBag.listemp;
+
+}
+
+
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_DepManager_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+
+        <h2>Manage Department Representative</h2>
+
+        <h4>Department Name</h4><h4>@dep.DepName</h4>
+        <h6>Current Rep</h6><h6>@EmployeeData.FindEmpById(dep.DepRepId).Name</h6>
+        <br>
+        <select style="width:350px;" id="empId">
+            @{
+                for (int j = 0; j < listemp.Count(); j++)
+                {
+                    <option value="@listemp[j].Id">@listemp[j].Name</option>
+                }
+            }
+        </select>
+
+
+        <input type="button" value="Change Representative" onclick="ChangeRep()" />
+    </div>
+</div>
+
+<script>
+            function ChangeRep() {
+
+                var e = document.getElementById("empId");
+                var eId = e.options[e.selectedIndex].value;
+
+                var pdata = { empId: eId };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/DepManager/setRep",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
+
+                    // Response Success
+                    success: function (response) {
+
+                        if (response.status == false) alert("You can not assign yourself as representative.");
+                        else alert("Assign Representative successfully");
+
+                        window.location.href = "./ManageRep";
+                    },
+
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
+
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
+
+
+                });
+            }
+
+            
+</script>

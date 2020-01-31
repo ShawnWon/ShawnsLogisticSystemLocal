@@ -1,9 +1,12 @@
 ﻿using ADprojectteam1.DB;
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
+using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -31,6 +34,15 @@ namespace ADprojectteam1.Controllers
         {
             
             SrequisitionData.RejectRequisition(reqId,remark);
+            string emailaddress = SrequisitionData.FindEmpEmailById(reqId);
+
+
+            Task task = Task.Run(() => {
+                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition was rejected");
+            });
+
+
+
             object n = new { amt = 0 };
             return Json(n, JsonRequestBehavior.AllowGet); 
         }
@@ -40,6 +52,14 @@ namespace ADprojectteam1.Controllers
         {
 
             SrequisitionData.ApproveRequisition(reqId, remark);
+            string emailaddress = SrequisitionData.FindEmpEmailById(reqId);
+
+
+            Task task = Task.Run(() => {
+                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition was approved");
+            });
+
+            
             object n = new { amt = 0 };
             return Json(n, JsonRequestBehavior.AllowGet);
         }
@@ -138,6 +158,51 @@ namespace ADprojectteam1.Controllers
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
+
+        ////////////////////////////////////////Manage Representative
+        public ActionResult ManageRep()
+        {
+            Employee u = EmployeeData.FindByUserName((string)Session["username"]);
+            int uId = u.Id;
+            int dId = u.department.Id;
+
+            Department dep = DepartmentData.GetDepById(dId);
+
+
+            List<Employee> lemp = DepartmentData.GetAllEmpByDepId(u.department.Id);
+            ViewBag.listemp = lemp;
+
+            ViewBag.dep = dep;
+            
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult setRep(int empId)
+        {
+            object status;
+            int userid = EmployeeData.GetId((string)Session["username"]);
+            if (userid == empId)
+            {
+                status = new { status = false };
+
+                return Json(status, JsonRequestBehavior.AllowGet);
+
+            }
+            Department dep = DepartmentData.GetDepById(EmployeeData.FindEmpById(userid).department.Id);
+            Employee currentRep = EmployeeData.FindEmpById(dep.DepRepId);
+            Employee newRep = EmployeeData.FindEmpById(empId);
+
+            EmployeeData.SetRoleToEmp(currentRep.Id);
+            EmployeeData.SetRoleToRep(newRep.Id);
+            DepartmentData.SetRep(EmployeeData.FindEmpById(userid).department.Id,empId);
+
+            status = new { status = true };
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
+        
 
     }
 }

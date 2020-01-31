@@ -47,7 +47,18 @@ namespace ADprojectteam1.DB
             return list;
         }
 
-        
+        internal static string FindEmpEmailById(int reqId)
+        {
+            SRequisition s = new SRequisition();
+            string em;
+            using (var db = new ADDbContext())
+            {
+                if (db.SRequisition.Where(x => x.Id == reqId).Any())
+                    s = db.SRequisition.Where(x => x.Id == reqId).FirstOrDefault();
+                    em=s.ListItem.FirstOrDefault().emp.EmailAdd;
+            }
+            return em;
+        }
 
         internal static void deleteReqById(int id)
         {

@@ -4,8 +4,12 @@ using ADprojectteam1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ADprojectteam1.Service;
 
 namespace ADprojectteam1.Controllers
 {
@@ -86,6 +90,15 @@ namespace ADprojectteam1.Controllers
         {
             SRequisition sr = (SRequisition)Session["reqform"];
             SrequisitionData.SaveReq(sr);
+            Employee e = EmployeeData.FindByUserName((string)Session["username"]);
+            Employee manager = EmployeeData.FindEmpById(e.department.DepHeadId);
+
+            Task task = Task.Run(() => {
+                EmailNotification.SendNotificationEmailToEmployee(manager.EmailAdd,"There is a new Stationary Requistion for your approval.");
+            });
+            
+            
+            
             Session.Remove("reqform");
 
             return RedirectToAction("RequisitionList");
@@ -153,5 +166,7 @@ namespace ADprojectteam1.Controllers
             return new searchResult { fit = (index != -1), str = s };
 
         }
+
+        
     }
 }
