@@ -21,12 +21,16 @@
 
                 @{ foreach (SRequisition sr in reqlist)
                     {
-                        <tr>
-                            <td>@sr.Id</td>
-                            <td>@sr.status</td>
-                            <td>@sr.remark</td>
-                            <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteReq", "DepEmp", new { id = sr.Id })'" /></td>
-                        </tr>
+                                <tr>
+                                    <td>@sr.Id</td>
+                                    <td>@sr.status</td>
+                                    <td>@sr.remark</td>
+                                    @{ if (sr.status.Equals("pending") || sr.status.Equals("rejected"))
+                                        {
+                                            <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteReq", "DepEmp", new { id = sr.Id })'" /></td>
+                                        }
+                                    }
+                                </tr>
 
                         <tr>
                             <td>

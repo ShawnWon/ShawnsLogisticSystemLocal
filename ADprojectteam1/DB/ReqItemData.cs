@@ -35,7 +35,7 @@ namespace ADprojectteam1.DB
             
         }
 
-        internal static void SetReqItemDelivered(int empId, int itemId)
+        internal static void SetReqItemDeliveredToRep(int empId, int itemId)
         {
             ReqItem reitem = new ReqItem();
             
@@ -43,7 +43,7 @@ namespace ADprojectteam1.DB
             {
                 if (db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).Any())
                     reitem = db.ReqItem.Where(x => x.item.Id == itemId && x.emp.Id == empId&&x.Status.Equals("collected")).FirstOrDefault();
-                reitem.Status = "delivered";
+                reitem.Status = "deliveredToRep";
 
                 db.SaveChanges();
             }

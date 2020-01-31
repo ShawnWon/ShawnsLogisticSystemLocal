@@ -29,7 +29,7 @@ namespace ADprojectteam1.Models
         public bool Delegated { get; set; }
         public virtual Department department { get; set; }
 
-        public Employee() { }
+        public Employee() { Delegated = false; }
 
         public Employee(string un, string ps,string role,string empcode,string title, string name,string email) {
             UserName = un;

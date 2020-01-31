@@ -131,7 +131,10 @@ namespace ADprojectteam1.Controllers
             ViewData["searchStr"] = searchStr;
             ViewData["match"] = match;
 
-
+            string user = (string)Session["username"];
+            bool dele = EmployeeData.GetDelegateStatusByUserName(user);
+            ViewBag.delestatus = dele;
+            if (dele) Session["sessionRole"] = "DeleManager";
 
             return View();
         }

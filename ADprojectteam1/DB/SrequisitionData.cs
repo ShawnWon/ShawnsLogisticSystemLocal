@@ -57,11 +57,13 @@ namespace ADprojectteam1.DB
                 if (db.SRequisition.Where(x => x.Id == id).Any())
                 {
                     sr = db.SRequisition.Where(x => x.Id == id).FirstOrDefault();
-                    foreach (ReqItem ri in sr.ListItem) {
-                        db.ReqItem.Remove(ri);
+                    List<ReqItem> list = sr.ListItem.ToList();
+                    for (int i=0;i<sr.ListItem.Count;i++) {
+                        db.ReqItem.Remove(list[i]);
                     }
                     db.SRequisition.Remove(sr);
                 }
+                db.SaveChanges();
             }
 
         }

@@ -140,6 +140,7 @@ namespace ADprojectteam1.Controllers
         [HttpPost]
         public JsonResult ChangePlan(int itemId, int depId, int quant)
         {
+            int totalitemquant = 0;
             Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
             if (Session["plannedlist"] != null)
             { plannedlist = (Dictionary<int, Dictionary<int,int>>)Session["plannedlist"]; }
@@ -147,19 +148,44 @@ namespace ADprojectteam1.Controllers
             if (plannedlist[depId].ContainsKey(itemId)) 
             {
                 plannedlist[depId][itemId] = quant;
+                
             }
-            int totalq = plannedlist[depId].Sum(x=>x.Value);
+
+            foreach (int dId in plannedlist.Keys)
+            {
+                totalitemquant+=plannedlist[dId][itemId];
+            }
+
             Session["plannedlist"] = plannedlist;
-            object new_amount = new { Id= itemId, quant= totalq };
+            object new_amount = new { Id = itemId, quant = totalitemquant };
 
             return Json(new_amount, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ConfirmDelOrder()
+        [HttpPost]
+        public JsonResult ConfirmDelOrder()
         {
+            object result;
             Dictionary<int, Dictionary<int, int>> plannedlist = new Dictionary<int, Dictionary<int, int>>();
             if (Session["plannedlist"] != null) { plannedlist = (Dictionary<int, Dictionary<int, int>>)Session["plannedlist"]; }
 
+            //Check if the collected quant is tally with deliver plan
+            Dictionary<int, int> collist = (Dictionary<int, int>)Session["collist"];
+            foreach (int itemId in collist.Keys)
+            {
+                int itemtotal = 0;
+                foreach (int depId in plannedlist.Keys)
+                {
+                    itemtotal += plannedlist[depId][itemId];
+                }
+                if (itemtotal != collist[itemId])
+                {
+                    result = new { status = false };
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            //Set ItemReq status and Dep Order status
             foreach (int depId in plannedlist.Keys)
             {
 
@@ -171,8 +197,8 @@ namespace ADprojectteam1.Controllers
                     DepOrderData.SetCollected(depId, itemId, plannedlist[depId][itemId]);
                 }
             }
-            
-            return RedirectToAction("CollectedDepOrder");
+            result = new { status=true };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CollectedDepOrder()

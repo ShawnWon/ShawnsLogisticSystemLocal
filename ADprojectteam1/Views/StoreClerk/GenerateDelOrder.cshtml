@@ -26,18 +26,17 @@
                                     <td>@ItemData.GetItemById(itemId).Description</td>
 
                                     <td>@collist[itemId]</td>
-                                    <td><label style="color:black;font-size:15px;">Planned Quant:</label><span id="plannedtotalq @itemId"></span></td>
+                                    <td><span id="plannedtotalq @itemId"></span></td>
                                 </tr>
 
 
                             }
-                            <tr>
-                                <td>
-                                    <a href="@Url.Action("ConfirmDelOrder", "StoreClerk")">
-                                        Confirm
-                                    </a>
-                                </td>
-                            </tr>
+                    <tr>
+                        
+                            
+                        <td><input type="button" value="Confirm Delivery Order" onclick="ConfirmDelOrder()" /></td>
+                        
+                    </tr>
 
                         }
                     </table>}
@@ -53,7 +52,7 @@
                             <td>@DepartmentData.GetDepNameById(depId)</td>
                             <td>@DepartmentData.GetColPointById(depId)</td>
                             <td>@DepartmentData.GetContactNameById(depId)</td>
-                            <td><input type="button" value="Send Notification to Rep" onclick="SendNoti(@depId);" /></td>
+                            
                         </tr>
 
 
@@ -109,8 +108,53 @@
                         // Response Success
                         success: function (response) {
 
-                            alert();
-                            document.getElementById("plannedtotalq " + response.itemId).innerHTML = response.quant;
+                            
+                            document.getElementById("plannedtotalq " + response.Id).innerHTML = response.quant;
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+
+                function ConfirmDelOrder() {
+
+
+                    
+
+                    var pdata = {
+                      
+                    };
+
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreClerk/ConfirmDelOrder",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            if (response.status == false) {
+                                alert("The plan quantity is inconsistence with collected quantity.");
+                            }
+                            else {
+                                alert("Confirm Delivery Order successfully");
+                                window.location.href = "./CollectedDepOrder";
+                            }
 
                         },
 

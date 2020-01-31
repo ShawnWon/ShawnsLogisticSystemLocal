@@ -103,7 +103,7 @@ namespace ADprojectteam1.Controllers
                     sr.ListItem = new List<ReqItem>();
                     foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
                     {
-                        ReqItemData.SetReqItemDelivered(empId, itemId);
+                        ReqItemData.SetReqItemDeliveredToRep(empId, itemId);
                         
 
                     }
@@ -189,6 +189,12 @@ namespace ADprojectteam1.Controllers
             
             ViewBag.currentDep = dep;
             ViewBag.listCP = listCP;
+
+            string user = (string)Session["username"];
+            bool dele = EmployeeData.GetDelegateStatusByUserName(user);
+            if (dele) Session["sessionRole"] = "DeleManager";
+            ViewBag.delestatus = dele;
+
             return View();
         }
 
