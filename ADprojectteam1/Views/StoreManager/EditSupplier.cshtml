@@ -1,0 +1,106 @@
+﻿
+@using ADprojectteam1.Models;
+
+@{
+    ViewBag.Title = "Edit Supplier";
+    Supplier sup = ViewBag.sup;
+
+}
+
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_StoreManager_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+        <h2>Supplier Info</h2>
+
+        <form action="UpdateSupplierInfo" method="post">
+            <table class="w3-table w3-striped">
+                <tr>
+                    <td>Supplier Code:</td>
+                    <td><input type="text" name="Code" value="@sup.Code" readonly/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Supplier Name:</td>
+                    <td><input type="text" name="Name" value="@sup.Name" /></td>
+                    
+                </tr>
+                <tr>
+                    <td>Contact Name:</td>
+                    <td><input type="text" name="ContactName" value="@sup.ContactName" /></td>
+                    
+                </tr>
+                <tr>
+                    <td>Phone No.:</td>
+                    <td><input type="text" name="Phone" value="@sup.Phone"/></td>
+                    
+                </tr>
+                <tr>
+                    <td>Fax No.:</td>
+                    <td><input type="text" name="Fax" value="@sup.Fax"/></td>
+                    
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td><input type="text" name="Address" value="@sup.Address"/></td>
+                    
+                </tr>
+                <tr>
+                    <td>Email Address:</td>
+                    <td><input type="text" name="Emailaddress" value="@sup.Emailaddress" /></td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="submit" value="Submit" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+            
+        <br>
+        <br>
+    </div>
+</div>
+
+<script>
+                function EditSupplier(supid) {
+
+
+                    var pdata = { supId: supid};
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreManager/EditSupplier",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+
+                            window.location.href = "./PendingInvAdjList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+
+</script>
+

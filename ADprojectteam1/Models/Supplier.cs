@@ -30,10 +30,15 @@ namespace ADprojectteam1.Models
             Emailaddress = e;
         }
 
-        public bool equalsTo(Supplier other) {
-            
-            if (this.Code.Equals(other.Code)) return true;
-            return false;
+        public override bool Equals(object obj)
+        {
+            return obj is Supplier supplier &&
+                   Id == supplier.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return 2108858624 + Id.GetHashCode();
         }
     }
     

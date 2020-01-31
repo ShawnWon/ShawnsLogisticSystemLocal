@@ -18,6 +18,30 @@ namespace ADprojectteam1.DB
             }
             return isup;
         }
+
+        internal static List<ItemSupplier> GetAllBySupplierId(int sid)
+        {
+            List<ItemSupplier> list = new List<ItemSupplier>();
+            using (var db = new ADDbContext())
+            {
+                if (db.ItemSupplier.Where(x => x.supplier.Id == sid).Any())
+                    list = db.ItemSupplier.Include("item").Include("supplier").Where(x => x.supplier.Id == sid).ToList();
+            }
+            return list;
+        }
+
+        internal static void SetPriceById(int isId, double newprice)
+        {
+            ItemSupplier itsu = new ItemSupplier();
+            using (var db = new ADDbContext())
+            {
+                if (db.ItemSupplier.Where(x => x.Id==isId).Any())
+                    itsu = db.ItemSupplier.Where(x => x.Id==isId).FirstOrDefault();
+
+                itsu.UnitPrice = newprice;
+                db.SaveChanges();
+            }
+        }
     }
     
 }

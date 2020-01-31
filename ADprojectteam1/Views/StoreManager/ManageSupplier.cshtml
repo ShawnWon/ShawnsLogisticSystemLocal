@@ -1,7 +1,125 @@
 ﻿
+@using ADprojectteam1.Models;
+
 @{
-    ViewBag.Title = "ManageSupplier";
+    ViewBag.Title = "Manage Supplier";
+    List<Supplier> listsup = ViewBag.slist;
+
 }
 
-<h2>ManageSupplier</h2>
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_StoreManager_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+        <h2>Supplier List</h2>
+
+        <table class="w3-table w3-striped">
+            <tr><th>Suppler Code</th><th></th><th></th></tr>
+
+            @{ foreach (Supplier sup in listsup)
+                {
+                    <tr>
+                        <td>@sup.Code</td>
+                        <td><input type="button" value="Edit" onclick="location.href='@Url.Action("EditSupplier", "StoreManager", new { sid=sup.Id })'" /></td>
+                        <td><input type="button" value="UpdatePrice" onclick="location.href='@Url.Action("EditSupplierPrice", "StoreManager", new { sid = sup.Id })'" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="w3-table w3-striped">
+                                <tr><td>Supplier Name:</td><td>@sup.Name</td></tr>
+                                <tr><td>Contact Name:</td><td>@sup.ContactName</td></tr>
+                                <tr><td>Phone No.:</td><td>@sup.Phone</td></tr>
+                                <tr><td>Fax No.:</td><td>@sup.Fax</td></tr>
+                                <tr><td>Address:</td><td>@sup.Address</td></tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+
+                }
+            }
+        </table>
+        <br>
+        <br>
+    </div>
+</div>
+
+<script>
+                function EditSupplier(supid) {
+
+
+                    var pdata = { supId: supid};
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreManager/EditSupplier",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            
+                            window.location.href = "./PendingInvAdjList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+
+                function UpdatePrice(supid) {
+
+
+
+
+                    var remark = document.getElementById("remarkbox " + invadj_id).value
+
+                    var pdata = { InvAdjId: invadj_id, remark: remark };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreSup/approveInvAdj",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("Approved Inventory Adjustment successfully");
+                            window.location.href = "./PendingInvAdjList";
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+</script>
 

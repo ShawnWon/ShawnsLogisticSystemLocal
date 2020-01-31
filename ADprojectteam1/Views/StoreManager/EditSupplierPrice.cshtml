@@ -1,0 +1,87 @@
+﻿
+@using ADprojectteam1.Models;
+
+@{
+    ViewBag.Title = "Update Supplier Tender Price";
+    List<ItemSupplier> listitemsup = ViewBag.listitemsup;
+
+}
+
+<div class="row" style="padding-top:70px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_StoreManager_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+        <h2>Supplier Tender Price List</h2>
+        <h4>@listitemsup.FirstOrDefault().supplier.Name</h4>
+        <h6>@listitemsup.FirstOrDefault().supplier.Address</h6>
+        <br>
+        <br>
+        <table class="w3-table w3-striped">
+            <tr><th>Item Description</th><th>Tender Price</th><th></th></tr>
+
+            @{ foreach (ItemSupplier itemsup in listitemsup)
+                {
+                        <tr>
+                            <td>@itemsup.item.Description</td>
+                            <td><span id="currentpriceBox @itemsup.Id">@itemsup.UnitPrice</span></td>
+                            <td><input type="text" placeholder="Input new price" size="6" id="newpriceBox @itemsup.Id"></td>
+                            <td><input type="button" value="UpdatePrice" onclick="UpdatePrice(@itemsup.Id)" /></td>
+                        </tr>
+                    
+
+
+
+                }
+            }
+        </table>
+        <br>
+        <br>
+    </div>
+</div>
+
+<script>
+
+
+                function UpdatePrice(itemsupid) {
+
+
+
+
+                    var newprice = document.getElementById("newpriceBox " + itemsupid).value
+
+                    var pdata = { isId:itemsupid, newprice: newprice };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/StoreManager/UpdatePrice",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(pdata),
+                        dataType: "json",
+
+                        // Response Success
+                        success: function (response) {
+
+                            alert("Update Unite price successfully");
+                            document.getElementById("currentpriceBox " + response.Id).innerHTML = response.nprice;
+
+                        },
+
+                        // Response Fail
+                        failure: function (response) {
+                            alert("Fail Case");
+                        },
+
+                        // Response Error
+                        error: function (response) {
+                            alert("ERROR case");
+                        }
+
+
+                    });
+                }
+</script>
+

@@ -147,6 +147,7 @@
     <Compile Include="DB\ReqItemData.cs" />
     <Compile Include="DB\SrequisitionData.cs" />
     <Compile Include="DB\StockCardData.cs" />
+    <Compile Include="DB\SupplierData.cs" />
     <Compile Include="Filter\DepEmpFilter.cs" />
     <Compile Include="Filter\DepManagerFilter.cs" />
     <Compile Include="Filter\DepRepFilter.cs" />
@@ -227,6 +228,8 @@
     <Content Include="Views\DepRep\ManageCollectingPoint.cshtml" />
     <Content Include="Views\StoreManager\ManageSupplier.cshtml" />
     <Content Include="Views\StoreSup\TrendReport.cshtml" />
+    <Content Include="Views\StoreManager\EditSupplier.cshtml" />
+    <Content Include="Views\StoreManager\EditSupplierPrice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
