@@ -5,9 +5,10 @@
     ViewBag.Title = "TrendReport";
     string[] months= ViewBag.months;
     int[] cons = ViewBag.cons;
+    Item item = ViewBag.item;
 }
 
-<div class="row" style="padding-top:70px;">
+<div class="row" style="padding-top:0px;">
     <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
         @{
             Html.RenderPartial("_Layout_StoreSup_LeftBar");
@@ -15,7 +16,14 @@
     </div>
 
     <div class="w3-main" style="margin-left:250px">
-        <h2>TrendReport</h2>
+        <h4>Item Info</h4>
+
+        <table class="w3-table w3-striped">
+        <tr><th>Category</th><th>Item Code</th><th>Item Decription</th><th>Item UOM</th><th>ReOrder Level</th><th>ReOrder Quant</th></tr>
+        <tr><td>@item.Category</td><td>@item.ItemCode</td><td>@item.Description</td><td>@item.UnitofMeasure</td><td>@item.ReorderLevel</td><td>@item.ReorderQty</td></tr>
+        </table>
+
+        <h4>Consuming TrendReport</h4>
         <table class="w3-table w3-striped">
         <tr>@{ for (int i = 0; i < months.Length; i++)
             {<td><span  id="months @i"  >@months[i]</span></td>}
@@ -29,7 +37,7 @@
                 }
             </tr>
         </table>
-            <input type="button" value="DrawChart" onclick="drawchart(@months.Length)" />
+          
 
             <!-- Styles -->
             <style>
@@ -46,7 +54,7 @@
 
             <!-- Chart code -->
             <script>
-                function drawchart(length) {
+                am4core.ready(function drawchart() {
                     
 
 
@@ -58,9 +66,9 @@
                     var chart = am4core.create("chartdiv", am4charts.XYChart);
                     chart.scrollbarX = new am4core.Scrollbar();
 
-
+                    
                     // Add data
-                    for (x = 0; x < length; x++) {
+                    for (x = 0; x < 12; x++) {
                         
                         var m = document.getElementById("months " + x).innerHTML
                         
@@ -113,7 +121,7 @@
                     // Cursor
                     chart.cursor = new am4charts.XYCursor();
 
-                }; // end am4core.ready()
+                }); // end am4core.ready()
             </script>
 
             <!-- HTML -->
@@ -125,83 +133,6 @@
     </div>
 </div>
 
-<script>
-    function rejectInvAdj(invadj_id) {
-
-
-
-
-        var remark = document.getElementById("remarkbox " + invadj_id).value
-
-        var pdata = { InvAdjId: invadj_id, remark: remark };
-
-        $.ajax({
-            type: "POST",
-            url: "/StoreSup/rejectInvAdj",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Rejected Inventory Adjustment successfully");
-                window.location.href = "./PendingInvAdjList";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-
-    function approveInvAdj(invadj_id) {
-
-
-
-
-        var remark = document.getElementById("remarkbox " + invadj_id).value
-
-        var pdata = { InvAdjId: invadj_id, remark: remark };
-
-        $.ajax({
-            type: "POST",
-            url: "/StoreSup/approveInvAdj",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(pdata),
-            dataType: "json",
-
-            // Response Success
-            success: function (response) {
-
-                alert("Approved Inventory Adjustment successfully");
-                window.location.href = "./PendingInvAdjList";
-
-            },
-
-            // Response Fail
-            failure: function (response) {
-                alert("Fail Case");
-            },
-
-            // Response Error
-            error: function (response) {
-                alert("ERROR case");
-            }
-
-
-        });
-    }
-</script>
 
 
 

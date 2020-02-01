@@ -9,7 +9,7 @@ namespace ADprojectteam1.DB
     public class DepOrderData
     {
 
-        public static void CreateDepOrder(int depId,int itemId, int quant)
+        public static void CreateDepOrder(int depId,int itemId, int quant,double price)
         {
             DepOrder dorder = new DepOrder();
             
@@ -21,6 +21,7 @@ namespace ADprojectteam1.DB
                 dorder.dep=d;
                 dorder.item = i;
                 dorder.quant = quant;
+                dorder.uprice = price;
 
                 
                 db.DepOrder.Add(dorder);
@@ -84,7 +85,8 @@ namespace ADprojectteam1.DB
                 if (db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).Any())
                     deporder = db.DepOrder.Where(x => x.dep.Id == dId && x.item.Id == itemId&&x.status.Equals("collected")).FirstOrDefault();
                 deporder.deliveredquant = v;
-                deporder.status = "received";
+                deporder.status = "delivered";
+                deporder.signindate = DateTime.Today;
                 db.SaveChanges();
             }
         }
@@ -113,6 +115,18 @@ namespace ADprojectteam1.DB
             }
             return depo;
 
+        }
+
+        internal static List<DepOrder> GetDeliveredDepOrderByDepId(int id)
+        {
+            List<DepOrder> listdepo = new List<DepOrder>();
+            using (var db = new ADDbContext())
+            {
+                if (db.DepOrder.Where(x => x.dep.Id == id && x.status.Equals("delivered")).Any())
+                    listdepo = db.DepOrder.Include("dep").Include("item").Where(x => x.dep.Id == id && x.status.Equals("delivered")).ToList();
+
+            }
+            return listdepo;
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+@{
+    ViewBag.Title = "Monthly Bill";
+    Department dep = ViewBag.dep;
+    Dictionary<string,List<DepOrder>> mbill=ViewBag.monthlybill;
+
+}
+
+
+<div class="row" style="padding-top:0px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_DepManager_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+
+        <h2>Monthly Bills</h2>
+
+        <h4>Department Name</h4><h4>@dep.DepName</h4>
+        
+        <br>
+        
+        <table class="w3-table w3-striped">
+            <tr><th>Date</th><th>Total Amount</th><th>Details</th></tr>
+            @{foreach (string m in mbill.Keys)
+                {
+                    <tr>
+                        <td>@m</td>
+                        <td>@mbill[m].Sum(x => x.uprice * x.quant)$</td>
+                        <td>
+                            <table class="w3-table w3-striped">
+                            <tr><th>Item Desc</th><th>Quantity</th><th>UOM</th><th>UPrice</th><th>Amount</th><tr>
+                                @{foreach (DepOrder dor in mbill[m])
+                                    { 
+                                        <tr><td>@dor.item.Description</td>
+                                            <td>@dor.quant</td>
+                                            <td>@dor.item.UnitofMeasure</td>
+                                            <td>@dor.uprice</td>
+                                            <td>@(dor.uprice*dor.quant)$</td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                            </td></tr>
+                }
+            }
+        </table>
+</div>
+</div>
+
+

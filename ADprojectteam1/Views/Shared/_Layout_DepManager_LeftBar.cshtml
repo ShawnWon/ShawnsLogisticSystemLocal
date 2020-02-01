@@ -10,7 +10,7 @@
         @{if (((string)Session["sessionRole"]).Equals("DepManager")) {<a class="w3-bar-item w3-button w3-hover-black" href="@Url.Action("DelegateView", "DepManager")">Delegate Management</a>
                 }
             }
-        <a class="w3-bar-item w3-button w3-hover-black" href="#">Monthly Bill</a>
+        <a class="w3-bar-item w3-button w3-hover-black" href="@Url.Action("MonthlyBill", "DepManager")">Monthly Bill</a>
     </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->

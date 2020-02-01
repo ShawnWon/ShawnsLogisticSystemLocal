@@ -117,8 +117,9 @@ namespace ADprojectteam1.Controllers
 
                     xlist = slist.Where(x => x.item.Id==itemId).ToList();
                     int quant= xlist.Select(x => x.Quant).Sum();
+                    double price = StockCardData.GetLatestPriceByItem(ItemData.GetItemById(itemId));
                     if(quant!=0) itemmap.Add(itemId,quant);
-                    DepOrderData.CreateDepOrder(depId,itemId,quant);
+                    DepOrderData.CreateDepOrder(depId,itemId,quant,price);
 
                     //Withdraw from stock
                     Item item = ItemData.GetItemById(itemId);
@@ -472,7 +473,7 @@ namespace ADprojectteam1.Controllers
             foreach (Item item in po.items.Select(x => x.item).ToList())
             {
                 int balance = StockCardData.GetStockBalanceByItem(item);
-                StockCardData.AddToStock(item, DateTime.Today, po.items.Select(x => x.UnitPrice).FirstOrDefault(), po.items.Select(x => x.item.ReorderQty).FirstOrDefault(),balance);
+                StockCardData.AddToStock(item, DateTime.Today,po.items.FirstOrDefault().supplier, po.items.Select(x => x.UnitPrice).FirstOrDefault(), po.items.Select(x => x.item.ReorderQty).FirstOrDefault(),balance);
                 
             }
             

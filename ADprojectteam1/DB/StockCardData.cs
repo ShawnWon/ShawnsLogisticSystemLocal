@@ -34,7 +34,7 @@ namespace ADprojectteam1.DB
             return sb;
         }
 
-        public static void AddToStock(Item item,DateTime dt,double price,int quant,int balance)
+        public static void AddToStock(Item item,DateTime dt,Supplier s,double price,int quant,int balance)
         {
             StockCard sc = new StockCard();
             Item it = new Item();
@@ -47,6 +47,7 @@ namespace ADprojectteam1.DB
                     it = db.Item.Where(x => x.Id == item.Id).FirstOrDefault();
                 sc.date = dt;
                 sc.item = it;
+                sc.supplier = s;
                 sc.uprice = price;
                 sc.quant = quant;
                 sc.comment = "Add In";
@@ -92,13 +93,28 @@ namespace ADprojectteam1.DB
                 sc.date = dt;
                 sc.item = it;
                 sc.department = dep;
-                sc.quant = quant;
+                sc.quant = -quant;
                 sc.comment = "Withdraw";
                 sc.balance = balance - quant;
+                sc.uprice = StockCardData.GetLatestPriceByItem(it);
                 db.StockCard.Add(sc);
                 db.SaveChanges();
             }
 
+        }
+
+        internal static List<StockCard> GetConsHistory(Item item)
+        {
+            List<StockCard> list = new List<StockCard>();
+            
+            int i = item.Id;
+            using (var db = new ADDbContext())
+            {
+                if (db.StockCard.Where(x => x.item.Id == item.Id).Any())
+                    list = db.StockCard.Where(x => x.item.Id == item.Id && x.comment.Equals("Withdraw")).ToList();
+                
+            }
+            return list;
         }
 
         public static void AdjustStockRecord(DateTime dt,InventoryAdj invadj,int balance)
@@ -121,6 +137,18 @@ namespace ADprojectteam1.DB
 
         }
 
-
+        public static double GetLatestPriceByItem(Item item)
+        {
+            double p = 0;
+            List<double> l = new List<double>();
+            int i = item.Id;
+            using (var db = new ADDbContext())
+            {
+                if (db.StockCard.Where(x => x.item.Id == item.Id).Any())
+                    l = db.StockCard.Where(x => x.item.Id == item.Id&&x.comment.Equals("Add in")).Select(x => x.uprice).ToList();
+                p = l[l.Count - 1];
+            }
+            return p;
+        }
     }
 }

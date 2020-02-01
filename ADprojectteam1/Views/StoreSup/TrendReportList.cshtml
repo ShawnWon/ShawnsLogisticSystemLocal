@@ -1,0 +1,65 @@
+﻿@using ADprojectteam1.Models;
+@using ADprojectteam1.DB;
+
+
+@{
+    ViewBag.Title = "TrendReportList";
+    Dictionary<int, Dictionary<string, int>> trendlist = ViewBag.trendlist;
+    List<string> mlist = ViewBag.monthslist;
+}
+
+<div class="row" style="padding-top:0px;">
+    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+        @{
+            Html.RenderPartial("_Layout_StoreSup_LeftBar");
+        }
+    </div>
+
+    <div class="w3-main" style="margin-left:250px">
+        <h2>Item Consumption Trend Report</h2>
+        <table class="w3-table w3-striped">
+            
+            
+            <tr>
+            <th>Item Des</th>
+            @{ foreach (string m in mlist)
+                { 
+                    <th>@m</th>
+                } }
+            </tr>
+            
+                @{ foreach (int i in trendlist.Keys)
+                    {
+                            <tr>
+                                <td>@ItemData.GetItemById(i).ItemCode</td>
+                                @{ foreach (string m in mlist)
+                                    {
+                                <td>@trendlist[i][m]</td>
+                                     }
+                                    }
+                                <td><input type="button" value="DrawChart" onclick="location.href='@Url.Action("TrendReport", "StoreSup",new { itemId=i})'" /></td>
+                            </tr>
+                    }
+                        
+                 }
+            
+        
+    </table>
+    
+
+    
+
+
+    <br>
+    <br>
+</div>
+</div>
+
+
+
+
+
+
+
+
+

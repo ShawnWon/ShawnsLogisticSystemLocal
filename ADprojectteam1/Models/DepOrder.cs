@@ -12,15 +12,29 @@ namespace ADprojectteam1.Models
         public virtual Item item { get; set; }
         public virtual Department dep { get; set; }
         public int quant { get; set; }
+        public double uprice { get; set; }
         public int collectedquant { get; set; }
         public int deliveredquant { get; set; }
-        public string status { get; set; }//can be "acknowledged","collected","delivered","tobereplenished"
+        public string status { get; set; }//can be "acknowledged","collected","delivered"
         public DateTime signindate { get; set; }
         public ICollection<SRequisition> listreq { get; set; }
 
         public DepOrder()
         {
             status = "acknowledged";
+        }
+
+        public DepOrder(Item it,Department d,int q,double price,  string s, DateTime sdate)
+        {
+            item = it;
+            dep = d;
+            quant = q;
+            uprice = price;
+            collectedquant = q;
+            deliveredquant = q;
+            status = s;
+            signindate = sdate;
+
         }
 
         public double GetOrderAmount()

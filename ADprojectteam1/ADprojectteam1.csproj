@@ -233,7 +233,8 @@
     <Content Include="Views\StoreManager\EditSupplier.cshtml" />
     <Content Include="Views\StoreManager\EditSupplierPrice.cshtml" />
     <Content Include="Views\DepManager\ManageRep.cshtml" />
-    <Content Include="Views\StoreSup\DrawTrendChart.cshtml" />
+    <Content Include="Views\StoreSup\TrendReportList.cshtml" />
+    <Content Include="Views\DepManager\MonthlyBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,6 +4,7 @@ using ADprojectteam1.Models;
 using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -202,7 +203,38 @@ namespace ADprojectteam1.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-        
+        ////////////////////////////////////////View Monthly Bill
+        public ActionResult MonthlyBill()
+        {
+            Employee u = EmployeeData.FindByUserName((string)Session["username"]);
+            int uId = u.Id;
+            int dId = u.department.Id;
+
+            Department dep = DepartmentData.GetDepById(dId);
+
+            Dictionary<string, List<DepOrder>> monthlybill = new Dictionary<string, List<DepOrder>>();
+            List<DepOrder> listdeporder = DepOrderData.GetDeliveredDepOrderByDepId(dep.Id);
+            
+            var iter = from deporder in listdeporder orderby  deporder.signindate descending group deporder by new { month = deporder.signindate.Month, year = deporder.signindate.Year } into d select new { dt = string.Format("{0}/{1}", d.Key.month, d.Key.year), detail=d.ToList() };
+
+            foreach (var grp in iter)
+            {
+                //Debug.WriteLine("{0}={1}", grp.dt, grp.dorder.Count());
+
+
+                List<DepOrder> mlist = new List<DepOrder>();
+                foreach (var dor in grp.detail)
+                {
+                    //Debug.WriteLine("{0}={1}", dor.item.Description, dor.quant);
+                    mlist.Add(dor);
+                }
+                monthlybill.Add(grp.dt,mlist);
+            }
+
+            ViewBag.dep = dep;
+            ViewBag.monthlybill = monthlybill;
+            return View();
+        }
 
     }
 }
