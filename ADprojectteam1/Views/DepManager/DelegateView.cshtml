@@ -8,52 +8,62 @@
 }
 
 
-<div class="row" style="padding-top:70px;">
-    <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
-        @{
-            Html.RenderPartial("_Layout_DepManager_LeftBar");
-        }
-    </div>
+    <div class="row" style="padding-top:0px;">
+        <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
+            @{
+                Html.RenderPartial("_Layout_DepManager_LeftBar");
+            }
+        </div>
 
-    <div class="w3-main" style="margin-left:250px">
+        <div class="w3-main" style="margin-left:250px">
 
-        <h2>DelegateView</h2>
-        <table class="w3-table w3-striped">
-            <tr><th>Start Date</th><th>End Date</th><th>Delegate To</th></tr>
+            <h2>DelegateView</h2>
 
-            @{ if (ldeleg != null)
 
-                {
-                    foreach (Delegation de in ldeleg)
+            <select style="width:350px;" id="empId">
+                @{
+                    for (int j = 0; j < lemp.Count(); j++)
                     {
-                        <tr>
-                            <td>@de.startdate.ToString("dd/MM/yyyy")</td>
-                            <td>@de.enddate.ToString("dd/MM/yyyy")</td>
-                            <td>@EmployeeData.FindEmpById(de.DelegatedEmpId).Name</td>
-                            <td><input type="button" value="Cancel Delegate" onclick="canceldele(@de.Id)" /></td>
-                        </tr>
+                        <option value="@lemp[j].Id">@lemp[j].Name</option>
                     }
                 }
+            </select>
 
-            }
-        </table>
+            <h5>Start date</h5>
+            <input type="date" placeholder="startdate" required="required" onchange="checkDate()" size="6" id="startdate">
 
-        <select style="width:350px;" id="empId">
-            @{
-                for (int j = 0; j < lemp.Count(); j++)
-                {
-                    <option value="@lemp[j].Id">@lemp[j].Name</option>
-                }
-            }
-        </select>
+            <h5>End date</h5>
+            <input type="date" placeholder="enddate" required="required" onchange="checkDate()" size="6" id="enddate">
 
-        <h5>Start date</h5>
-        <input type="date" placeholder="startdate" required="required" onchange="checkDate()" size="6" id="startdate">
+            <input type="button" value="Delegate authority" onclick="delegate()" />
 
-        <h5>End date</h5>
-        <input type="date" placeholder="enddate" required="required" onchange="checkDate()" size="6" id="enddate">
+            <br>
+            <br>
+            <br>
+                
+            <table class="w3-table w3-striped">
+                @{if (ldeleg.Count!=0)
+                    {<tr><th>Start Date</th><th>End Date</th><th>Delegate To</th></tr>
 
-        <input type="button" value="Delegate authority" onclick="delegate()" />
+
+
+                        foreach (Delegation de in ldeleg)
+                            {
+                                <tr>
+                                    <td>@de.startdate.ToString("dd/MM/yyyy")</td>
+                                    <td>@de.enddate.ToString("dd/MM/yyyy")</td>
+                                    <td>@EmployeeData.FindEmpById(de.DelegatedEmpId).Name</td>
+                                    <td><input type="button" value="Cancel Delegate" onclick="canceldele(@de.Id)" /></td>
+                                </tr>
+                            }
+                        
+                     }
+                  }
+
+                    </table>
+                
+            
+
         </div>
     </div>
 

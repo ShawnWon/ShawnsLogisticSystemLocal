@@ -219,13 +219,9 @@ namespace ADprojectteam1.Controllers
 
             foreach (var grp in iter)
             {
-                //Debug.WriteLine("{0}={1}", grp.dt, grp.dorder.Count());
-
-
                 List<DepOrder> mlist = new List<DepOrder>();
                 foreach (var dor in grp.detail)
                 {
-                    //Debug.WriteLine("{0}={1}", dor.item.Description, dor.quant);
                     mlist.Add(dor);
                 }
                 monthlybill.Add(grp.dt,mlist);

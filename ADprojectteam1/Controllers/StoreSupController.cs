@@ -64,17 +64,39 @@ namespace ADprojectteam1.Controllers
             Dictionary<int, Dictionary<string, int>> trendlist = (Dictionary<int, Dictionary<string, int>>)Session["trendlist"];
             Item item = ItemData.GetItemById(itemId);
             List<string> monlist = new List<string>();
+            Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
             for (int i = 11; i >= 0; i--)
             {
                 string dt = string.Format("{0}/{1}", DateTime.Today.AddMonths(-i).Month, DateTime.Today.AddMonths(-i).Year);
                 monlist.Add(dt);
+
+                //Get stockbalance on given month
+                bool gotstockbalance = false;
+                string givenmonth = dt;
+                while (!gotstockbalance)
+                {
+
+                    if (StockCardData.GetStockBalanceByItemAndMonth(item, givenmonth) >= 0)
+                    {
+                        itemsbtrend.Add(dt, StockCardData.GetStockBalanceByItemAndMonth(item, givenmonth));
+                        gotstockbalance = true;
+                    }
+                    else
+                    {
+                        DateTime date = DateTime.Parse(dt);
+                        givenmonth = string.Format("{0}/{1}", date.AddMonths(-1).Month, date.AddMonths(-1).Year);
+
+                    }
+                }
             }
 
             int[] cons = trendlist[itemId].Values.ToArray();
             
+            
             ViewBag.cons = cons;
             ViewBag.months = monlist.ToArray();
             ViewBag.Item = item;
+            ViewBag.sbalance = itemsbtrend.Values.ToArray();
             return View();
         }
 
@@ -83,6 +105,7 @@ namespace ADprojectteam1.Controllers
             List<StockCard> itemlistsc = new List<StockCard>();
             
             Dictionary<int, Dictionary<string, int>> trendlist = new Dictionary<int, Dictionary<string, int>>();
+            
 
             List<string> monlist = new List<string>();
             for (int i = 11; i >= 0; i--)
@@ -95,13 +118,17 @@ namespace ADprojectteam1.Controllers
             List<Item> listitem = ItemData.FindAll();
             foreach (Item item in listitem)
             {
-
+                Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
                 Dictionary<string, int> itemtrend = new Dictionary<string, int>();
                 itemlistsc = StockCardData.GetConsHistory(item);
                 var iter = from sc in itemlistsc orderby sc.date group sc by new { month = sc.date.Month, year = sc.date.Year } into d select new { dt = string.Format("{0}/{1}", d.Key.month, d.Key.year), cons = d.Sum(x => x.quant) };
 
                 foreach (string m in monlist)
                 {
+                    
+                    
+                    
+                    //Get monthly consumption quant on given month
                     bool exist = false;
                     foreach (var grp in iter)
                     {
@@ -117,26 +144,44 @@ namespace ADprojectteam1.Controllers
 
                 }
                 trendlist.Add(item.Id,itemtrend);
-
+                
             }
 
-
-
-           
             
             
-            //int[] cons = itemtrend.Values.ToArray();
-            //string[] months = monlist.ToArray();
-            
-            //int[] cons = new int[] { 30, 20, 50, 70, 20, 30, 80, 50, 25, 35, 15, 30 };
-            //string[] months = new string[] { "201901", "201902", "201903", "201904", "201905", "201906", "201907", "201908", "201909", "201910", "201911", "201912" };
 
             ViewBag.trendlist = trendlist;
             ViewBag.monthslist = monlist;
             Session["trendlist"] = trendlist;
+            
             return View();
         }
 
+        [HttpPost]
+        public JsonResult UpdateReOrderLevel(int itemId, int newreorderlevel)
+        {
+
+            ItemData.UpdateReOrderLevelByItemId(itemId,newreorderlevel);
+
+            
+
+            ///
+            object n = new { newlevel = newreorderlevel };
+            return Json(n, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateReOrderQuant(int itemId, int newreorderquant)
+        {
+
+            ItemData.UpdateReOrderQuantByItemId(itemId, newreorderquant);
+
+
+
+            ///
+            object n = new { newquant = newreorderquant };
+            return Json(n, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

@@ -345,7 +345,7 @@ namespace ADprojectteam1.DB
 
             List<StockCard> lsc1 = new List<StockCard>();
             
-            for(int i=1; i<85;i++)
+            for(int i=2; i<85;i++)
             lsc1.Add(new StockCard(items[i], dt, sups[0],1, 500, 550));
 
             foreach (StockCard sc in lsc1)

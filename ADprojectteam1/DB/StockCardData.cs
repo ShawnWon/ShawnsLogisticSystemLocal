@@ -137,6 +137,29 @@ namespace ADprojectteam1.DB
 
         }
 
+        internal static int GetStockBalanceByItemAndMonth(Item item, string m)
+        {
+            int sb = 0;
+            List<int> l = new List<int>();
+            int i = item.Id;
+            string[] date = m.Split('/');
+            string month = date[0];
+            string year = date[1];
+
+            
+
+            using (var db = new ADDbContext())
+            {
+                if (db.StockCard.Where(x => x.item.Id == item.Id && x.date.Year.ToString().Equals(year) && x.date.Month.ToString().Equals(month)).Any())
+                {
+                    l = db.StockCard.Where(x => x.item.Id == item.Id && x.date.Year.ToString().Equals(year) && x.date.Month.ToString().Equals(month)).Select(x => x.balance).ToList();
+                    sb = l[l.Count - 1];
+                }
+                else sb = -1;
+            }
+            return sb;
+        }
+
         public static double GetLatestPriceByItem(Item item)
         {
             double p = 0;
