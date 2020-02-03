@@ -135,7 +135,7 @@ namespace ADprojectteam1.DB
             {
                 if (db.PurchaseOrder.Where(x => x.Id==pId).Any())
 
-                    p = db.PurchaseOrder.Include("items.item").Where(x => x.Id==pId).FirstOrDefault();
+                    p = db.PurchaseOrder.Include("items.item").Include("items.supplier").Where(x => x.Id==pId).FirstOrDefault();
 
             }
             return p;

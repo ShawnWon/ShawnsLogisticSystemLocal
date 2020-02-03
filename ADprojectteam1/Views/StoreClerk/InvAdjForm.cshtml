@@ -42,7 +42,7 @@
                                 <td>@invadj.Quant</td>
                                 <td>@invadj.Reason</td>
                                 <td>@invadj.Status</td>
-                                <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteInvAdj","StoreClerk", new { id = invadj.Id})'" /></td>
+                                <td><input type="button" value="Delete" onclick="Delete_InvAdj(@invadj.Id);" /></td>
                             </tr>
 
                         }
@@ -191,6 +191,40 @@
                     success: function (response) {
 
                         alert("Inventory Adjustment vouchour submitted successfully");
+                        window.location.href = "./InvAdjForm";
+
+                    },
+
+                    // Response Fail
+                    failure: function (response) {
+                        alert("Fail Case");
+                    },
+
+                    // Response Error
+                    error: function (response) {
+                        alert("ERROR case");
+                    }
+
+
+                });
+            }
+
+
+                        function Delete_InvAdj(item_id) {
+
+                var pdata = { Id: item_id};
+
+                $.ajax({
+                    type: "POST",
+                    url: "/StoreClerk/deleteInvAdj",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(pdata),
+                    dataType: "json",
+
+                    // Response Success
+                    success: function (response) {
+
+                        alert("Inventory Adjustment vouchour deleted successfully");
                         window.location.href = "./InvAdjForm";
 
                     },

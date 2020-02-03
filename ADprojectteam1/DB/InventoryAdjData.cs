@@ -114,5 +114,25 @@ namespace ADprojectteam1.DB
             }
             return list;
         }
+
+        internal static void DeleteInvAdj(int itemId)
+        {
+            InventoryAdj invadj = new InventoryAdj();
+
+            using (var db = new ADDbContext())
+            {
+                if (db.InventoryAdj.Where(x => x.Id == itemId).Any())
+                {
+                    invadj = db.InventoryAdj.Where(x => x.Id == itemId).FirstOrDefault();
+
+
+
+                    db.InventoryAdj.Remove(invadj) ;
+                    db.SaveChanges();
+
+
+                }
+            }
+        }
     }
 }

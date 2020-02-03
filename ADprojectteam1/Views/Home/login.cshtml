@@ -1,19 +1,25 @@
 ﻿@model ADprojectteam1.Models.Employee
+<head>
+    <style>
+.form-horizontal{
+    padding-left:40%;
+}
+</style>
+</head>
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="col-md-12 col-sm-12"></div>
+        <div class="col-md-12 col-sm-12">
 
-<br>
-<br>
-<div class="col-md-12 col-xs-12 text-center">
-    <div class="col-md-6 col-sm-6 text-center">
-        <div class="col-md-6 col-sm-6"></div>
-        <div class="col-md-6 col-sm-6">
-
-            @using (Html.BeginForm("LoginCheckPassword", "Home", FormMethod.Post))  //Password only post to checkpassword(),so user will not see it in browser.
+            @using (Html.BeginForm("LoginCheckPassword", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))  //Password only post to checkpassword(),so user will not see it in browser.
             {
                 <table>
                     <tr>
                         <td>@Html.LabelFor(x => x.UserName):</td>
                         <td>@Html.TextBoxFor(x => x.UserName, new { id = "username" })</td>  @*The name of this textbox is "UserName", the attribute of model user.*@
                         <td>@Html.ValidationMessageFor(x => x.UserName)</td>
+                        <td></td>
                     </tr>
 
                     <tr><td><br></td></tr>
@@ -28,29 +34,107 @@
                                 <td>Incorrect username or password</td>
                             }
                         }
+
+
+                        <td align="right"><input id="submitBtn" type="submit" value="Log In" style="color:midnightblue" /></td>
+
                     </tr>
-
-                    <tr><td><br></td></tr>
-
-
-                    <tr>
-                        <td colspan="2" align="right"><input id="submitBtn" type="submit" value="Log In" style="color:midnightblue" /></td>
-                    </tr>
-
 
                 </table>
             }
 
 
-            
+
         </div>
     </div>
+    
+</header>
+
+
+
+<div class="w3-row-padding w3-center w3-margin-top">
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Department Employee</h3><br>
+            <p>UserName:depemp</p>
+            <p>PassWork:depemp</p>
+            <i class="fa fa-desktop w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i> Submit stationary requisition</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i> Track the status of requisition</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i> Email notification when status change</p>
+        </div>
+    </div>
+
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Department Manager</h3><br>
+            <p>UserName:depmanager</p>
+            <p>PassWork:depmanager</p>
+            <i class="fa fa-css3 w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Approve/Reject pending requisition</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Manage department representative</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Delegate authority</font></p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>View monthly bills</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Email notification when new requisition</font></p>
+        </div>
+    </div>
+
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Department Representative</h3><br>
+            <p>UserName:deprep</p>
+            <p>PassWork:deprep</p>
+            <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>View disbursment order</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Adjust received quantities</font></p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Sign in disbursment order</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Manage collecting point</p>
+        </div>
+    </div>
+
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Store<br> Clerk</h3><br>
+            <p>UserName:storeclerk</p>
+            <p>PassWork:storeclerk</p>
+            <i class="fa fa-male w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>View demanding item list</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Adjust collected quantity</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Balance the short supplies</font></p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Delivery plan sort by department</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Low stock balance notification</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Aggregate PO to suppliers</font></p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Tracking PO status</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Confirm delivery from suppliers</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Submit inventory adjustment</p>
+        </div>
+    </div>
+
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Store<br> Supervisor</h3><br>
+            <p>UserName:storesup</p>
+            <p>PassWork:storesup</p>
+            <i class="fa fa-rocket w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Approve/Reject inventory adjustment</p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Trend Analysis</font></p>
+            <p><i class="fa fa-star w3-margin-bottom w3-text-theme" style="font-size:14px"></i><font color="red">Neurol network prediction</font></p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Update re-order level/quant</p>
+        </div>
+    </div>
+
+    <div class="w3-col col-md-2 w3-center">
+        <div class="w3-card w3-container" style="min-height:460px">
+            <h3>Store<br> Manager</h3><br>
+            <p>UserName:storemanager</p>
+            <p>PassWork:storemanager</p>
+            <i class="fa fa-shield w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Approve/Reject inventory adjustment</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Maintain supplier info</p>
+            <p><i class="fa fa-check-circle w3-margin-bottom w3-text-theme" style="font-size:12px"></i>Maintain tender price</p>
+
+        </div>
+    </div>
+
 </div>
-
-
-
-
-
-
-
 

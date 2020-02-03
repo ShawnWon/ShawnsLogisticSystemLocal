@@ -9,14 +9,14 @@ namespace ADprojectteam1.Service
 {
     public class EmailNotification
     {
-        public static void SendNotificationEmailToEmployee(string toAddress, string content)
+        public static void SendNotificationEmailToEmployee(string toAddress, string subject,string content)
         {
             string to = toAddress;
             string from = "shawn.won@hotmail.com";
             MailMessage message = new MailMessage(from, to);
 
             string mailbody = content;
-            message.Subject = "New Stationary Requisition Notification";
+            message.Subject = subject;
             message.Body = mailbody;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;

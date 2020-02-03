@@ -34,7 +34,7 @@ namespace ADprojectteam1.DB
             return sb;
         }
 
-        public static void AddToStock(Item item,DateTime dt,Supplier s,double price,int quant,int balance)
+        public static void AddToStock(Item item,DateTime dt,int supId,double price,int quant,int balance)
         {
             StockCard sc = new StockCard();
             Item it = new Item();
@@ -47,7 +47,7 @@ namespace ADprojectteam1.DB
                     it = db.Item.Where(x => x.Id == item.Id).FirstOrDefault();
                 sc.date = dt;
                 sc.item = it;
-                sc.supplier = s;
+                sc.supplierId = supId;
                 sc.uprice = price;
                 sc.quant = quant;
                 sc.comment = "Add In";

@@ -217,73 +217,49 @@ namespace ADprojectteam1.DB
             srq1.ListItem = rit1;
             context.SRequisition.Add(srq1);
 
-           
-            
-            
-            /*
-            List<ReOrderRecord> lro = new List<ReOrderRecord>();
-            lro.Add(new ReOrderRecord(itemsup[0]));
-            lro.Add(new ReOrderRecord(itemsup[1]));
-            lro.Add(new ReOrderRecord(itemsup[3]));
-
-            foreach (ReOrderRecord rr in lro)
-                context.ReOrderRecord.Add(rr);
-
-            List<ReOrderRecord> lro1 = new List<ReOrderRecord>();
-            lro.Add(new ReOrderRecord(itemsup[0]));
-            lro.Add(new ReOrderRecord(itemsup[1]));
-            lro.Add(new ReOrderRecord(itemsup[3]));
-
-            foreach (ReOrderRecord rr in lro1)
-                context.ReOrderRecord.Add(rr);
-
-            PurchaseOrder po = new PurchaseOrder(lro);
-            PurchaseOrder po1 = new PurchaseOrder(lro1);
-            context.PurchaseOrder.Add(po);
-            context.PurchaseOrder.Add(po1);*/
 
             List<StockCard> lsc = new List<StockCard>();
             DateTime dt = DateTime.Today;
             
-            lsc.Add(new StockCard(items[58],dt.AddMonths(-5), sups[0],1,500,550));
+            lsc.Add(new StockCard(items[58],dt.AddMonths(-5), sups[0].Id,1,500,550));
             lsc.Add(new StockCard(items[58], dt.AddMonths(-5), deps[0], -20, 530));
             lsc.Add(new StockCard(items[58], dt.AddMonths(-5), 4, 534));
             lsc.Add(new StockCard(items[58], dt, deps[1], -30, 504));
             lsc.Add(new StockCard(items[58], dt, deps[2], -50, 454));
-            lsc.Add(new StockCard(items[58], dt, sups[0],1, 500, 954));
+            lsc.Add(new StockCard(items[58], dt, sups[0].Id,1, 500, 954));
 
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-12), sups[0], 1, 100, 100));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-12), sups[0].Id, 1, 100, 100));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-12), deps[0], -25, 75));
             
             lsc.Add(new StockCard(items[0], dt.AddMonths(-11), deps[0], -20, 55));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-10), 4, 59));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-10), deps[1], -35, 24));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-9), sups[0], 1, 30, 54));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-9), sups[0].Id, 1, 30, 54));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-9), deps[1], -15, 39));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-8), sups[0], 1, 30, 69));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-8), sups[0].Id, 1, 30, 69));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-8), deps[1], -40, 29));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-8), sups[0], 1, 30, 59));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-8), sups[0].Id, 1, 30, 59));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-7), deps[1], -20, 39));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-7), sups[0], 1, 30, 69));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-7), sups[0].Id, 1, 30, 69));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-6), deps[1], -35, 34));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-6), sups[0], 1, 30, 64));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-6), sups[0].Id, 1, 30, 64));
             
             lsc.Add(new StockCard(items[0], dt.AddMonths(-5), deps[0], -20, 44));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-5), 4, 48));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-5), sups[0], 1, 30, 78));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-5), sups[0].Id, 1, 30, 78));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-4), deps[1], -35, 43));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-4), sups[0], 1, 30, 73));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-4), sups[0].Id, 1, 30, 73));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-4), deps[1], -15, 58));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-3), deps[1], -40, 18));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), sups[0],1, 30, 48));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), sups[0], 1, 30, 78));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), sups[0].Id,1, 30, 48));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-3), sups[0].Id, 1, 30, 78));
             lsc.Add(new StockCard(items[0], dt.AddMonths(-2), deps[1], -20, 58));
             
             lsc.Add(new StockCard(items[0], dt.AddMonths(-1), deps[1], -35, 23));
-            lsc.Add(new StockCard(items[0], dt.AddMonths(-1), sups[0], 1, 30, 53));
+            lsc.Add(new StockCard(items[0], dt.AddMonths(-1), sups[0].Id, 1, 30, 53));
             lsc.Add(new StockCard(items[0], dt, deps[2], -50, 3));
-            lsc.Add(new StockCard(items[0], dt, sups[0],1, 30, 33));
-            lsc.Add(new StockCard(items[0], dt, sups[0],1, 30, 63));
+            lsc.Add(new StockCard(items[0], dt, sups[0].Id,1, 30, 33));
+            lsc.Add(new StockCard(items[0], dt, sups[0].Id,1, 30, 63));
 
             List<DepOrder> ldo = new List<DepOrder>();
             ldo.Add(new DepOrder(items[0], deps[0], 25, 1.2, "delivered", dt.AddMonths(-12)));
@@ -304,28 +280,28 @@ namespace ADprojectteam1.DB
 
 
 
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-12), sups[0], 1, 100, 100));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-12), sups[0].Id, 1, 100, 100));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-12), deps[0], -25, 75));
 
             
             lsc.Add(new StockCard(items[1], dt.AddMonths(-10), 4, 79));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-10), deps[1], -35, 44));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-9), sups[0], 1, 30, 74));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-9), sups[0].Id, 1, 30, 74));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-9), deps[1], -15, 59));
             
             lsc.Add(new StockCard(items[1], dt.AddMonths(-7), deps[1], -20, 39));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-7), sups[0], 1, 30, 69));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-7), sups[0].Id, 1, 30, 69));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-6), deps[1], -35, 34));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-6), sups[0], 1, 30, 64));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-6), sups[0].Id, 1, 30, 64));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-4), deps[1], -35, 29));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-4), sups[0], 1, 30, 59));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-4), sups[0].Id, 1, 30, 59));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-3), deps[1], -40, 19));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-3), sups[0], 1, 30, 49));
-            lsc.Add(new StockCard(items[1], dt.AddMonths(-3), sups[0], 1, 30, 79));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-3), sups[0].Id, 1, 30, 49));
+            lsc.Add(new StockCard(items[1], dt.AddMonths(-3), sups[0].Id, 1, 30, 79));
             lsc.Add(new StockCard(items[1], dt.AddMonths(-2), deps[1], -20, 59));
             lsc.Add(new StockCard(items[1], dt, deps[2], -50, 9));
-            lsc.Add(new StockCard(items[1], dt, sups[0], 1, 30, 39));
-            lsc.Add(new StockCard(items[1], dt, sups[0], 1, 30, 69));
+            lsc.Add(new StockCard(items[1], dt, sups[0].Id, 1, 30, 39));
+            lsc.Add(new StockCard(items[1], dt, sups[0].Id, 1, 30, 69));
 
             ldo.Add(new DepOrder(items[1],deps[0],25,1.2,"delivered",dt.AddMonths(-12)));
             ldo.Add(new DepOrder(items[1], deps[0], 35, 1.2, "delivered", dt.AddMonths(-10)));
@@ -346,7 +322,7 @@ namespace ADprojectteam1.DB
             List<StockCard> lsc1 = new List<StockCard>();
             
             for(int i=2; i<85;i++)
-            lsc1.Add(new StockCard(items[i], dt, sups[0],1, 500, 550));
+            lsc1.Add(new StockCard(items[i], dt, sups[0].Id,1, 500, 550));
 
             foreach (StockCard sc in lsc1)
                 context.StockCard.Add(sc);

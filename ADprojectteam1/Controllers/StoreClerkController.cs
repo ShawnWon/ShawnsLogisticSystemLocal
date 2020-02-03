@@ -207,7 +207,7 @@ namespace ADprojectteam1.Controllers
                             string emailaddress = EmployeeData.FindEmpById(empId).EmailAdd;
                             Task task = Task.Run(() =>
                             {
-                                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition is under delivering");
+                                EmailNotification.SendNotificationEmailToEmployee(emailaddress,"Stationary Requisition Status Changed", "Your Stationary Requisition is under delivering");
                             });
                             notifystatus = true;
                         }
@@ -473,7 +473,7 @@ namespace ADprojectteam1.Controllers
             foreach (Item item in po.items.Select(x => x.item).ToList())
             {
                 int balance = StockCardData.GetStockBalanceByItem(item);
-                StockCardData.AddToStock(item, DateTime.Today,po.items.FirstOrDefault().supplier, po.items.Select(x => x.UnitPrice).FirstOrDefault(), po.items.Select(x => x.item.ReorderQty).FirstOrDefault(),balance);
+                StockCardData.AddToStock(item, DateTime.Today,po.items.FirstOrDefault().supplier.Id, po.items.Select(x => x.UnitPrice).FirstOrDefault(), po.items.Select(x => x.item.ReorderQty).FirstOrDefault(),balance);
                 
             }
             
@@ -555,6 +555,17 @@ namespace ADprojectteam1.Controllers
             Item it = ItemData.GetItemById(Id);
             
             InventoryAdjData.CreateInvAdj(it,quant,reason);
+            object new_q = new { };
+            return Json(new_q, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult deleteInvAdj(int Id)
+        {
+            Item it = ItemData.GetItemById(Id);
+
+            InventoryAdjData.DeleteInvAdj(Id);
             object new_q = new { };
             return Json(new_q, JsonRequestBehavior.AllowGet);
 

@@ -39,7 +39,7 @@ namespace ADprojectteam1.Controllers
 
 
             Task task = Task.Run(() => {
-                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition was rejected");
+                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Stationary Requisition Status Changed","Your Stationary Requisition was rejected");
             });
 
 
@@ -57,7 +57,7 @@ namespace ADprojectteam1.Controllers
 
 
             Task task = Task.Run(() => {
-                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition was approved");
+                EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Stationary Requisition Status Changed","Your Stationary Requisition was approved");
             });
 
             

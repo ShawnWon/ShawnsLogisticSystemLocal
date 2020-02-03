@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.DataVisualization.Charting;
@@ -59,7 +61,7 @@ namespace ADprojectteam1.Controllers
         }
 
         /////////////////////////////////////////////////////////Trend Report
-        public ActionResult TrendReport(int itemId)
+        public async Task<ActionResult> TrendReport(int itemId)
         {
             Dictionary<int, Dictionary<string, int>> trendlist = (Dictionary<int, Dictionary<string, int>>)Session["trendlist"];
             Item item = ItemData.GetItemById(itemId);
@@ -91,12 +93,33 @@ namespace ADprojectteam1.Controllers
             }
 
             int[] cons = trendlist[itemId].Values.ToArray();
-            
-            
+
+
+            int pre = 0;
+            string conshist = string.Join(", ", cons);
+            using (var client = new HttpClient())
+            {
+                string xValue = conshist;
+
+                // send a GET request to the server uri with the data and get the response as HttpResponseMessage object
+                HttpResponseMessage res = await client.GetAsync("http://127.0.0.1:5000/model1?x=" + xValue);
+
+                // Return the result from the server if the status code is 200 (everything is OK)
+                // should raise exception or error if it's not
+                if (res.IsSuccessStatusCode)
+                {
+                    // pass the result to update the user preference
+                    // have to read as string for the data in response.body
+                    pre = Convert.ToInt32(res.Content.ReadAsStringAsync().Result);
+                }
+            }
+
+
             ViewBag.cons = cons;
             ViewBag.months = monlist.ToArray();
             ViewBag.Item = item;
             ViewBag.sbalance = itemsbtrend.Values.ToArray();
+            ViewBag.prediction = pre;
             return View();
         }
 

@@ -111,7 +111,7 @@ namespace ADprojectteam1.Controllers
                         string emailaddress = EmployeeData.FindEmpById(empId).EmailAdd;
                         Task task = Task.Run(() =>
                         {
-                            EmailNotification.SendNotificationEmailToEmployee(emailaddress, "Your Stationary Requisition has delivered to Department Representative.");
+                            EmailNotification.SendNotificationEmailToEmployee(emailaddress,"Stationary Requisition Status Changed", "Your Stationary Requisition has delivered to Department Representative.");
                         });
                         notifystatus = true;
                     }

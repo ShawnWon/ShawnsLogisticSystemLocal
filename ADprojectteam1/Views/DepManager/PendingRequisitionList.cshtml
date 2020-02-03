@@ -35,13 +35,14 @@
                         <tr>
                             <td>
                                 <table class="w3-table w3-striped">
-                                    <tr><th>Item Description</th><th>Quant</th></tr>
+                                    <tr><th>Item Description</th><th>Quant</th><th>UOM</th></tr>
 
                                     @{ foreach (ReqItem ri in sr.ListItem)
                                         {
                                             <tr>
                                                 <td>@ri.item.Description</td>
                                                 <td>@ri.Quant</td>
+                                                <td>@ri.item.UnitofMeasure</td>
                                             </tr>
                                         }
                                     }

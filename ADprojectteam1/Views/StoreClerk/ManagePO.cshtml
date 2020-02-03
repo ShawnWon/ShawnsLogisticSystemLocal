@@ -24,7 +24,7 @@
             <h2>Pending PO List</h2>
             @{ if (plist != null)
                 {
-                    <table>
+                    <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
 
                         @{ foreach (PurchaseOrder po in plist.Keys)
@@ -32,7 +32,7 @@
                                 <tr>
                                     <td>@po.GetSupplierName()</td>
                                     <td>
-                                        <table>
+                                        <table class="w3-table w3-striped">
                                             <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
                                             @{ foreach (Item item in plist[po])
                                                 {
@@ -68,7 +68,7 @@
                                 <tr>
                                     <td>@po.GetSupplierName()</td>
                                     <td>
-                                        <table>
+                                        <table class="w3-table w3-striped">
                                             <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
                                             @{ foreach (Item rr in slist[po])
                                                 {
@@ -106,7 +106,7 @@
                                 <tr>
                                     <td>@po.GetSupplierName()</td>
                                     <td>
-                                        <table>
+                                        <table class="w3-table w3-striped">
                                             <tr><th>Item Name</th><th>ReOrder Quant</th><th>UOM</th></tr>
                                             @{ foreach (Item rr in clist[po])
                                                 {

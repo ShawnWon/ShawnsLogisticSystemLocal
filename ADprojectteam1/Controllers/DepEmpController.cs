@@ -94,7 +94,7 @@ namespace ADprojectteam1.Controllers
             Employee manager = EmployeeData.FindEmpById(e.department.DepHeadId);
 
             Task task = Task.Run(() => {
-                EmailNotification.SendNotificationEmailToEmployee(manager.EmailAdd,"There is a new Stationary Requistion for your approval.");
+                EmailNotification.SendNotificationEmailToEmployee(manager.EmailAdd,"New Stationary Requisition Reminder","There is a new Stationary Requistion for your approval.");
             });
             
             
