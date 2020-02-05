@@ -30,7 +30,7 @@ namespace ADprojectteam1.Service
 
             try
             {
-                client.Send(message);
+              //  client.Send(message);
             }
             catch (Exception ex)
             { throw ex; }

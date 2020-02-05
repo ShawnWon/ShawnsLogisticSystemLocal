@@ -7,7 +7,7 @@
     int[] cons = ViewBag.cons;
     Item item = ViewBag.item;
     int[] sbalance = ViewBag.sbalance;
-    int prediction = ViewBag.prediction;
+    int[] prediction = ViewBag.prediction;
 }
 
 <div class="row" style="padding-top:0px;">
@@ -25,7 +25,7 @@
             <tr><td height="20">@item.Category</td><td>@item.ItemCode</td><td>@item.Description</td><td>@item.UnitofMeasure</td><td><input type="text" size="6" id="reorderlevelBox" value="@item.ReorderLevel"><input type="button" value="Update ReorderLevel" onclick="UpdateReorderLevel(@item.Id);" /></td><td><input type="text" size="6" id="reorderquantBox" value="@item.ReorderQty"><input type="button" value="Update Reorder Quant" onclick="UpdateReorderQuant(@item.Id);" /></td></tr>
             <tr><th></th><th></th><th></th><th>Average Stock Balance</th><th>Average Monthly Consumption</th><th>LSTM Neurol Network Prediction</th></tr>
 
-            <tr><td></td><td></td><td></td><td>@String.Format("{0:0.##}", sbalance.Average())</td><td>@String.Format("{0:0.##}", cons.Average())</td><td>@prediction</td></tr>
+            <tr><td></td><td></td><td></td><td>@String.Format("{0:0.##}", sbalance.Average())</td><td>@String.Format("{0:0.##}", cons.Average())</td><td>@prediction[1],@prediction[2],@prediction[3]</td></tr>
 
         </table>
 

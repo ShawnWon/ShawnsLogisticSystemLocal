@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace ADprojectteam1.DB
 {
-    public class ADDbInitializer<T> :DropCreateDatabaseAlways<ADDbContext> {
+    public class ADDbInitializer<T> : CreateDatabaseIfNotExists<ADDbContext> {
         protected override void Seed(ADDbContext context)
         {
             

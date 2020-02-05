@@ -97,7 +97,7 @@ namespace ADprojectteam1.Controllers
 
 
 
-            var DailyTime = "20:31:00";
+           /* var DailyTime = "20:31:00";
             var timeParts = DailyTime.Split(new char[1] { ':' });
             var dateNow = DateTime.Now;
             var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
@@ -109,30 +109,14 @@ namespace ADprojectteam1.Controllers
                 date = date.AddDays(1);
                 ts = date - dateNow;
             }
-            Task.Delay(ts).ContinueWith((x) => DailyCheck());
+            Task.Delay(ts).ContinueWith((x) => MyScheduler.DailyCheckDelegation());*/
             
             status = new {status=true };
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
-        public void DailyCheck()
-        {
-            List<Delegation> delelist = DelegationData.GetAll();
 
-            foreach (Delegation dele in delelist)
-            {
-                var datetoday = DateTime.Today;
-                if (dele.startdate.Date == datetoday)
-                {
-                    EmployeeData.GiveDelegate(dele.DelegatedEmpId);
-                }
-                if (dele.enddate.Date == datetoday)
-                {
-                    EmployeeData.RetractDelegate(dele.DelegatedEmpId);
-                }
-            }
-        }
 
 
         [HttpPost]

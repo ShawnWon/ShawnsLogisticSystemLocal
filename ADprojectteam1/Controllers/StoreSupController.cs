@@ -95,7 +95,7 @@ namespace ADprojectteam1.Controllers
             int[] cons = trendlist[itemId].Values.ToArray();
 
 
-            int pre = 0;
+            int[] prelist = new int[4];
             string conshist = string.Join(", ", cons);
             using (var client = new HttpClient())
             {
@@ -110,8 +110,11 @@ namespace ADprojectteam1.Controllers
                 {
                     // pass the result to update the user preference
                     // have to read as string for the data in response.body
-                    pre = Convert.ToInt32(res.Content.ReadAsStringAsync().Result);
+                    //pre = Convert.ToInt32(res.Content.ReadAsStringAsync().Result); //if only display one month prediction.
+                    string arr = res.Content.ReadAsStringAsync().Result;
+                    prelist = arr.Split(',').Select(str => int.Parse(str)).ToArray(); 
                 }
+                else prelist = new int[4] { 0,0,0,0};
             }
 
 
@@ -119,7 +122,7 @@ namespace ADprojectteam1.Controllers
             ViewBag.months = monlist.ToArray();
             ViewBag.Item = item;
             ViewBag.sbalance = itemsbtrend.Values.ToArray();
-            ViewBag.prediction = pre;
+            ViewBag.prediction = prelist;
             return View();
         }
 

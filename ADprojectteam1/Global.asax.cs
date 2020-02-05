@@ -1,4 +1,6 @@
 ﻿using ADprojectteam1.DB;
+using ADprojectteam1.Service;
+using FluentScheduler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,9 @@ namespace ADprojectteam1
 
             ADDbContext db = new ADDbContext();
             db.Database.Initialize(force:true);
-        
+
+            JobManager.Initialize(new MyScheduler());
+
         }
     }
 }

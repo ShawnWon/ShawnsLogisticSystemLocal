@@ -11,26 +11,36 @@ app = Flask(__name__)
 
 @app.route('/model1', methods=['GET'])
 def callModelOne():
+    
+    
+    
     xValue = request.args.get('x')
     df=list(map(int,xValue.split(',')))
-    print("Received request to predict demanding quantity.")
-    print("The latest 12 months' demanding is ")
-    print(df)
+    x1=np.asarray(df,dtype=np.int64)
+
+    print("The previous 12 month consumptions are:")
+    print(x1)
     modelOne = pickle.load(open('item1predictormodel.pkl', 'rb')) # load model to the server
     
+    prelist=predict(3,x1,modelOne)
     
-    x1=np.asarray(df,dtype=np.int64)
-    x2=x1.reshape((-1,1))
-    x2=x2.reshape((-1))
-    x3=x2.reshape((1,12,1))
-    
-    
-    pre=modelOne.predict(x3)[0][0]
+    prestr= ','.join(map(str, prelist))
     print("The prediction result is")
-    print(pre)
+    print(prestr)
     K.clear_session()
-    return str(int(pre))
+    return prestr
 
+def predict(num_prediction,histdata,model):
+    look_back=12
+    prediction_list=histdata[-look_back:]
+    for _ in range(num_prediction):
+        x=prediction_list[-look_back:]
+        x=x.reshape((1,look_back,1))
+        out=int(model.predict(x)[0][0])
+        prediction_list=np.append(prediction_list,out)
+    prediction_list=prediction_list[look_back-1:]
+    
+    return prediction_list
 # run the server
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
