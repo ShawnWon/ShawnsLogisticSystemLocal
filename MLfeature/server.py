@@ -20,9 +20,15 @@ def callModelOne():
 
     print("The previous 12 month consumptions are:")
     print(x1)
-    modelOne = pickle.load(open('item1predictormodel.pkl', 'rb')) # load model to the server
-    
-    prelist=predict(3,x1,modelOne)
+    print(x1[1:])
+    x2=x1[1:]
+    modellist=[1,2]
+    if(x1[0] in modellist):   
+        model=getModel(x1[0])
+        prelist=predict(3,x2,model)
+    else:
+        prelist=[0,0,0,0]        
+
     
     prestr= ','.join(map(str, prelist))
     print("The prediction result is")
@@ -41,6 +47,16 @@ def predict(num_prediction,histdata,model):
     prediction_list=prediction_list[look_back-1:]
     
     return prediction_list
+
+def getModel(i):
+    switcher={
+            1:lambda:pickle.load(open('item1predictormodel.pkl', 'rb')),
+            2:lambda:pickle.load(open('item2predictormodel.pkl', 'rb'))
+        }
+    func=switcher.get(i,lambda:'Invalid')
+    return func()
+
+
 # run the server
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

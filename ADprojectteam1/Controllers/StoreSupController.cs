@@ -85,7 +85,7 @@ namespace ADprojectteam1.Controllers
                     }
                     else
                     {
-                        DateTime date = DateTime.Parse(dt);
+                        DateTime date = DateTime.Parse(givenmonth);
                         givenmonth = string.Format("{0}/{1}", date.AddMonths(-1).Month, date.AddMonths(-1).Year);
 
                     }
@@ -96,10 +96,15 @@ namespace ADprojectteam1.Controllers
 
 
             int[] prelist = new int[4];
-            string conshist = string.Join(", ", cons);
+            int[] paralist = new int[13];
+            paralist[0] = itemId;
+            for (int i = 1; i < 13; i++)
+                paralist[i] = cons[i - 1];
+            string conshist = string.Join(", ", paralist);
             using (var client = new HttpClient())
             {
                 string xValue = conshist;
+                
 
                 // send a GET request to the server uri with the data and get the response as HttpResponseMessage object
                 HttpResponseMessage res = await client.GetAsync("http://127.0.0.1:5000/model1?x=" + xValue);

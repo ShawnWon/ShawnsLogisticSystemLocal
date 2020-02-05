@@ -12,36 +12,29 @@
         <div class="col-md-12 col-sm-12"></div>
         <div class="col-md-12 col-sm-12">
 
-            @using (Html.BeginForm("LoginCheckPassword", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))  //Password only post to checkpassword(),so user will not see it in browser.
+            @using (Html.BeginForm("LoginCheckPassword", "Home", FormMethod.Post, new { @class = "form-inline" }))  //Password only post to checkpassword(),so user will not see it in browser.
             {
-                <table>
-                    <tr>
-                        <td>@Html.LabelFor(x => x.UserName):</td>
-                        <td>@Html.TextBoxFor(x => x.UserName, new { id = "username" })</td>  @*The name of this textbox is "UserName", the attribute of model user.*@
-                        <td>@Html.ValidationMessageFor(x => x.UserName)</td>
-                        <td></td>
-                    </tr>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.UserName):
+                    @Html.TextBoxFor(x => x.UserName, new { id = "username", @class = "form-control" }) @*The name of this textbox is "UserName", the attribute of model user.*@
+                    @Html.ValidationMessageFor(x => x.UserName)
+                </div>
 
-                    <tr><td><br></td></tr>
-
-                    <tr>
-                        <td>@Html.LabelFor(x => x.PassWord):</td>
-                        <td>@Html.PasswordFor(x => x.PassWord, new { id = "password" })</td>
-                        @*The name of this textbox is "Password", the attribute of model user.*@
-                        <td>@Html.ValidationMessageFor(x => x.PassWord)</td>
-                        @{ if ((bool)TempData["isAuth"] == false)
-                            {
-                                <td>Incorrect username or password</td>
-                            }
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PassWord):
+                    @Html.PasswordFor(x => x.PassWord, new { id = "password", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.PassWord)
+                    @{ if ((bool)TempData["isAuth"] == false)
+                        {
+                            <p>Incorrect username or password</p>
                         }
+                    }
+
+                </div>
+
+                <input id="submitBtn" type="submit" value="Log In" class="btn btn-default" />
 
 
-                        <td align="right"><input id="submitBtn" type="submit" value="Log In" style="color:midnightblue" /></td>
-
-                    </tr>
-
-                </table>
-                
             }
 
 

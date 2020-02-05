@@ -60,15 +60,16 @@
                         <tr>
                             <td>
                                 <table class="w3-table w3-striped">
-                                    <tr><th>Department </th><th>Demand Quant</th><th>Actual Quant</th></tr>
+                                    <tr><th>Department </th><th>Demand Quant</th></tr>
 
                                     @{ foreach (int depId in reqlist[itemId].Keys)
                                         {
-                                            <tr>
+                                            if (@reqlist[itemId][depId] != 0)
+                                            {<tr>
                                                 <td>@DepartmentData.GetDepNameById(depId)</td>
-                                                <td>@reqlist[itemId][depId].</td>
+                                                <td>@reqlist[itemId][depId]</td>
 
-                                            </tr>
+                                            </tr>}
 
                                         }
                                     }

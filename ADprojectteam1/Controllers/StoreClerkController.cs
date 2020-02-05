@@ -246,6 +246,7 @@ namespace ADprojectteam1.Controllers
             
             ViewBag.Rlist = plannedlist;
             Session.Remove("collist");
+            Session.Remove("plannedlist");
 
             return View();
 

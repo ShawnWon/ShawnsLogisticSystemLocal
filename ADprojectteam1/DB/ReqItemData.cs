@@ -23,13 +23,18 @@ namespace ADprojectteam1.DB
         }
 
         
-        internal static void CreatReqItem(Item item, Employee rep, int dif, string v)
+        internal static void CreatReqItem(int itemId, int empId, int dif, string v)
         {
-            ReqItem reitem = new ReqItem(item,rep,dif);
-            reitem.Status = v;
+            ReqItem reitem = new ReqItem();
+            
             using (var db = new ADDbContext())
             {
+                reitem.item = db.Item.Where(x => x.Id == itemId).FirstOrDefault();
+                reitem.emp = db.Employee.Where(x=>x.Id==empId).FirstOrDefault();
+                reitem.Status = v;
+                reitem.Quant = dif;
                 db.ReqItem.Add(reitem);
+                
                 db.SaveChanges();
             }
             
@@ -70,5 +75,7 @@ namespace ADprojectteam1.DB
             }
             return status;
         }
+
+   
     }
 }

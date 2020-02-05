@@ -5,7 +5,7 @@ using System.Data.Entity;
 
 namespace ADprojectteam1.DB
 {
-    public class ADDbInitializer<T> : CreateDatabaseIfNotExists<ADDbContext> {
+    public class ADDbInitializer<T> : DropCreateDatabaseAlways<ADDbContext> {
         protected override void Seed(ADDbContext context)
         {
             
@@ -109,7 +109,7 @@ namespace ADprojectteam1.DB
             List<Department> deps = new List<Department>();
 
             deps.Add(new Department("English Dept", "ENGL", "8742234", "8921456", "Stationery Store", 1, 3));
-            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 1, 3));
+            deps.Add(new Department("Computer Science", "CPSC", "8901235", "8921457", "Stationery Store", 6, 4));
             deps.Add(new Department("Commerce Dept", "COMM", "8741284", "8921256", "Stationery Store", 1, 3));
             deps.Add(new Department("Registrar Dept", "REGR", "8901266", "8921465", "Stationery Store", 1, 3));
             deps.Add(new Department("Zoology Dep", "ZOOL", "8901266", "8921456", "Stationery Store", 1, 3));
@@ -126,8 +126,10 @@ namespace ADprojectteam1.DB
             emps.Add(new Employee("storesup", "8050b9c976aed3e1ab492f373fbd8421", "StoreSup", "11236", "Ms", "Suwetaa Ramesh", "suwetaa@gmail.com"));
             emps.Add(new Employee("depemp", "bb3852c905fe1d884ad105f9b6dcbc19", "DepEmp", "11238", "Ms", "Jenny Tang", "e0457838@u.nus.edu"));
             emps.Add(new Employee("deprep", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11239", "Mr", "Thant Htet Myet", "than@gmail.com"));
-            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Thant Htet Myet", "than@gmail.com"));
-            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Thant Htet Myet", "than@gmail.com"));
+            emps.Add(new Employee("deprep1", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11242", "Mr", "Rep of Computer Dep", "than@gmail.com"));
+
+            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Emp of Computer Dep", "than@gmail.com"));
+            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Manager of Computer Dep", "than@gmail.com"));
 
             foreach (Employee e in emps)
                 context.Employee.Add(e);
@@ -142,7 +144,7 @@ namespace ADprojectteam1.DB
             emps[5].department = deps[0];
             emps[6].department = deps[1];
             emps[7].department = deps[1];
-
+            emps[8].department = deps[1];
 
             List<Supplier> sups = new List<Supplier>();
 
@@ -322,7 +324,7 @@ namespace ADprojectteam1.DB
             List<StockCard> lsc1 = new List<StockCard>();
             
             for(int i=2; i<85;i++)
-            lsc1.Add(new StockCard(items[i], dt, sups[0].Id,1, 500, 550));
+            lsc1.Add(new StockCard(items[i], dt.AddMonths(-12), sups[0].Id,1, 500, 550));
 
             foreach (StockCard sc in lsc1)
                 context.StockCard.Add(sc);

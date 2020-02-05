@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Pending Disbursement";
     Dictionary<int, int> itemlist = ViewBag.Rlist;
+    Department d = ViewBag.dep;
 
 
 }
@@ -18,7 +19,7 @@
     <div class="w3-main" style="margin-left:250px">
 
         <h2>Pending Discursement</h2>
-
+        <h4>@d.DepName</h4>
         <input type="button" value="Confirm Received" onclick="ConfirmReceived();" />
 
         <table class="w3-table w3-striped">
@@ -36,7 +37,7 @@
             }
         </table>
 
-        </div>
+    </div>
     </div>
 
         <br>
@@ -65,7 +66,7 @@
                     // Response Success
                     success: function (response) {
 
-                        alert();
+                        
                         document.getElementById("Receivedtotalq " + response.itemId).innerHTML = response.quant;
 
                     },
@@ -106,7 +107,7 @@
                     // Response Success
                     success: function (response) {
 
-                        alert();
+                        
                         window.location.href = "./PendingDisbursmentList";
 
                     },

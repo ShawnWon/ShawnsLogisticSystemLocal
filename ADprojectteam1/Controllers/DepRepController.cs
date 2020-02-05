@@ -40,9 +40,13 @@ namespace ADprojectteam1.Controllers
             Session["signinglist"] = signinglist;
 
             string user = (string)Session["username"];
+            
+            
             bool dele = EmployeeData.GetDelegateStatusByUserName(user);
             if (dele) Session["sessionRole"] = "DeleManager";
             ViewBag.delestatus = dele;
+
+            ViewBag.dep = DepartmentData.GetDepById(EmployeeData.FindDepIdByUsername(user)); 
 
             return View();
         }
@@ -101,8 +105,8 @@ namespace ADprojectteam1.Controllers
                 {
                     
 
-                    SRequisition sr = new SRequisition();
-                    sr.ListItem = new List<ReqItem>();
+                   // SRequisition sr = new SRequisition();
+                    //sr.ListItem = new List<ReqItem>();
                         
                 foreach (int empId in DepartmentData.GetDepById(depId).Employees.Select(x => x.Id))
                     {
@@ -122,57 +126,11 @@ namespace ADprojectteam1.Controllers
                 int dif = DepOrderData.GetDeliveringOrderByDepAndItem(depId, itemId).quant- signinglist[itemId];
 
                 if (dif>0)                    {
-                        
-          
 
-                        Employee rep = EmployeeData.FindEmpById(DepartmentData.GetRepById(depId));
-
-                        
-
-                        Item item = ItemData.GetItemById(itemId);
-
-                        /////////////////////////
-
-
-
-                        if (sr == null)
-                        {
-
-                            sr.ListItem = new List<ReqItem>();
-                            ReqItem reqitem = new ReqItem(item, rep, dif);
-                            sr.ListItem.Add(reqitem);
-
-                        }
-
-                        else if (!sr.ListItem.Where(x => x.item.Id == itemId).Any())
-                        {
-                            Item p = new Item();
-                            int i = rep.Id;
-                            int j = rep.department.Id;
-                            p = ItemData.GetItemById(itemId);
-                            ReqItem reqitem = new ReqItem(p, rep, dif);
-
-                            sr.ListItem.Add(reqitem);
-
-                        }
-                        else
-                        {
-                            ReqItem ri = new ReqItem();
-                            ri = sr.ListItem.Where(x => x.item.Id == depId).FirstOrDefault();
-                            ri.Quant = dif;
-                        }
-
-
-
-
-
-
-                        SrequisitionData.SaveReq(sr);
-                        int srId = SrequisitionData.FindLastId();
-                        SrequisitionData.ApproveRequisition(srId, "Unfulfiled quant");
-                        /////////////////////////
-
-
+                    int i = itemId;
+                    int j = DepartmentData.GetRepById(depId);
+                    ReqItemData.CreatReqItem(itemId, DepartmentData.GetRepById(depId), dif,"approved");
+                    /////////////////////////
                     }
 
                 //mark this DepOrder to be delivered
