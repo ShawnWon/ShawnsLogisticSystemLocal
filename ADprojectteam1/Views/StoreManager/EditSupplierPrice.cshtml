@@ -1,11 +1,14 @@
-﻿
+﻿@using PagedList;
+@using PagedList.Mvc;
 @using ADprojectteam1.Models;
 
 @{
+
     ViewBag.Title = "Update Supplier Tender Price";
     List<ItemSupplier> listitemsup = ViewBag.listitemsup;
     string searchStr = (string)ViewData["searchStr"];
     bool match = (bool)ViewData["match"];
+    PagedList<Item> listItem = ViewBag.Rlist;
 }
 <script>
     window.onload = function () { searchEnter() };
@@ -61,6 +64,7 @@
                 }
             }
         </table>
+        @Html.PagedListPager(listItem, page => Url.Action("EditSupplierPrice", new { page, searchStr = searchStr,sid=@listitemsup.FirstOrDefault().supplier.Id }))
         <br>
         <br>
     </div>

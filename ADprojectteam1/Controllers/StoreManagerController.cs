@@ -2,6 +2,7 @@
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using ADprojectteam1.Service;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +87,7 @@ namespace ADprojectteam1.Controllers
             
         }
 
-        public ActionResult EditSupplierPrice(int sid,string searchStr)
+        public ActionResult EditSupplierPrice(int sid,string searchStr, int? page)
         {
             
 
@@ -94,14 +95,15 @@ namespace ADprojectteam1.Controllers
             List<Item> listitem = ItemData.FindAll();
 
             ViewBag.listItem = listitem;
-
+            IPagedList<Item> pagedlist;
             List<Item> resultlist = new List<Item>();
+            
             bool match = false;
 
             if (searchStr == null)
             {
                 searchStr = "";
-                resultlist = listitem;
+                pagedlist = listitem.ToPagedList(page ?? 1, 7);
             }
             else
             {
@@ -116,9 +118,10 @@ namespace ADprojectteam1.Controllers
 
                     if (fit) { match = true; resultlist.Add(Pro); }
                 }
+                pagedlist = resultlist.ToPagedList(page ?? 1, 7);
             }
 
-
+            ViewBag.Rlist = pagedlist;
             ViewData["searchStr"] = searchStr;
             ViewData["match"] = match;
 
@@ -126,7 +129,7 @@ namespace ADprojectteam1.Controllers
             
             List<ItemSupplier> rlist = new List<ItemSupplier>();
             List<ItemSupplier> list = ItemSupplierData.GetAllBySupplierId(sid);
-            foreach (Item item in resultlist)
+            foreach (Item item in pagedlist)
             {
 
                 rlist.Add(list.Where(x=>x.item.Id==item.Id).FirstOrDefault());

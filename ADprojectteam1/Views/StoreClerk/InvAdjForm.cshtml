@@ -1,4 +1,6 @@
-﻿
+﻿@using PagedList;
+@using PagedList.Mvc
+
 @{
     ViewBag.Title = "Inventory Adjustment Form";
 }
@@ -20,8 +22,8 @@
 
 
         @{
-            List<Item> listItem = new List<Item>();
-            listItem = ViewBag.Rlist;
+            
+            PagedList<Item> listItem = ViewBag.Rlist;
             string searchStr = (string)ViewData["searchStr"];
             bool match = (bool)ViewData["match"];
             List<InventoryAdj> listInvAdj = new List<InventoryAdj>();
@@ -49,8 +51,9 @@
                     }
                 </table>
 
-                        }
-                        else { <h4>There is no Inventory Adjustment Voucher now.</h4>}
+            }
+            else
+            { <h4>There is no Inventory Adjustment Voucher now.</h4>}
         }
 
 
@@ -113,10 +116,15 @@
                     }
                 }
             </table>
+
+            @Html.PagedListPager(listItem, page => Url.Action("InvAdjForm", new { page, searchStr = searchStr }))
+
+
+
         }
 
 
-        </div>
+    </div>
     </div>
 
 

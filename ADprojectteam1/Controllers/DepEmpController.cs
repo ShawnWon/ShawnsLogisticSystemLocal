@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ADprojectteam1.Service;
+using PagedList;
+using PagedList.Mvc;
+
 
 namespace ADprojectteam1.Controllers
 {
@@ -106,7 +109,7 @@ namespace ADprojectteam1.Controllers
 
     
 
-    public ActionResult RequisitionForm(string searchStr)
+    public ActionResult RequisitionForm(string searchStr, int? page)
         {
             List<Item> Plist = new List<Item>();
             Plist = ItemData.FindAll();
@@ -118,7 +121,7 @@ namespace ADprojectteam1.Controllers
             if (searchStr == null)
             {
                 searchStr = "";
-                ViewBag.Rlist = Plist;
+                ViewBag.Rlist = Plist.ToPagedList(page ?? 1,7);
             }
             else
             {
@@ -133,12 +136,13 @@ namespace ADprojectteam1.Controllers
                     
                     if (fit) { match = true; Rlist.Add(Pro); }
                 }
-                ViewBag.Rlist = Rlist;
+                ViewBag.Rlist = Rlist.ToPagedList(page ?? 1,7);
             }
 
 
             ViewData["searchStr"] = searchStr;
             ViewData["match"] = match;
+
 
             string user = (string)Session["username"];
             bool dele = EmployeeData.GetDelegateStatusByUserName(user);

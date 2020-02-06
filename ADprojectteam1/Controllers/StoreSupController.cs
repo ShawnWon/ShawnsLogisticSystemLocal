@@ -2,6 +2,7 @@
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using ADprojectteam1.Service;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -132,7 +133,7 @@ namespace ADprojectteam1.Controllers
             return View();
         }
 
-        public ActionResult TrendReportList(string searchStr)
+        public ActionResult TrendReportList(string searchStr,int? page)
         {
             List<StockCard> itemlistsc = new List<StockCard>();
             
@@ -148,16 +149,17 @@ namespace ADprojectteam1.Controllers
 
             //////////////////////////////////////////////////////searchbox feature
             List<Item> listitem = ItemData.FindAll();
-
+            List<Item> resultlist = new List<Item>();
             ViewBag.listItem = listitem;
 
-            List<Item> resultlist = new List<Item>();
+
+            IPagedList<Item> resultlist1;
             bool match = false;
 
-            if (searchStr == null)
+            if (searchStr == null||searchStr=="")
             {
                 searchStr = "";
-                resultlist = listitem;
+                resultlist1 = listitem.ToPagedList(page ?? 1, 7);
             }
             else
             {
@@ -172,8 +174,10 @@ namespace ADprojectteam1.Controllers
 
                     if (fit) { match = true; resultlist.Add(Pro); }
                 }
+                resultlist1 = resultlist.ToPagedList(page ?? 1, 7);
             }
 
+            ViewBag.listitem = resultlist1;
 
             ViewData["searchStr"] = searchStr;
             ViewData["match"] = match;
@@ -185,7 +189,7 @@ namespace ADprojectteam1.Controllers
 
 
 
-            foreach (Item item in resultlist)
+            foreach (Item item in resultlist1)
             {
                 Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
                 Dictionary<string, int> itemtrend = new Dictionary<string, int>();

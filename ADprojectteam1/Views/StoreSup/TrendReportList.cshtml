@@ -1,5 +1,7 @@
 ﻿@using ADprojectteam1.Models;
 @using ADprojectteam1.DB;
+@using PagedList.Mvc;
+@using PagedList;
     <script>
         window.onload = function () { searchEnter() };
     </script>
@@ -10,6 +12,7 @@
     List<string> mlist = ViewBag.monthslist;
     string searchStr = (string)ViewData["searchStr"];
     bool match = (bool)ViewData["match"];
+    PagedList<Item> listItem=ViewBag.listitem;
 }
 
 <div class="row" style="padding-top:0px;">
@@ -68,6 +71,8 @@
 
 
         </table>
+
+        @Html.PagedListPager(listItem, page => Url.Action("TrendReportList", new { page, searchStr = searchStr }))
 
 
 

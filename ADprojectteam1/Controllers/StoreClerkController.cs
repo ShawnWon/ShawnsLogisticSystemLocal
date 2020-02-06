@@ -2,6 +2,7 @@
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
 using ADprojectteam1.Service;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -487,7 +488,7 @@ namespace ADprojectteam1.Controllers
         /////////////////////////////////////////////////////////////////////////////////////Inventory Adjustment Vouchour
         ///
         
-        public ActionResult InvAdjForm(string searchStr)
+        public ActionResult InvAdjForm(string searchStr, int? page)
         {
             List<Item> Plist = new List<Item>();
             Plist = ItemData.FindAll();
@@ -508,7 +509,7 @@ namespace ADprojectteam1.Controllers
             if (searchStr == null)
             {
                 searchStr = "";
-                ViewBag.Rlist = Plist;
+                ViewBag.Rlist = Plist.ToPagedList(page ?? 1, 7);
             }
             else
             {
@@ -523,7 +524,7 @@ namespace ADprojectteam1.Controllers
 
                     if (fit) { match = true; Rlist.Add(Pro); }
                 }
-                ViewBag.Rlist = Rlist;
+                ViewBag.Rlist = Rlist.ToPagedList(page ?? 1, 7);
             }
 
 

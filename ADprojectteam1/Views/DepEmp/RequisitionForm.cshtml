@@ -1,4 +1,6 @@
-﻿
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<ADprojectteam1.Models.Item>
 @{
     ViewBag.Title = "RequisitionForm";
 }
@@ -13,8 +15,7 @@
 
 
 @{
-    List<Item> listItem = new List<Item>();
-    listItem = ViewBag.Rlist;
+    PagedList<Item> listItem = ViewBag.Rlist;
     string searchStr = (string)ViewData["searchStr"];
     bool match = (bool)ViewData["match"];
     SRequisition sr = (SRequisition)Session["reqform"];
@@ -113,6 +114,10 @@
                     }
                 }
             </table>
+
+            @Html.PagedListPager(listItem, page => Url.Action("RequisitionForm",new { page, searchStr=searchStr}))
+
+
         }
         </div>
     </div>
