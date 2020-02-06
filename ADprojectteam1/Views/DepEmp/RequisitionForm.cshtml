@@ -115,7 +115,7 @@
                 }
             </table>
 
-            @Html.PagedListPager(listItem, page => Url.Action("RequisitionForm",new { page, searchStr=searchStr}))
+            @Html.PagedListPager(listItem, page => Url.Action("RequisitionForm",new { page, searchStr=searchStr, @class="pagination"}),new PagedListRenderOptions() { LiElementClasses=new List<string> { "breadcrumb-item"}, UlElementClasses=new List<string> { "breadcrumb"}  })
 
 
         }

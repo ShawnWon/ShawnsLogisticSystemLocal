@@ -64,7 +64,7 @@
                 }
             }
         </table>
-        @Html.PagedListPager(listItem, page => Url.Action("EditSupplierPrice", new { page, searchStr = searchStr,sid=@listitemsup.FirstOrDefault().supplier.Id }))
+        @Html.PagedListPager(listItem, page => Url.Action("EditSupplierPrice", new { page, searchStr = searchStr,sid=@listitemsup.FirstOrDefault().supplier.Id }),new PagedListRenderOptions() { LiElementClasses=new List<string> { "breadcrumb-item"}, UlElementClasses=new List<string> { "breadcrumb"}  })
         <br>
         <br>
     </div>
