@@ -16,46 +16,51 @@
 
         <div class="w3-main" style="margin-left:250px">
             <h2>RequisitionList</h2>
+            @{if (reqlist.Count != 0)
+                {
+                    <table class="w3-table w3-striped">
+                        <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
+
+                        @{ foreach (SRequisition sr in reqlist)
+                            {
+                                <tr>
+                                    <td>@sr.ListItem.FirstOrDefault().emp.Name</td>
+                                    <td>@sr.GetAmount()</td>
+                                    <td>@sr.status</td>
+                                    <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @sr.Id"></td>
+                                    <td><input type="button" value="Approve" onclick="approveSr(@sr.Id)" /></td>
+                                    <td><input type="button" value="Reject" onclick="rejectSr(@sr.Id)" /></td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <table class="w3-table w3-striped">
+                                            <tr><th>Item Description</th><th>Quant</th><th>UOM</th></tr>
+
+                                            @{ foreach (ReqItem ri in sr.ListItem)
+                                                {
+                                                    <tr>
+                                                        <td>@ri.item.Description</td>
+                                                        <td>@ri.Quant</td>
+                                                        <td>@ri.item.UnitofMeasure</td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                                }
+                        }
+                    </table>
+                    <br>
+                                                }
+                                                else { <h4>There is no pending requisition at this moment.</h4>}
+            }
+
 
             <br>
-            <table class="w3-table w3-striped">
-                <tr><th>Employee Name</th><th>Cost</th><th>Status</th><th>Remark</th></tr>
-
-                @{ foreach (SRequisition sr in reqlist)
-                    {
-                        <tr>
-                            <td>@sr.ListItem.FirstOrDefault().emp.Name</td>
-                            <td>@sr.GetAmount()</td>
-                            <td>@sr.status</td>
-                            <td><input type="text" placeholder="Remark..." size="6" id="remarkbox @sr.Id"></td>
-                            <td><input type="button" value="Approve" onclick="approveSr(@sr.Id)" /></td>
-                            <td><input type="button" value="Reject" onclick="rejectSr(@sr.Id)" /></td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <table class="w3-table w3-striped">
-                                    <tr><th>Item Description</th><th>Quant</th><th>UOM</th></tr>
-
-                                    @{ foreach (ReqItem ri in sr.ListItem)
-                                        {
-                                            <tr>
-                                                <td>@ri.item.Description</td>
-                                                <td>@ri.Quant</td>
-                                                <td>@ri.item.UnitofMeasure</td>
-                                            </tr>
-                                        }
-                                    }
-                                </table>
-                            </td>
-                        </tr>
-
-                    }
-                }
-            </table>
-            <br>
-            <br>
-            </div>
+        </div>
         </div>
 
 

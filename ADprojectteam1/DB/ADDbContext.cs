@@ -9,7 +9,8 @@ namespace ADprojectteam1.DB
 {
     public class ADDbContext : DbContext
     {
-        public ADDbContext() : base("Server=DESKTOP-MBSGJ0P; Database=ADprojDB;Integrated Security=True") {
+        public ADDbContext() : base("Server=DESKTOP-MBSGJ0P; Database=shawnlogistic;Integrated Security=True")
+        {
             Database.SetInitializer(new ADDbInitializer<ADDbContext>());
         }
 

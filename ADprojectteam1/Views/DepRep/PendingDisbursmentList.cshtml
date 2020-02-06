@@ -20,22 +20,29 @@
 
         <h2>Pending Discursement</h2>
         <h4>@d.DepName</h4>
-        <input type="button" value="Confirm Received" onclick="ConfirmReceived();" />
 
-        <table class="w3-table w3-striped">
-            <tr><th>Item Name </th><th>Planned Quant</th><th>Actually Received Quant</th></tr>
+        @{ if (itemlist.Count()!=0)
+            {<input type="button" value="Confirm Received" onclick="ConfirmReceived();" />
 
-            @{ foreach (int itemId in itemlist.Keys)
-                {
-                    <tr>
-                        <td>@ItemData.GetItemById(itemId).Description</td>
-                        <td>@itemlist[itemId]</td>
-                        <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId)" size="6" id="ReceivedquantityBox @itemId" value="@itemlist[itemId]"></td>
-                    </tr>
+                <table class="w3-table w3-striped">
+                    <tr><th>Item Name </th><th>Planned Quant</th><th>Actually Received Quant</th></tr>
 
-                }
-            }
-        </table>
+                    @{ foreach (int itemId in itemlist.Keys)
+                        {
+                            <tr>
+                                <td>@ItemData.GetItemById(itemId).Description</td>
+                                <td>@itemlist[itemId]</td>
+                                <td><input type="text" placeholder="Input quantity" onchange="ChangeReceive(@itemId)" size="6" id="ReceivedquantityBox @itemId" value="@itemlist[itemId]"></td>
+                            </tr>
+
+                        }
+                    }
+                </table>
+                        }
+                        else
+                        {<h5>There is no pending disbursment order now.</h5> }
+        }
+
 
     </div>
     </div>

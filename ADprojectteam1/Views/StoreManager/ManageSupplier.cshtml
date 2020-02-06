@@ -25,7 +25,7 @@
                     <tr>
                         <td>@sup.Code</td>
                         <td><input type="button" value="Edit" onclick="location.href='@Url.Action("EditSupplier", "StoreManager", new { sid=sup.Id })'" /></td>
-                        <td><input type="button" value="UpdatePrice" onclick="location.href='@Url.Action("EditSupplierPrice", "StoreManager", new { sid = sup.Id })'" /></td>
+                        <td><input type="button" value="UpdatePrice" onclick="location.href='@Url.Action("EditSupplierPrice", "StoreManager", new { sid = sup.Id,searchStr="" })'" /></td>
                     </tr>
                     <tr>
                         <td>

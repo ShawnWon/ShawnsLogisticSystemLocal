@@ -1,11 +1,15 @@
 ﻿@using ADprojectteam1.Models;
 @using ADprojectteam1.DB;
-
+    <script>
+        window.onload = function () { searchEnter() };
+    </script>
 
 @{
     ViewBag.Title = "TrendReportList";
     Dictionary<int, Dictionary<string, int>> trendlist = ViewBag.trendlist;
     List<string> mlist = ViewBag.monthslist;
+    string searchStr = (string)ViewData["searchStr"];
+    bool match = (bool)ViewData["match"];
 }
 
 <div class="row" style="padding-top:0px;">
@@ -17,46 +21,100 @@
 
     <div class="w3-main" style="margin-left:250px">
         <h2>Item Consumption Trend Report</h2>
+
+
+        <br>
+        <form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
+            <table>
+                <tr>
+                    <td>
+
+                        <input type="text" class="form-control" placeholder="Search.." size="20" id="searchBox" value="@searchStr">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-info" style="background-color:darkslategrey;border:none;">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </td>
+
+                </tr>
+            </table>
+        </form>
+
+
         <table class="w3-table w3-striped">
-            
-            
             <tr>
-            <th>Item Des</th>
-            @{ foreach (string m in mlist)
-                { 
-                    <th>@m</th>
-                } }
-            </tr>
-            
-                @{ foreach (int i in trendlist.Keys)
+                <th>Item Des</th>
+                @{ foreach (string m in mlist)
                     {
-                            <tr>
-                                <td>@ItemData.GetItemById(i).ItemCode</td>
-                                @{ foreach (string m in mlist)
-                                    {
+                        <th>@m</th>
+                    } }
+            </tr>
+
+            @{ foreach (int i in trendlist.Keys)
+                {
+                    <tr>
+                        <td>@ItemData.GetItemById(i).Description</td>
+                        @{ foreach (string m in mlist)
+                            {
                                 <td>@trendlist[i][m]</td>
-                                     }
-                                    }
-                                <td><input type="button" value="More Info" onclick="location.href='@Url.Action("TrendReport", "StoreSup",new { itemId=i})'" /></td>
-                            </tr>
-                    }
-                        
-                 }
-            
-        
-    </table>
-    
+                            }
+                        }
+                        <td><input type="button" value="More Info" onclick="location.href='@Url.Action("TrendReport", "StoreSup",new { itemId=i})'" /></td>
+                    </tr>
+                }
 
-    
+            }
 
 
-    <br>
-    <br>
+        </table>
+
+
+
+
+
+        <br>
+        <br>
+    </div>
 </div>
-</div>
 
 
+<script>
 
+    function searchEnter() {
+        var searchBox = document.getElementById("searchBox");
+        searchBox.addEventListener("keypress", function (e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) {
+                var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
+                doPOST(data);           /*Here we post 'data' to method, if the method has a parameter with same name of "searchStr", it passes to controller.*/
+            }
+        });
+    }
+
+    function searchClick() {
+        var searchBox = document.getElementById("searchBox");
+        var data = { searchStr: searchBox.value };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
+
+        doPOST(data);
+    }
+
+    function doPOST(data) {
+        var ajax = new XMLHttpRequest();
+
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState == 4) {
+                document.open();
+                document.write(ajax.response);
+                document.close();
+            }
+        }
+        ajax.open("POST", "/StoreSup/TrendReportList", true);
+        ajax.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+
+        ajax.send(JSON.stringify(data));
+    }
+    </script>
 
 
 

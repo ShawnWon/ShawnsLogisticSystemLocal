@@ -1,6 +1,7 @@
 ﻿using ADprojectteam1.DB;
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
+using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,10 +86,53 @@ namespace ADprojectteam1.Controllers
             
         }
 
-        public ActionResult EditSupplierPrice(int sid)
+        public ActionResult EditSupplierPrice(int sid,string searchStr)
         {
+            
+
+            //////////////////////////////////////////////////////searchbox feature
+            List<Item> listitem = ItemData.FindAll();
+
+            ViewBag.listItem = listitem;
+
+            List<Item> resultlist = new List<Item>();
+            bool match = false;
+
+            if (searchStr == null)
+            {
+                searchStr = "";
+                resultlist = listitem;
+            }
+            else
+            {
+                foreach (Item Pro in listitem)
+                {
+                    bool fit = false;
+                    if (Search.Found(Pro.Description, searchStr).fit)
+                    {
+                        fit = true;
+                        Pro.Description = Search.Found(Pro.Description, searchStr).str;
+                    }
+
+                    if (fit) { match = true; resultlist.Add(Pro); }
+                }
+            }
+
+
+            ViewData["searchStr"] = searchStr;
+            ViewData["match"] = match;
+
+            /////////////////////////////////////////////////////////////
+            
+            List<ItemSupplier> rlist = new List<ItemSupplier>();
             List<ItemSupplier> list = ItemSupplierData.GetAllBySupplierId(sid);
-            ViewBag.listitemsup = list;
+            foreach (Item item in resultlist)
+            {
+
+                rlist.Add(list.Where(x=>x.item.Id==item.Id).FirstOrDefault());
+            }
+
+            ViewBag.listitemsup = rlist;
             return View();
         }
 

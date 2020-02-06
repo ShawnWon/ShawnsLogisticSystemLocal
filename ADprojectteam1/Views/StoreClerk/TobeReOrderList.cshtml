@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Items TobeReOrder";
     List<Item> list = ViewBag.Rlist;
-     Dictionary<int, int> sellist = (Dictionary<int, int>)Session["selectedsupplier"];
+    Dictionary<int, int> sellist = (Dictionary<int, int>)Session["selectedsupplier"];
 }
 
     <div class="row" style="padding-top:0px;">
@@ -16,60 +16,66 @@
 
         <div class="w3-main" style="margin-left:250px">
 
-            <h2>Tobe ReOrder List</h2>
-            
-            <input type="button" value="Generate Purchase Orders" onclick="GeneratePO()" />
+            <h2>To be Re-order List</h2>
 
-            <table class="w3-table w3-striped">
-                <tr><th>Item Name</th></tr>
+            @{ if (list.Count != 0)
+                {
+                    <input type="button" value="Generate Purchase Orders" onclick="GeneratePO()" />
 
-                @{ foreach (Item item in list)
-                    {
-                        <tr>
-                            <td>@item.Description</td>
-                            <td>
-                                <table class="w3-table w3-striped">
-                                    <tr><th>Supplier Name</th><th>Unit Price</th><th>UOM</th></tr>
-                                    <tr>
-                                        <td>@item.Supplier1.supplier.Name</td>
-                                        <td>@item.Supplier1.UnitPrice</td>
-                                        <td>@item.UnitofMeasure</td>
-                                    </tr>
+                    <table class="w3-table w3-striped">
+                        <tr><th>Item Name</th></tr>
 
-                                    <tr>
-                                        <td>@item.Supplier2.supplier.Name</td>
-                                        <td>@item.Supplier2.UnitPrice</td>
-                                        <td>@item.UnitofMeasure</td>
-                                    </tr>
+                        @{ foreach (Item item in list)
+                            {
+                                <tr>
+                                    <td>@item.Description</td>
+                                    <td>
+                                        <table class="w3-table w3-striped">
+                                            <tr><th>Supplier Name</th><th>Unit Price</th><th>UOM</th></tr>
+                                            <tr>
+                                                <td>@item.Supplier1.supplier.Name</td>
+                                                <td>@item.Supplier1.UnitPrice</td>
+                                                <td>@item.UnitofMeasure</td>
+                                            </tr>
 
-                                    <tr>
-                                        <td>@item.Supplier3.supplier.Name</td>
-                                        <td>@item.Supplier3.UnitPrice</td>
-                                        <td>@item.UnitofMeasure</td>
-                                    </tr>
+                                            <tr>
+                                                <td>@item.Supplier2.supplier.Name</td>
+                                                <td>@item.Supplier2.UnitPrice</td>
+                                                <td>@item.UnitofMeasure</td>
+                                            </tr>
 
-                                </table>
+                                            <tr>
+                                                <td>@item.Supplier3.supplier.Name</td>
+                                                <td>@item.Supplier3.UnitPrice</td>
+                                                <td>@item.UnitofMeasure</td>
+                                            </tr>
 
-                            </td>
+                                        </table>
 
-                            <td>
-                                <select style="width:350px;" id="supId" onchange="SelectSup(@item.Id)">
-                                    @{
-                                        
-                                            <option value="@item.Supplier1.supplier.Id">@item.Supplier1.supplier.Name</option>
-                                            <option value="@item.Supplier2.supplier.Id">@item.Supplier2.supplier.Name</option>
-                                            <option value="@item.Supplier3.supplier.Id">@item.Supplier3.supplier.Name</option>
-                                        
-                                    }
-                                </select>
-                            </td>
-                        </tr>
-                    }
-                }
-            </table>
+                                    </td>
+
+                                    <td>
+                                        <select style="width:350px;" id="supId" onchange="SelectSup(@item.Id)">
+                                            @{
+
+                                                <option value="@item.Supplier1.supplier.Id">@item.Supplier1.supplier.Name</option>
+                                                <option value="@item.Supplier2.supplier.Id">@item.Supplier2.supplier.Name</option>
+                                                <option value="@item.Supplier3.supplier.Id">@item.Supplier3.supplier.Name</option>
+
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                                }
+                        }
+                    </table>
+                    <br>
+                                                }
+                                                else { <h4>There is no item's stock balance is below re-order level now.</h4>}
+            }
+
             <br>
-            <br>
-            </div>
+        </div>
         </div>
 
             <script>

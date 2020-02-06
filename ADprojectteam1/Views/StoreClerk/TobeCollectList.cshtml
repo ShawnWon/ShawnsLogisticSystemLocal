@@ -15,13 +15,13 @@
         </div>
 
         <div class="w3-main" style="margin-left:250px">
-            
 
 
-            @{if (collist != null)
+            <h2>Collected Item List</h2>
+            @{if (collist!=null&&collist.Count != 0)
                 {
 
-                    <h2>Collected Item List</h2>
+
                     <table class="w3-table w3-striped">
                         <tr><th>Item Name</th><th>Quant</th></tr>
 
@@ -30,59 +30,66 @@
                                 <tr>
                                     <td>@ItemData.GetItemById(itemId).Description</td>
                                     <td>@collist[itemId]</td>
-                                    <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteColItem","StoreClerk", new { id = itemId})'" /></td>
+                                    <td><input type="button" value="Delete" onclick="location.href='@Url.Action("deleteColItem", "StoreClerk", new { id = itemId })'" /></td>
                                 </tr>
 
                             }
                         }
                     </table>
-                    <input type="button" value="Generate Delivery Orders" onclick="location.href='@Url.Action("GenerateDelOrder","StoreClerk")'" />
+                    <input type="button" value="Generate Delivery Orders" onclick="location.href='@Url.Action("GenerateDelOrder", "StoreClerk")'" />
                 }
+                else
+                { <h4>You haven't collected any item yet.</h4>}
             }
+
+
             <h2>TobeCollectList</h2>
 
-            <table class="w3-table w3-striped">
-                <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
+            @{ if (reqlist.Count != 0)
+                {<table class="w3-table w3-striped">
+                        <tr><th>Item Name</th><th>Demand Quant</th><th>Collected Quant</th></tr>
 
-                @{ foreach (int itemId in reqlist.Keys)
-                    {
-                        <tr>
-                            <td>@ItemData.GetItemById(itemId).Description</td>
-                            <td>@reqlist[itemId].Values.Sum()</td>
-                            <td><input type="text" placeholder="Input quantity" size="6" id="ActquantityBox @itemId"></td>
-                            <td><input type="button" value="Confirm Collected" onclick="ConfirmCollect(@itemId);" /></td>
-                        </tr>
+                        @{ foreach (int itemId in reqlist.Keys)
+                            {
+                                <tr>
+                                    <td>@ItemData.GetItemById(itemId).Description</td>
+                                    <td>@reqlist[itemId].Values.Sum()</td>
+                                    <td><input type="text" placeholder="Input quantity" size="6" id="ActquantityBox @itemId"></td>
+                                    <td><input type="button" value="Confirm Collected" onclick="ConfirmCollect(@itemId);" /></td>
+                                </tr>
 
+                                <tr>
+                                    <td>
+                                        <table class="w3-table w3-striped">
+                                            <tr><th>Department </th><th>Demand Quant</th></tr>
 
+                                            @{ foreach (int depId in reqlist[itemId].Keys)
+                                                {
+                                                    if (@reqlist[itemId][depId] != 0)
+                                                    {
+                                                        <tr>
+                                                            <td>@DepartmentData.GetDepNameById(depId)</td>
+                                                            <td>@reqlist[itemId][depId]</td>
 
+                                                        </tr>
+                                                    }
 
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
 
-                        <tr>
-                            <td>
-                                <table class="w3-table w3-striped">
-                                    <tr><th>Department </th><th>Demand Quant</th></tr>
+                                                }
+                        }
+                    </table>
+                    <br> }
+               else
+               { <h4>There is no pending requisition to be collected now.</h4> }
+            }
 
-                                    @{ foreach (int depId in reqlist[itemId].Keys)
-                                        {
-                                            if (@reqlist[itemId][depId] != 0)
-                                            {<tr>
-                                                <td>@DepartmentData.GetDepNameById(depId)</td>
-                                                <td>@reqlist[itemId][depId]</td>
-
-                                            </tr>}
-
-                                        }
-                                    }
-                                </table>
-                            </td>
-                        </tr>
-
-                    }
-                }
-            </table>
             <br>
-            <br>
-            </div>
+        </div>
         </div>
             <script>
 

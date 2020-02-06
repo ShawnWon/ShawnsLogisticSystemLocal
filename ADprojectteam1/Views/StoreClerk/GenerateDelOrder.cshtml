@@ -16,7 +16,8 @@
         </div>
 
         <div class="w3-main" style="margin-left:250px">
-            @{ if (planlist != null)
+            <h2>Making delivery plan base on collected items.</h2>
+            @{ if (planlist.Count != 0)
                 {<h2>Overall Item Collected</h2>
                     <table class="w3-table w3-striped">
                         <tr><th>Item Name</th><th>Collected Quant</th><th>Planned Quant</th></tr>
@@ -31,59 +32,60 @@
 
 
                             }
-                    <tr>
-                        
-                            
-                        <td><input type="button" value="Confirm Delivery Order" onclick="ConfirmDelOrder()" /></td>
-                        
-                    </tr>
+                            <tr>
+
+
+                                <td><input type="button" value="Confirm Delivery Order" onclick="ConfirmDelOrder()" /></td>
+
+                            </tr>
 
                         }
-                    </table>}
-            }
-            <h2>Delivery Order List</h2>
+                    </table>
+                    <br>
 
-            <table class="w3-table w3-striped">
-                <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
+                    <h2>Delivery Order List</h2>
 
-                @{ foreach (int depId in reqlist.Keys)
-                    {
-                        <tr>
-                            <td>@DepartmentData.GetDepNameById(depId)</td>
-                            <td>@DepartmentData.GetColPointById(depId)</td>
-                            <td>@DepartmentData.GetContactNameById(depId)</td>
-                            
-                        </tr>
+                    <table class="w3-table w3-striped">
+                        <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
 
+                        @{ foreach (int depId in reqlist.Keys)
+                            {
+                                <tr>
+                                    <td>@DepartmentData.GetDepNameById(depId)</td>
+                                    <td>@DepartmentData.GetColPointById(depId)</td>
+                                    <td>@DepartmentData.GetContactNameById(depId)</td>
 
+                                </tr>
 
+                                <tr>
+                                    <td>
+                                        <table class="w3-table w3-striped">
+                                            <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
 
+                                            @{ foreach (int itemId in reqlist[depId].Keys)
+                                                {
+                                                    <tr>
+                                                        <td>@ItemData.GetItemById(itemId).Description</td>
+                                                        <td>@reqlist[depId][itemId].</td>
+                                                        <td><input type="text" placeholder="Input quantity" onchange="ChangePlan(@itemId,@depId)" size="6" id="PlanquantityBox @itemId@depId" value="@planlist[depId][itemId]"></td>
+                                                    </tr>
 
-                        <tr>
-                            <td>
-                                <table class="w3-table w3-striped">
-                                    <tr><th>Item Name </th><th>Demand Quant</th><th>Plan to Deli Quant</th></tr>
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
 
-                                    @{ foreach (int itemId in reqlist[depId].Keys)
-                                        {
-                                            <tr>
-                                                <td>@ItemData.GetItemById(itemId).Description</td>
-                                                <td>@reqlist[depId][itemId].</td>
-                                                <td><input type="text" placeholder="Input quantity" onchange="ChangePlan(@itemId,@depId)" size="6" id="PlanquantityBox @itemId@depId" value="@planlist[depId][itemId]"></td>
-                                            </tr>
-
-                                        }
-                                    }
-                                </table>
-                            </td>
-                        </tr>
-
-                    }
+                            }
+                        }
+                    </table>
                 }
-            </table>
+                else
+                { <h4>You haven't collected any item to make delivery plan yet. </h4>}
+            }
             <br>
             <br>
-            </div>
+        </div>
         </div>
             <script>
 

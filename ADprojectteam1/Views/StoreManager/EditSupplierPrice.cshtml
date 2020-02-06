@@ -4,8 +4,12 @@
 @{
     ViewBag.Title = "Update Supplier Tender Price";
     List<ItemSupplier> listitemsup = ViewBag.listitemsup;
-
+    string searchStr = (string)ViewData["searchStr"];
+    bool match = (bool)ViewData["match"];
 }
+<script>
+    window.onload = function () { searchEnter() };
+</script>
 
 <div class="row" style="padding-top:0px;">
     <div class="col-sm-3 col-xs-3 col-lg-3 col-md-3">
@@ -17,21 +21,40 @@
     <div class="w3-main" style="margin-left:250px">
         <h2>Supplier Tender Price List</h2>
         <h4>@listitemsup.FirstOrDefault().supplier.Name</h4>
+        <h4 hidden id="supId" value="@listitemsup.FirstOrDefault().supplier.Id">@listitemsup.FirstOrDefault().supplier.Id</h4>
         <h6>@listitemsup.FirstOrDefault().supplier.Address</h6>
         <br>
+        <br>
+        <form action="javascript:searchClick()" class="navbar-brand" style="padding-top:7px;" method="post">
+            <table>
+                <tr>
+                    <td>
+
+                        <input type="text" class="form-control" placeholder="Search.." size="20" id="searchBox" value="@searchStr">
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-info" style="background-color:darkslategrey;border:none;">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </td>
+
+                </tr>
+            </table>
+        </form>
+
         <br>
         <table class="w3-table w3-striped">
             <tr><th>Item Description</th><th>Tender Price</th><th></th></tr>
 
             @{ foreach (ItemSupplier itemsup in listitemsup)
                 {
-                        <tr>
-                            <td>@itemsup.item.Description</td>
-                            <td><span id="currentpriceBox @itemsup.Id">@itemsup.UnitPrice</span></td>
-                            <td><input type="text" placeholder="Input new price" size="6" id="newpriceBox @itemsup.Id"></td>
-                            <td><input type="button" value="UpdatePrice" onclick="UpdatePrice(@itemsup.Id)" /></td>
-                        </tr>
-                    
+                    <tr>
+                        <td>@itemsup.item.Description</td>
+                        <td><span id="currentpriceBox @itemsup.Id">@itemsup.UnitPrice</span></td>
+                        <td><input type="text" placeholder="Input new price" size="6" id="newpriceBox @itemsup.Id"></td>
+                        <td><input type="button" value="UpdatePrice" onclick="UpdatePrice(@itemsup.Id)" /></td>
+                    </tr>
+
 
 
 
@@ -46,42 +69,80 @@
 <script>
 
 
-                function UpdatePrice(itemsupid) {
+    function UpdatePrice(itemsupid) {
 
 
 
 
-                    var newprice = document.getElementById("newpriceBox " + itemsupid).value
+        var newprice = document.getElementById("newpriceBox " + itemsupid).value
 
-                    var pdata = { isId:itemsupid, newprice: newprice };
+        var pdata = { isId: itemsupid, newprice: newprice };
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/StoreManager/UpdatePrice",
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(pdata),
-                        dataType: "json",
+        $.ajax({
+            type: "POST",
+            url: "/StoreManager/UpdatePrice",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(pdata),
+            dataType: "json",
 
-                        // Response Success
-                        success: function (response) {
+            // Response Success
+            success: function (response) {
 
-                            alert("Update Unite price successfully");
-                            document.getElementById("currentpriceBox " + response.Id).innerHTML = response.nprice;
+                alert("Update Unite price successfully");
+                document.getElementById("currentpriceBox " + response.Id).innerHTML = response.nprice;
 
-                        },
+            },
 
-                        // Response Fail
-                        failure: function (response) {
-                            alert("Fail Case");
-                        },
+            // Response Fail
+            failure: function (response) {
+                alert("Fail Case");
+            },
 
-                        // Response Error
-                        error: function (response) {
-                            alert("ERROR case");
-                        }
+            // Response Error
+            error: function (response) {
+                alert("ERROR case");
+            }
 
 
-                    });
-                }
+        });
+    }
+
+
+       function searchEnter() {
+           var searchBox = document.getElementById("searchBox");
+           var supplierId = parseInt(document.getElementById("supId").value);
+           searchBox.addEventListener("keypress", function (e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) {
+                var data = { searchStr: searchBox.value, sid:supplierId };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
+                doPOST(data);           /*Here we post 'data' to method, if the method has a parameter with same name of "searchStr", it passes to controller.*/
+            }
+        });
+    }
+
+    function searchClick() {
+        var searchBox = document.getElementById("searchBox");
+        var supplierId = parseInt(document.getElementById("supId").innerHTML);
+        var data = { searchStr: searchBox.value, sid:supplierId };  /*Here we pass the Viariable name "searchStr" and its value to dictionary 'data'*/
+
+        doPOST(data);
+    }
+
+    function doPOST(data) {
+        var ajax = new XMLHttpRequest();
+
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState == 4) {
+                document.open();
+                document.write(ajax.response);
+                document.close();
+            }
+        }
+        ajax.open("POST", "/StoreManager/EditSupplierPrice", true);
+        ajax.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+
+        ajax.send(JSON.stringify(data));
+    }
+ 
 </script>
 

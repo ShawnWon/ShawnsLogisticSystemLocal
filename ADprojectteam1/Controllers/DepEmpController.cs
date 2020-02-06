@@ -112,13 +112,9 @@ namespace ADprojectteam1.Controllers
             Plist = ItemData.FindAll();
             ViewBag.listItem = Plist;
             
-            
             List<Item> Rlist = new List<Item>();
             bool match = false;
             
-
-            
-
             if (searchStr == null)
             {
                 searchStr = "";
@@ -129,10 +125,10 @@ namespace ADprojectteam1.Controllers
                 foreach (Item Pro in Plist)
                 {
                     bool fit = false;
-                    if (Found(Pro.Description, searchStr).fit)
+                    if (Search.Found(Pro.Description, searchStr).fit)
                     {
                         fit = true;
-                        Pro.Description = Found(Pro.Description, searchStr).str;
+                        Pro.Description = Search.Found(Pro.Description, searchStr).str;
                     }
                     
                     if (fit) { match = true; Rlist.Add(Pro); }
@@ -152,20 +148,7 @@ namespace ADprojectteam1.Controllers
             return View();
         }
 
-        public searchResult Found(string ba, string ta)
-        {
 
-            string s = ba;
-            int index = ba.IndexOf(ta, StringComparison.CurrentCultureIgnoreCase);
-            if (index != -1)
-            {
-
-                s = ba.Substring(0, index) + "<span class='font-red'>" + ba.Substring(index, ta.Length) + "</span>" + ba.Substring(index + ta.Length);
-            }
-
-            return new searchResult { fit = (index != -1), str = s };
-
-        }
 
         
     }

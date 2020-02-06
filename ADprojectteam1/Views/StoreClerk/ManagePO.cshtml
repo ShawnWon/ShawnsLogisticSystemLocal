@@ -22,7 +22,7 @@
 
 
             <h2>Pending PO List</h2>
-            @{ if (plist != null)
+            @{ if (plist.Count != 0)
                 {
                     <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
@@ -48,17 +48,18 @@
                                     <td><input type="button" value="Send Purchase Orders" onclick="sendPO(@po.Id)" /></td>
 
                                 </tr>
-                            }
+                                                }
                         }
                     </table>
-                }
+                                                }
+                                                else { <h4>There is no pending Purchase Order to be dealt with now.</h4>}
             }
             <br>
             <br>
 
 
             <h2>Sent PO List</h2>
-            @{ if (slist != null)
+            @{ if (slist.Count != 0)
                 {
                     <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
@@ -85,18 +86,19 @@
                                     <td><input type="button" value="PO rejected by supplier" onclick="rejectPO(@po.Id)" /></td>
 
                                 </tr>
-                            }
+                                                }
                         }
 
                     </table>
-                }
+                                                }
+                                                else { <h4>There is no Purchase Order waiting for confirmation by suppliers now.</h4>}
             }
             <br>
             <br>
 
 
             <h2>Confirmed PO List</h2>
-            @{ if (clist != null)
+            @{ if (clist.Count != 0)
                 {
                     <table class="w3-table w3-striped">
                         <tr><th>Supplier Name</th></tr>
@@ -124,10 +126,11 @@
                                     </td>
 
                                 </tr>
-                            }
+                                                }
                         }
                     </table>
-                }
+                                                }
+                                                else { <h4>There is no Purchase Order waiting for delivering now.</h4>}
             }
             <br>
             <br>

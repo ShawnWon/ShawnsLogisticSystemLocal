@@ -1,6 +1,7 @@
 ﻿using ADprojectteam1.DB;
 using ADprojectteam1.Filter;
 using ADprojectteam1.Models;
+using ADprojectteam1.Service;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -131,7 +132,7 @@ namespace ADprojectteam1.Controllers
             return View();
         }
 
-        public ActionResult TrendReportList()
+        public ActionResult TrendReportList(string searchStr)
         {
             List<StockCard> itemlistsc = new List<StockCard>();
             
@@ -145,9 +146,46 @@ namespace ADprojectteam1.Controllers
                 monlist.Add(dt);
             }
 
-
+            //////////////////////////////////////////////////////searchbox feature
             List<Item> listitem = ItemData.FindAll();
-            foreach (Item item in listitem)
+
+            ViewBag.listItem = listitem;
+
+            List<Item> resultlist = new List<Item>();
+            bool match = false;
+
+            if (searchStr == null)
+            {
+                searchStr = "";
+                resultlist = listitem;
+            }
+            else
+            {
+                foreach (Item Pro in listitem)
+                {
+                    bool fit = false;
+                    if (Search.Found(Pro.Description, searchStr).fit)
+                    {
+                        fit = true;
+                        Pro.Description = Search.Found(Pro.Description, searchStr).str;
+                    }
+
+                    if (fit) { match = true; resultlist.Add(Pro); }
+                }
+            }
+
+
+            ViewData["searchStr"] = searchStr;
+            ViewData["match"] = match;
+
+            /////////////////////////////////////////////////////////////
+
+
+
+
+
+
+            foreach (Item item in resultlist)
             {
                 Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
                 Dictionary<string, int> itemtrend = new Dictionary<string, int>();

@@ -18,52 +18,54 @@
 
         <h2>Collected Department Order List</h2>
 
-        <table class="w3-table w3-striped">
-            <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
+        @{ if (reqlist.Count != 0)
+            {
+                <table class="w3-table w3-striped">
+                    <tr><th>Dep Name</th><th>Collect Point</th><th>Contact Person</th></tr>
 
-            @{ foreach (int depId in reqlist.Keys)
-                {
-                    if (reqlist[depId].Values.Sum() != 0)
-                    {
-                        <tr>
-                            <td>@DepartmentData.GetDepNameById(depId)</td>
-                            <td>@DepartmentData.GetColPointById(depId)</td>
-                            <td>@DepartmentData.GetContactNameById(depId)</td>
+                    @{ foreach (int depId in reqlist.Keys)
+                        {
+                            if (reqlist[depId].Values.Sum() != 0)
+                            {
+                                <tr>
+                                    <td>@DepartmentData.GetDepNameById(depId)</td>
+                                    <td>@DepartmentData.GetColPointById(depId)</td>
+                                    <td>@DepartmentData.GetContactNameById(depId)</td>
 
-                        </tr>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <table class="w3-table w3-striped">
+                                            <tr><th>Item Name </th><th>Plan to Deli Quant</th><th>UOM</th></tr>
+
+                                            @{ foreach (int itemId in reqlist[depId].Keys)
+                                                {
+                                                    <tr>
+                                                        <td>@ItemData.GetItemById(itemId).Description</td>
+                                                        <td>@reqlist[depId][itemId].</td>
+                                                        <td>@ItemData.GetItemById(itemId).UnitofMeasure</td>
+                                                    </tr>
+
+                                                }
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
 
 
-
-
-
-                        <tr>
-                            <td>
-                                <table class="w3-table w3-striped">
-                                    <tr><th>Item Name </th><th>Plan to Deli Quant</th></tr>
-
-                                    @{ foreach (int itemId in reqlist[depId].Keys)
-                                        {
-                                            <tr>
-                                                <td>@ItemData.GetItemById(itemId).Description</td>
-                                                <td>@reqlist[depId][itemId].</td>
-                                                <td></td>
-                                            </tr>
-
-                                        }
-                                    }
-                                </table>
-                            </td>
-                        </tr>
+                        }
                     }
 
+                </table>
+                <br>
 
-                }
             }
-
-        </table>
+            else{<h4>You haven't confirmed any delivery plan yet.</h4>}
+        }
         <br>
-        <br>
-        </div>
+    </div>
     </div>
  
 
