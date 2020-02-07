@@ -340,6 +340,53 @@ namespace ADprojectteam1.DB
             foreach(InventoryAdj ia in liva)
                 context.InventoryAdj.Add(ia);
 
+            ///initialize monthlyreport table
+
+            List<MonthlyReport> listmr = new List<MonthlyReport>();
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-1).Month, DateTime.Today.AddMonths(-1).Year),35,53));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-2).Month, DateTime.Today.AddMonths(-2).Year), 20, 58));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-3).Month, DateTime.Today.AddMonths(-3).Year), 40, 78));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-4).Month, DateTime.Today.AddMonths(-4).Year), 50, 58));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-5).Month, DateTime.Today.AddMonths(-5).Year), 20, 78));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-6).Month, DateTime.Today.AddMonths(-6).Year), 35, 64));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-7).Month, DateTime.Today.AddMonths(-7).Year), 20, 69));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-8).Month, DateTime.Today.AddMonths(-8).Year), 40, 59));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-9).Month, DateTime.Today.AddMonths(-9).Year), 15, 39));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-10).Month, DateTime.Today.AddMonths(-10).Year), 35, 24));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-11).Month, DateTime.Today.AddMonths(-11).Year), 20, 55));
+            listmr.Add(new MonthlyReport(1, string.Format("{0}/{1}", DateTime.Today.AddMonths(-12).Month, DateTime.Today.AddMonths(-12).Year), 35, 53));
+
+
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-1).Month, DateTime.Today.AddMonths(-1).Year), 0, 59));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-2).Month, DateTime.Today.AddMonths(-2).Year), 20, 59));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-3).Month, DateTime.Today.AddMonths(-3).Year), 40, 79));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-4).Month, DateTime.Today.AddMonths(-4).Year), 35, 59));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-5).Month, DateTime.Today.AddMonths(-5).Year), 0, 64));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-6).Month, DateTime.Today.AddMonths(-6).Year), 35, 64));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-7).Month, DateTime.Today.AddMonths(-7).Year), 20, 69));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-8).Month, DateTime.Today.AddMonths(-8).Year), 0, 59));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-9).Month, DateTime.Today.AddMonths(-9).Year), 15, 59));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-10).Month, DateTime.Today.AddMonths(-10).Year), 35, 44));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-11).Month, DateTime.Today.AddMonths(-11).Year), 0, 75));
+            listmr.Add(new MonthlyReport(2, string.Format("{0}/{1}", DateTime.Today.AddMonths(-12).Month, DateTime.Today.AddMonths(-12).Year), 35, 53));
+
+            foreach (MonthlyReport mr in listmr)
+                context.MonthlyReport.Add(mr);
+
+            for (int i = 1; i < 13; i++)
+            {
+                DateTime date = DateTime.Today.AddMonths(-i);
+                string dtstring = string.Format("{0}/{1}", date.Month, date.Year);
+
+                MonthlyReport mr = new MonthlyReport();
+                for (int itemId= 3; itemId <= 85;itemId++)
+                {
+                    
+                    mr = new MonthlyReport(itemId, dtstring, 0,550);
+                    context.MonthlyReport.Add(mr);
+                }
+            }
+            
             
 
             base.Seed(context);

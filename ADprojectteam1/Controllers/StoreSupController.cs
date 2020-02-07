@@ -69,29 +69,15 @@ namespace ADprojectteam1.Controllers
             Item item = ItemData.GetItemById(itemId);
             List<string> monlist = new List<string>();
             Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
-            for (int i = 11; i >= 0; i--)
+            for (int i = 12; i >= 1; i--)
             {
                 string dt = string.Format("{0}/{1}", DateTime.Today.AddMonths(-i).Month, DateTime.Today.AddMonths(-i).Year);
                 monlist.Add(dt);
 
-                //Get stockbalance on given month
-                bool gotstockbalance = false;
-                string givenmonth = dt;
-                while (!gotstockbalance)
-                {
-
-                    if (StockCardData.GetStockBalanceByItemAndMonth(item, givenmonth) >= 0)
-                    {
-                        itemsbtrend.Add(dt, StockCardData.GetStockBalanceByItemAndMonth(item, givenmonth));
-                        gotstockbalance = true;
-                    }
-                    else
-                    {
-                        DateTime date = DateTime.Parse(givenmonth);
-                        givenmonth = string.Format("{0}/{1}", date.AddMonths(-1).Month, date.AddMonths(-1).Year);
-
-                    }
-                }
+                //Get stockbalance on given month from monthly report
+                int stockbalance = MonthlyReportData.GetMonthlyStockbalanceByMonthAndItemId(dt,itemId);
+                itemsbtrend.Add(dt, stockbalance);
+                
             }
 
             int[] cons = trendlist[itemId].Values.ToArray();
@@ -141,7 +127,7 @@ namespace ADprojectteam1.Controllers
             
 
             List<string> monlist = new List<string>();
-            for (int i = 11; i >= 0; i--)
+            for (int i = 12; i >= 1; i--)
             {
                 string dt = string.Format("{0}/{1}", DateTime.Today.AddMonths(-i).Month, DateTime.Today.AddMonths(-i).Year);
                 monlist.Add(dt);
@@ -193,31 +179,14 @@ namespace ADprojectteam1.Controllers
             {
                 Dictionary<string, int> itemsbtrend = new Dictionary<string, int>();
                 Dictionary<string, int> itemtrend = new Dictionary<string, int>();
-                itemlistsc = StockCardData.GetConsHistory(item);
-                var iter = from sc in itemlistsc orderby sc.date group sc by new { month = sc.date.Month, year = sc.date.Year } into d select new { dt = string.Format("{0}/{1}", d.Key.month, d.Key.year), cons = d.Sum(x => x.quant) };
-
+                
                 foreach (string m in monlist)
                 {
-                    
-                    
-                    
                     //Get monthly consumption quant on given month
-                    bool exist = false;
-                    foreach (var grp in iter)
-                    {
-                        if (m.Equals(grp.dt))
-                        {
-                            itemtrend.Add(m, -grp.cons);
-                            exist = true;
-                            break;
-                        }
-                        
-                    }
-                    if(!exist) itemtrend.Add(m, 0);
-
+                    int cons = MonthlyReportData.GetMonthlyConsByMonthAndItemId(m,item.Id);
+                    itemtrend.Add(m, cons);
                 }
                 trendlist.Add(item.Id,itemtrend);
-                
             }
 
             

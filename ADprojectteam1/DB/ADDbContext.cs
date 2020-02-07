@@ -33,5 +33,6 @@ namespace ADprojectteam1.DB
         public DbSet<InventoryAdj> InventoryAdj { get; set; }
         public DbSet<DepOrder> DepOrder { get; set; }
         public DbSet<Delegation> Delegation { get; set; }
+        public DbSet<MonthlyReport> MonthlyReport { get; set; }
     }
 }

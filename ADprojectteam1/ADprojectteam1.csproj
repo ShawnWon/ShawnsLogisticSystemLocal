@@ -154,6 +154,7 @@
     <Compile Include="DB\InventoryAdjData.cs" />
     <Compile Include="DB\ItemData.cs" />
     <Compile Include="DB\ItemSupplierData.cs" />
+    <Compile Include="DB\MonthlyReportData.cs" />
     <Compile Include="DB\PurchaseOrderData.cs" />
     <Compile Include="DB\ReqItemData.cs" />
     <Compile Include="DB\SrequisitionData.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\DepOrder.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\InventoryAdj.cs" />
+    <Compile Include="Models\MonthlyReport.cs" />
     <Compile Include="Models\StockCard.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemSupplier.cs" />

@@ -17,6 +17,8 @@ namespace ADprojectteam1.Service
 
             // Schedule a simple job to run at a specific time
             Schedule(() => DailyCheckDelegation()).ToRunEvery(1).Days().At(12, 41);
+
+            Schedule(() => MakeMonthlyReport()).ToRunEvery(1).Months().OnTheLastDay().At(23, 59); 
         }
 
         public static void DailyCheckDelegation()
@@ -34,6 +36,22 @@ namespace ADprojectteam1.Service
                 {
                     EmployeeData.RetractDelegate(dele.DelegatedEmpId);
                 }
+            }
+        }
+
+        public static void MakeMonthlyReport()
+        {
+            List<Item> items = ItemData.FindAll();
+            
+            string dt = string.Format("{0}/{1}", DateTime.Today.Month, DateTime.Today.Year);
+
+            foreach (Item item in items)
+            {
+                int sbalance = StockCardData.GetStockBalanceByItemAndMonth(item,dt);
+                int mcons = StockCardData.GetConsByItemAndMonth(item,dt);
+
+                MonthlyReportData.CreateMonthlyReport(item.Id,dt,mcons,sbalance);
+
             }
         }
     }

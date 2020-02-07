@@ -59,6 +59,29 @@ namespace ADprojectteam1.DB
          
         }
 
+        internal static int GetConsByItemAndMonth(Item item, string dt)
+        {
+            int mcons = 0;
+            List<int> l = new List<int>();
+            int i = item.Id;
+            string[] date = dt.Split('/');
+            string month = date[0];
+            string year = date[1];
+
+
+
+            using (var db = new ADDbContext())
+            {
+                if (db.StockCard.Where(x => x.item.Id == item.Id && x.date.Year.ToString().Equals(year) && x.date.Month.ToString().Equals(month)&&x.comment.Equals("Withdraw")).Any())
+                {
+                    mcons = db.StockCard.Where(x => x.item.Id == item.Id && x.date.Year.ToString().Equals(year) && x.date.Month.ToString().Equals(month)&&x.comment.Equals("Withdraw")).Select(x => x.quant).Sum();
+                    
+                }
+                else mcons = 0;
+            }
+            return mcons;
+        }
+
         internal static double FindPriceByItemId(int itemId)
         {
             
@@ -155,7 +178,14 @@ namespace ADprojectteam1.DB
                     l = db.StockCard.Where(x => x.item.Id == item.Id && x.date.Year.ToString().Equals(year) && x.date.Month.ToString().Equals(month)).Select(x => x.balance).ToList();
                     sb = l[l.Count - 1];
                 }
-                else sb = -1;
+                else
+                {
+                    DateTime dt = Convert.ToDateTime(m).AddMonths(-1);
+                    string mpre= string.Format("{0}/{1}", dt.Month, dt.Year);
+
+                    sb = MonthlyReportData.GetMonthlyStockbalanceByMonthAndItemId(m,item.Id);
+                
+                }
             }
             return sb;
         }
