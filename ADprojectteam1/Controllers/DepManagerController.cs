@@ -93,24 +93,24 @@ namespace ADprojectteam1.Controllers
 
             }
 
-            DelegationData.CreateDelegation(userid,startdate,enddate,empId);
+            Delegation dele=DelegationData.CreateDelegation(userid,startdate,enddate,empId);
 
+            if(DateTime.Today.Date.Equals(startdate)) EmployeeData.GiveDelegate(dele.DelegatedEmpId);//If start from today, set delegate immediately.
 
+            /* var DailyTime = "20:31:00";
+             var timeParts = DailyTime.Split(new char[1] { ':' });
+             var dateNow = DateTime.Now;
+             var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
+             TimeSpan ts;
+             if (date > dateNow)
+                 ts = date - dateNow;
+             else
+             {
+                 date = date.AddDays(1);
+                 ts = date - dateNow;
+             }
+             Task.Delay(ts).ContinueWith((x) => MyScheduler.DailyCheckDelegation());*/
 
-           /* var DailyTime = "20:31:00";
-            var timeParts = DailyTime.Split(new char[1] { ':' });
-            var dateNow = DateTime.Now;
-            var date = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
-            TimeSpan ts;
-            if (date > dateNow)
-                ts = date - dateNow;
-            else
-            {
-                date = date.AddDays(1);
-                ts = date - dateNow;
-            }
-            Task.Delay(ts).ContinueWith((x) => MyScheduler.DailyCheckDelegation());*/
-            
             status = new {status=true };
 
             return Json(status, JsonRequestBehavior.AllowGet);

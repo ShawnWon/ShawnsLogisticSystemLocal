@@ -125,11 +125,14 @@ namespace ADprojectteam1.DB
             emps.Add(new Employee("storemanager", "4e02b0e68f049d9fd40b2013f7b637e2", "StoreManager", "11235", "Ms", "Aye Moe Phyu", "aye@gmail.com"));
             emps.Add(new Employee("storesup", "8050b9c976aed3e1ab492f373fbd8421", "StoreSup", "11236", "Ms", "Suwetaa Ramesh", "suwetaa@gmail.com"));
             emps.Add(new Employee("depemp", "bb3852c905fe1d884ad105f9b6dcbc19", "DepEmp", "11238", "Ms", "Jenny Tang", "e0457838@u.nus.edu"));
+            
             emps.Add(new Employee("deprep", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11239", "Mr", "Thant Htet Myet", "than@gmail.com"));
-            emps.Add(new Employee("deprep1", "7706011852e262a2d5012ace5b77c80e", "DepRep", "11242", "Mr", "Rep of Computer Dep", "than@gmail.com"));
 
-            emps.Add(new Employee("depemp1", "7706011852e262a2d5012ace5b77c80e", "DepEmp", "11240", "Mr", "Emp of Computer Dep", "than@gmail.com"));
-            emps.Add(new Employee("depmanager1", "7706011852e262a2d5012ace5b77c80e", "DepManager", "11241", "Mr", "Manager of Computer Dep", "than@gmail.com"));
+            emps.Add(new Employee("deprep1", "408b85c841e42c3d9565c5b4e1a4761d", "DepRep", "11242", "Mr", "Rep of Computer Dep", "than@gmail.com"));
+
+            emps.Add(new Employee("depemp1", "bd13f7f64605dbc4e2329bd5f5cd443f", "DepEmp", "11240", "Mr", "Emp of Computer Dep", "than@gmail.com"));
+            emps.Add(new Employee("depmanager1", "4a10eb8cdbdd952cc3ec6b50a840b499", "DepManager", "11241", "Mr", "Manager of Computer Dep", "than@gmail.com"));
+            emps.Add(new Employee("depemp2", "e0b3d486eccac095cfbbaf5cfa18d0e3", "DepEmp", "11241", "Mr", "Wang Xuezhi", "wxz@gmail.com"));
 
             foreach (Employee e in emps)
                 context.Employee.Add(e);
@@ -145,7 +148,7 @@ namespace ADprojectteam1.DB
             emps[6].department = deps[1];
             emps[7].department = deps[1];
             emps[8].department = deps[1];
-
+            emps[9].department = deps[0];
             List<Supplier> sups = new List<Supplier>();
 
             sups.Add(new Supplier("ALPA","ALPHA Office Supplies","Ms Irene Tan", "Blk 1128, Ang Mo Kio Industrial Park #02-1108 Ang Mo Kio Street 62 Singapore 622262","4619928","4612238","alpha@gmail.com"));
@@ -201,11 +204,11 @@ namespace ADprojectteam1.DB
                 context.ReqItem.Add(ri);
 
             List<ReqItem> rit1 = new List<ReqItem>();
-            rit1.Add(new ReqItem(items[1], emps[5], 10));
-            rit1.Add(new ReqItem(items[68], emps[5], 45));
-            rit1.Add(new ReqItem(items[40], emps[5], 100));
-            rit1.Add(new ReqItem(items[84], emps[5], 25));
-            rit1.Add(new ReqItem(items[73], emps[5], 55));
+            rit1.Add(new ReqItem(items[1], emps[9], 10));
+            rit1.Add(new ReqItem(items[68], emps[9], 45));
+            rit1.Add(new ReqItem(items[40], emps[9], 100));
+            rit1.Add(new ReqItem(items[84], emps[9], 25));
+            rit1.Add(new ReqItem(items[73], emps[9], 55));
 
 
             foreach (ReqItem ri in rit1)

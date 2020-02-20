@@ -150,16 +150,26 @@ namespace ADprojectteam1.Controllers
             if (Session["plannedlist"] != null)
             { plannedlist = (Dictionary<int, Dictionary<int,int>>)Session["plannedlist"]; }
 
-            if (plannedlist[depId].ContainsKey(itemId)) 
+            if (plannedlist.ContainsKey(depId)&&plannedlist[depId].ContainsKey(itemId)) 
             {
                 plannedlist[depId][itemId] = quant;
                 
+
+                foreach (int dId in plannedlist.Keys)
+                {
+
+
+                    foreach(int iId in plannedlist[dId].Keys)
+                    {
+                        int i = plannedlist[dId][iId];
+                       if(iId==itemId) totalitemquant += plannedlist[dId][iId];
+
+                    }
+                }
+
             }
 
-            foreach (int dId in plannedlist.Keys)
-            {
-                totalitemquant+=plannedlist[dId][itemId];
-            }
+            
 
             Session["plannedlist"] = plannedlist;
             object new_amount = new { Id = itemId, quant = totalitemquant };
@@ -181,7 +191,10 @@ namespace ADprojectteam1.Controllers
                 int itemtotal = 0;
                 foreach (int depId in plannedlist.Keys)
                 {
-                    itemtotal += plannedlist[depId][itemId];
+                    foreach (int iId in plannedlist[depId].Keys)
+                    { 
+                        if(iId==itemId) itemtotal += plannedlist[depId][itemId]; 
+                    }
                 }
                 if (itemtotal != collist[itemId])
                 {

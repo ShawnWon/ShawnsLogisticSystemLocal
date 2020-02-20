@@ -51,7 +51,7 @@ namespace ADprojectteam1.DB
             {
                 if (db.Department.Where(x => x.Id == id).Any())
                 {
-                    empid = db.Department.Where(x => x.Id == id).Select(x => x.ContactId).FirstOrDefault();
+                    empid = db.Department.Where(x => x.Id == id).Select(x => x.DepRepId).FirstOrDefault();
                     i = EmployeeData.GetNameById(empid);
                 }
             }

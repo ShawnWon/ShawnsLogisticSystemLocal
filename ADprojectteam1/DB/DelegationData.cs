@@ -8,7 +8,7 @@ namespace ADprojectteam1.DB
 {
     public class DelegationData
     {
-        internal static void CreateDelegation(int userid, DateTime sdate, DateTime edate, int empId)
+        internal static Delegation CreateDelegation(int userid, DateTime sdate, DateTime edate, int empId)
         {
             Delegation deleg = new Delegation(userid, sdate,edate,empId);
 
@@ -17,6 +17,7 @@ namespace ADprojectteam1.DB
                 db.Delegation.Add(deleg);
                 db.SaveChanges();
             }
+            return deleg;
         }
 
         internal static List<Delegation> GetAllByManagerId(int uId)

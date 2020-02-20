@@ -9,7 +9,7 @@ namespace ADprojectteam1.Models
     {
         public int Id { get; set; }
         public string DepName { get; set; }
-        public int ContactId { get; set; }
+       
         public string DepCode { get; set; }
         public string Tele { get; set; }
         public string Fax { get; set; }
